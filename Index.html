@@ -1,0 +1,649 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA LEGENDS DRAFT & SIM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nba-blue: #17408B;
+            --nba-red: #C9082A;
+            --p1-color: #ff3e3e;
+            --p2-color: #3e8bff;
+            --nba-gold: #f1c40f;
+            --bg-dark: #020b13;
+        }
+
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            overflow: hidden; /* Prevent scrolling during game */
+            height: 100vh;
+            width: 100vw;
+        }
+
+
+        h1, h2, h3 { font-family: 'Bebas Neue', cursive; letter-spacing: 2px; }
+
+
+        /* Background */
+        .court-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(2, 11, 19, 0.85), rgba(2, 11, 19, 0.95)), 
+                        url('https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            z-index: -1;
+        }
+
+
+        /* Screens Management */
+        .screen {
+            display: none;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            padding: 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+
+        .screen.active { display: flex; animation: fadeIn 0.5s ease forwards; }
+
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+        /* Turn Transition Overlay */
+        #turn-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: var(--nba-blue);
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+
+        /* Buttons & Inputs */
+        .btn {
+            background: var(--nba-red);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Bebas Neue';
+            font-size: 1.8rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .btn:hover { background: white; color: var(--nba-red); transform: translateY(-3px); }
+
+
+        .naming-box {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 15px;
+            border-bottom: 5px solid white;
+            width: 90%;
+            max-width: 500px;
+            transition: border-color 0.5s;
+        }
+
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            font-family: 'Bebas Neue';
+            margin: 20px 0;
+            outline: none;
+        }
+
+
+        /* Draft Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            width: 95%;
+            max-width: 1100px;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+
+        .card-slot {
+            aspect-ratio: 2/3;
+            background: #111;
+            border: 1px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue';
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+        .card-slot:hover { border-color: var(--nba-gold); transform: scale(1.1); z-index: 5; background: #222; }
+
+
+        /* Reveal Modal */
+        #reveal-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .reveal-card {
+            background: white;
+            color: black;
+            width: 320px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            animation: cardPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+
+        @keyframes cardPop { from { transform: scale(0); rotate: 10deg; } to { transform: scale(1); rotate: 0deg; } }
+
+
+        .player-img { width: 100%; height: 320px; object-fit: cover; border-radius: 8px; margin: 10px 0; background: #eee; border: 4px solid var(--nba-blue); }
+
+
+        /* Simulation Board */
+        .scoreboard {
+            background: #000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-family: 'Orbitron', sans-serif;
+            border: 2px solid #333;
+            margin-bottom: 15px;
+        }
+
+
+        .score-num { font-size: 3.5rem; color: #f1c40f; min-width: 80px; }
+        .clock { color: #ff3d00; font-size: 2rem; }
+        .qtr { background: #333; padding: 4px 10px; font-size: 1rem; border-radius: 4px; }
+
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+
+        .team-table {
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 35px 35px 35px 35px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+
+        .ticker {
+            width: 100%;
+            background: var(--nba-blue);
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+
+
+        /* Mobile specific */
+        @media (max-width: 768px) {
+            .cards-grid { grid-template-columns: repeat(5, 1fr); }
+            .stats-container { grid-template-columns: 1fr; }
+            .scoreboard { gap: 10px; padding: 10px; }
+            .score-num { font-size: 2rem; }
+            .reveal-card { width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="court-bg"></div>
+
+
+    <!-- Screen 1: Team Naming -->
+    <div id="screen-setup" class="screen active">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/03/National_Basketball_Association_logo.svg/315px-National_Basketball_Association_logo.svg.png" height="100" style="margin-bottom: 20px;">
+        <h1 style="font-size: 3rem;">LEGENDS DRAFT</h1>
+        <div id="naming-box" class="naming-box">
+            <h2 id="player-label">PLAYER 1: TEAM NAME</h2>
+            <input type="text" id="team-input" placeholder="LAKERS, BULLS, HEAT..." maxlength="15">
+            <button class="btn" onclick="handleTeamName()">CONFIRM TEAM</button>
+        </div>
+    </div>
+
+
+    <!-- Screen 2: The Draft -->
+    <div id="screen-draft" class="screen">
+        <div id="draft-turn-indicator" style="margin-bottom: 20px;">
+            <h1 id="drafting-player-name" style="font-size: 2.5rem; color: var(--p1-color);">PLAYER 1 DRAFT</h1>
+            <div id="draft-pos" style="background: var(--nba-gold); color: black; padding: 5px 20px; border-radius: 20px; display: inline-block; font-weight: bold; margin: 10px 0;">CENTER (C)</div>
+        </div>
+        <div id="cards-container" class="cards-grid"></div>
+    </div>
+
+
+    <!-- Screen 3: Lineup Reveal -->
+    <div id="screen-lineups" class="screen">
+        <h1 style="font-size: 3rem; margin-bottom: 20px;">BATTLE READY</h1>
+        <div class="stats-container">
+            <div id="lineup-p1" class="team-table" style="border-top: 4px solid var(--p1-color)"></div>
+            <div id="lineup-p2" class="team-table" style="border-top: 4px solid var(--p2-color)"></div>
+        </div>
+        <button class="btn" onclick="startMatch()" style="padding: 20px 60px;">TIP OFF</button>
+    </div>
+
+
+    <!-- Screen 4: Match Simulation -->
+    <div id="screen-sim" class="screen">
+        <div class="scoreboard">
+            <div style="text-align: right;">
+                <h3 id="sim-t1-name">TEAM 1</h3>
+                <div id="score-1" class="score-num">00</div>
+            </div>
+            <div style="text-align: center;">
+                <div id="sim-qtr" class="qtr">1ST QTR</div>
+                <div id="sim-clock" class="clock">12:00</div>
+            </div>
+            <div style="text-align: left;">
+                <h3 id="sim-t2-name">TEAM 2</h3>
+                <div id="score-2" class="score-num">00</div>
+            </div>
+        </div>
+        <div id="game-ticker" class="ticker">WAITING FOR TIP-OFF...</div>
+        <div class="stats-container">
+            <div id="stats-p1" class="team-table"></div>
+            <div id="stats-p2" class="team-table"></div>
+        </div>
+    </div>
+
+
+    <!-- Screen 5: Final Results -->
+    <div id="screen-results" class="screen">
+        <h1 id="winner-banner" style="font-size: 5rem; color: var(--nba-gold);">PLAYER 1 WINS!</h1>
+        <div id="mvp-box" style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin: 20px 0; border: 2px solid var(--nba-gold); max-width: 500px;"></div>
+        <button class="btn" onclick="location.reload()">PLAY AGAIN</button>
+    </div>
+
+
+    <!-- Overlays -->
+    <div id="turn-overlay">
+        <h1 id="transition-title" style="font-size: 5rem;">PLAYER 1</h1>
+        <h2 id="transition-sub">GET READY</h2>
+    </div>
+
+
+    <div id="reveal-modal">
+        <div class="reveal-card">
+            <h3 id="rev-pos" style="color: var(--nba-red);">CENTER</h3>
+            <img id="rev-photo" class="player-img" src="">
+            <h1 id="rev-name" style="font-size: 2.2rem; line-height: 1;">MICHAEL JORDAN</h1>
+            <p id="rev-team" style="font-weight: bold; color: #555;">CHICAGO BULLS</p>
+        </div>
+    </div>
+
+
+    <script>
+        // --- REAL NBA PLAYER DATABASE (50 per position) ---
+        const PLAYER_DB = {
+            'C': [
+                {n: "Kareem Abdul-Jabbar", t: "Lakers", i: "76003"}, {n: "Shaquille O'Neal", t: "Lakers", i: "406"}, {n: "Bill Russell", t: "Celtics", i: "78049"}, {n: "Wilt Chamberlain", t: "Warriors", i: "76375"}, {n: "Hakeem Olajuwon", t: "Rockets", i: "247"},
+                {n: "David Robinson", t: "Spurs", i: "764"}, {n: "Patrick Ewing", t: "Knicks", i: "47"}, {n: "Nikola Jokic", t: "Nuggets", i: "203999"}, {n: "Joel Embiid", t: "76ers", i: "203954"}, {n: "Dwight Howard", t: "Magic", i: "2730"},
+                {n: "Moses Malone", t: "76ers", i: "77449"}, {n: "Alonzo Mourning", t: "Heat", i: "297"}, {n: "Dikembe Mutombo", t: "Nuggets", i: "87"}, {n: "Robert Parish", t: "Celtics", i: "77796"}, {n: "Bill Walton", t: "Blazers", i: "78450"},
+                {n: "Arvydas Sabonis", t: "Blazers", i: "717"}, {n: "Ben Wallace", t: "Pistons", i: "1112"}, {n: "Rudy Gobert", t: "Timberwolves", i: "203497"}, {n: "Anthony Davis", t: "Lakers", i: "203076"}, {n: "Bam Adebayo", t: "Heat", i: "1628389"},
+                {n: "Karl-Anthony Towns", t: "Knicks", i: "1626157"}, {n: "Domantas Sabonis", t: "Kings", i: "1627734"}, {n: "Chet Holmgren", t: "Thunder", i: "1631096"}, {n: "Victor Wembanyama", t: "Spurs", i: "1641705"}, {n: "Brook Lopez", t: "Bucks", i: "201572"},
+                {n: "Deandre Ayton", t: "Blazers", i: "1629028"}, {n: "Jarrett Allen", t: "Cavaliers", i: "1628386"}, {n: "Myles Turner", t: "Pacers", i: "1626167"}, {n: "Clint Capela", t: "Hawks", i: "203991"}, {n: "Kristaps Porzingis", t: "Celtics", i: "204001"},
+                {n: "Marc Gasol", t: "Grizzlies", i: "201180"}, {n: "Pau Gasol", t: "Lakers", i: "2200"}, {n: "Yao Ming", t: "Rockets", i: "2403"}, {n: "Vlade Divac", t: "Kings", i: "136"}, {n: "Zydrunas Ilgauskas", t: "Cavaliers", i: "980"},
+                {n: "Jonas Valanciunas", t: "Wizards", i: "202685"}, {n: "Nikola Vucevic", t: "Bulls", i: "202696"}, {n: "Jusuf Nurkic", t: "Suns", i: "203994"}, {n: "Alperen Sengun", t: "Rockets", i: "1630578"}, {n: "Walker Kessler", t: "Jazz", i: "1631117"},
+                {n: "Nic Claxton", t: "Nets", i: "1629651"}, {n: "Mitchell Robinson", t: "Knicks", i: "1629011"}, {n: "Steven Adams", t: "Rockets", i: "203500"}, {n: "Ivica Zubac", t: "Clippers", i: "1627826"}, {n: "Jakob Poeltl", t: "Raptors", i: "1627751"},
+                {n: "Dereck Lively II", t: "Mavericks", i: "1641726"}, {n: "Naz Reid", t: "Timberwolves", i: "1629675"}, {n: "Isaiah Hartenstein", t: "Thunder", i: "1628392"}, {n: "Bobby Portis", t: "Bucks", i: "1626171"}, {n: "Jalen Duren", t: "Pistons", i: "1631105"}
+            ],
+            'PF': [
+                {n: "Tim Duncan", t: "Spurs", i: "1495"}, {n: "Kevin Garnett", t: "Wolves", i: "708"}, {n: "Dirk Nowitzki", t: "Mavs", i: "1717"}, {n: "Charles Barkley", t: "Suns", i: "784"}, {n: "Karl Malone", t: "Jazz", i: "252"},
+                {n: "Giannis Antetokounmpo", t: "Bucks", i: "203507"}, {n: "Elvin Hayes", t: "Bullets", i: "76979"}, {n: "Pau Gasol", t: "Lakers", i: "2200"}, {n: "Chris Bosh", t: "Heat", i: "2547"}, {n: "Shawn Kemp", t: "Sonics", i: "420"},
+                {n: "Dennis Rodman", t: "Bulls", i: "863"}, {n: "Draymond Green", t: "Warriors", i: "203110"}, {n: "Amar'e Stoudemire", t: "Suns", i: "2406"}, {n: "Rasheed Wallace", t: "Pistons", i: "734"}, {n: "Chris Webber", t: "Kings", i: "185"},
+                {n: "Kevin Love", t: "Cavaliers", i: "201567"}, {n: "Blake Griffin", t: "Clippers", i: "201933"}, {n: "Pascal Siakam", t: "Pacers", i: "1627783"}, {n: "Julius Randle", t: "Knicks", i: "203944"}, {n: "Zion Williamson", t: "Pelicans", i: "1629627"},
+                {n: "Paolo Banchero", t: "Magic", i: "1631094"}, {n: "Jaren Jackson Jr.", t: "Grizzlies", i: "1628991"}, {n: "Evan Mobley", t: "Cavaliers", i: "1630596"}, {n: "Lauri Markkanen", t: "Jazz", i: "204001"}, {n: "Aaron Gordon", t: "Nuggets", i: "203932"},
+                {n: "Tobias Harris", t: "Pistons", i: "202699"}, {n: "Jerami Grant", t: "Blazers", i: "203924"}, {n: "Kyle Kuzma", t: "Wizards", i: "1628398"}, {n: "John Collins", t: "Jazz", i: "1628381"}, {n: "Miles Bridges", t: "Hornets", i: "1628970"},
+                {n: "P.J. Washington", t: "Mavericks", i: "1629640"}, {n: "Cameron Johnson", t: "Nets", i: "1629661"}, {n: "Keegan Murray", t: "Kings", i: "1631099"}, {n: "Jabari Smith Jr.", t: "Rockets", i: "1631095"}, {n: "Jonathan Kuminga", t: "Warriors", i: "1630228"},
+                {n: "Jeremy Sochan", t: "Spurs", i: "1631110"}, {n: "Brandon Miller", t: "Hornets", i: "1641706"}, {n: "Bobby Portis", t: "Bucks", i: "1626171"}, {n: "Christian Wood", t: "Lakers", i: "1626174"}, {n: "Naz Reid", t: "Wolves", i: "1629675"},
+                {n: "Obi Toppin", t: "Pacers", i: "1630167"}, {n: "Santi Aldama", t: "Grizzlies", i: "1630583"}, {n: "Denny Avdija", t: "Blazers", i: "1630166"}, {n: "Grant Williams", t: "Hornets", i: "1629684"}, {n: "Rui Hachimura", t: "Lakers", i: "1629060"},
+                {n: "Al Horford", t: "Celtics", i: "201143"}, {n: "Wendell Carter Jr.", t: "Magic", i: "1628976"}, {n: "Nic Claxton", t: "Nets", i: "1629651"}, {n: "Onyeka Okongwu", t: "Hawks", i: "1630168"}, {n: "Daniel Gafford", t: "Mavs", i: "1629655"}
+            ],
+            'SF': [
+                {n: "LeBron James", t: "Lakers", i: "2544"}, {n: "Larry Bird", t: "Celtics", i: "1449"}, {n: "Kevin Durant", t: "Suns", i: "201142"}, {n: "Scottie Pippen", t: "Bulls", i: "937"}, {n: "Julius Erving", t: "76ers", i: "76681"},
+                {n: "Kawhi Leonard", t: "Clippers", i: "202695"}, {n: "Paul Pierce", t: "Celtics", i: "1718"}, {n: "Dominique Wilkins", t: "Hawks", i: "78519"}, {n: "James Worthy", t: "Lakers", i: "78600"}, {n: "Carmelo Anthony", t: "Knicks", i: "2546"},
+                {n: "Jayson Tatum", t: "Celtics", i: "1628369"}, {n: "Jimmy Butler", t: "Heat", i: "202710"}, {n: "Paul George", t: "76ers", i: "202331"}, {n: "Jaylen Brown", t: "Celtics", i: "1627759"}, {n: "Brandon Ingram", t: "Pelicans", i: "1627742"},
+                {n: "Mikal Bridges", t: "Knicks", i: "1628969"}, {n: "OG Anunoby", t: "Knicks", i: "1628384"}, {n: "Michael Porter Jr.", t: "Nuggets", i: "1629008"}, {n: "Andrew Wiggins", t: "Warriors", i: "203952"}, {n: "De'Andre Hunter", t: "Hawks", i: "1629631"},
+                {n: "Khris Middleton", t: "Bucks", i: "203114"}, {n: "RJ Barrett", t: "Raptors", i: "1629628"}, {n: "Franz Wagner", t: "Magic", i: "1630532"}, {n: "Scottie Barnes", t: "Raptors", i: "1630567"}, {n: "Keldon Johnson", t: "Spurs", i: "1629640"},
+                {n: "Bennedict Mathurin", t: "Pacers", i: "1631097"}, {n: "Herb Jones", t: "Pelicans", i: "1630529"}, {n: "Austin Reaves", t: "Lakers", i: "1630559"}, {n: "Trey Murphy III", t: "Pelicans", i: "1630530"}, {n: "Jaden McDaniels", t: "Wolves", i: "1630183"},
+                {n: "Kelly Oubre Jr.", t: "76ers", i: "1626162"}, {n: "Dillon Brooks", t: "Rockets", i: "1628415"}, {n: "Buddy Hield", t: "Warriors", i: "204001"}, {n: "Josh Hart", t: "Knicks", i: "1628404"}, {n: "Bojan Bogdanovic", t: "Nets", i: "202711"},
+                {n: "Harrison Barnes", t: "Spurs", i: "203084"}, {n: "Gordon Hayward", t: "Thunder", i: "202330"}, {n: "Grant Williams", t: "Hornets", i: "1629684"}, {n: "Jaime Jaquez Jr.", t: "Heat", i: "1631730"}, {n: "Gradey Dick", t: "Raptors", i: "1641711"},
+                {n: "Auser Thompson", t: "Pistons", i: "1641709"}, {n: "Amen Thompson", t: "Rockets", i: "1641708"}, {n: "Caleb Martin", t: "76ers", i: "1628997"}, {n: "Saddiq Bey", t: "Wizards", i: "1630180"}, {n: "Corey Kispert", t: "Wizards", i: "1630557"},
+                {n: "Chris Duarte", t: "Bulls", i: "1630537"}, {n: "Shaedon Sharpe", t: "Blazers", i: "1631101"}, {n: "Cam Reddish", t: "Lakers", i: "1629629"}, {n: "Josh Green", t: "Hornets", i: "1630182"}, {n: "Tari Eason", t: "Rockets", i: "1631106"}
+            ],
+            'SG': [
+                {n: "Michael Jordan", t: "Bulls", i: "893"}, {n: "Kobe Bryant", t: "Lakers", i: "977"}, {n: "Dwyane Wade", t: "Heat", i: "2548"}, {n: "Jerry West", t: "Lakers", i: "78497"}, {n: "Allen Iverson", t: "76ers", i: "947"},
+                {n: "James Harden", t: "Clippers", i: "201935"}, {n: "Ray Allen", t: "Celtics", i: "951"}, {n: "Reggie Miller", t: "Pacers", i: "77583"}, {n: "Clyde Drexler", t: "Blazers", i: "76581"}, {n: "Tracy McGrady", t: "Rockets", i: "1503"},
+                {n: "Devin Booker", t: "Suns", i: "1626164"}, {n: "Anthony Edwards", t: "Wolves", i: "1630162"}, {n: "Donovan Mitchell", t: "Cavs", i: "1628378"}, {n: "Kyrie Irving", t: "Mavs", i: "202681"}, {n: "Shai Gilgeous-Alexander", t: "Thunder", i: "1628983"},
+                {n: "De'Aaron Fox", t: "Kings", i: "1628368"}, {n: "Tyrese Maxey", t: "76ers", i: "1630178"}, {n: "Jalen Brunson", t: "Knicks", i: "1628973"}, {n: "Zach LaVine", t: "Bulls", i: "203897"}, {n: "Dejounte Murray", t: "Pelicans", i: "1627749"},
+                {n: "Bradley Beal", t: "Suns", i: "203078"}, {n: "Klay Thompson", t: "Mavs", i: "202691"}, {n: "Desmond Bane", t: "Grizzlies", i: "1630217"}, {n: "Tyler Herro", t: "Heat", i: "1629639"}, {n: "Jordan Poole", t: "Wizards", i: "1629673"},
+                {n: "Immanuel Quickley", t: "Raptors", i: "1630193"}, {n: "Austin Reaves", t: "Lakers", i: "1630559"}, {n: "Cam Thomas", t: "Nets", i: "1630560"}, {n: "Anfernee Simons", t: "Blazers", i: "1629014"}, {n: "Jalen Suggs", t: "Magic", i: "1630591"},
+                {n: "Josh Giddey", t: "Bulls", i: "1630581"}, {n: "Cade Cunningham", t: "Pistons", i: "1630595"}, {n: "Jalen Williams", t: "Thunder", i: "1631114"}, {n: "Benedict Mathurin", t: "Pacers", i: "1631097"}, {n: "Derrick White", t: "Celtics", i: "1628401"},
+                {n: "Alex Caruso", t: "Thunder", i: "1628210"}, {n: "Kentavious Caldwell-Pope", t: "Magic", i: "203484"}, {n: "Grayson Allen", t: "Suns", i: "1628960"}, {n: "Norman Powell", t: "Clippers", i: "1626181"}, {n: "Malik Monk", t: "Kings", i: "1628374"},
+                {n: "Caris LeVert", t: "Cavs", i: "1627747"}, {n: "Donte DiVincenzo", t: "Wolves", i: "1628978"}, {n: "Bogdan Bogdanovic", t: "Hawks", i: "203992"}, {n: "Gary Trent Jr.", t: "Bucks", i: "1629018"}, {n: "Christian Braun", t: "Nuggets", i: "1631128"},
+                {n: "Peyton Watson", t: "Nuggets", i: "1631212"}, {n: "Keyonte George", t: "Jazz", i: "1641718"}, {n: "Scoot Henderson", t: "Blazers", i: "1630703"}, {n: "Bilal Coulibaly", t: "Wizards", i: "1641731"}, {n: "Brandin Podziemski", t: "Warriors", i: "1641717"}
+            ],
+            'PG': [
+                {n: "Magic Johnson", t: "Lakers", i: "77142"}, {n: "Stephen Curry", t: "Warriors", i: "201939"}, {n: "Oscar Robertson", t: "Bucks", i: "77986"}, {n: "John Stockton", t: "Jazz", i: "304"}, {n: "Isiah Thomas", t: "Pistons", i: "78318"},
+                {n: "Steve Nash", t: "Suns", i: "959"}, {n: "Chris Paul", t: "Spurs", i: "101108"}, {n: "Jason Kidd", t: "Mavs", i: "467"}, {n: "Russell Westbrook", t: "Nuggets", i: "201566"}, {n: "Damian Lillard", t: "Bucks", i: "203081"},
+                {n: "Luka Doncic", t: "Mavs", i: "1629029"}, {n: "Ja Morant", t: "Grizzlies", i: "1629630"}, {n: "Trae Young", t: "Hawks", i: "1629027"}, {n: "Tyrese Haliburton", t: "Pacers", i: "1630169"}, {n: "Darius Garland", t: "Cavs", i: "1629636"},
+                {n: "LaMelo Ball", t: "Hornets", i: "1630163"}, {n: "De'Aaron Fox", t: "Kings", i: "1628368"}, {n: "Jamal Murray", t: "Nuggets", i: "203999"}, {n: "Jalen Brunson", t: "Knicks", i: "1628973"}, {n: "Fred VanVleet", t: "Rockets", i: "1627832"},
+                {n: "Marcus Smart", t: "Grizzlies", i: "203935"}, {n: "Derrick White", t: "Celtics", i: "1628401"}, {n: "Jrue Holiday", t: "Celtics", i: "201950"}, {n: "Mike Conley", t: "Wolves", i: "201144"}, {n: "D'Angelo Russell", t: "Lakers", i: "1626156"},
+                {n: "Terry Rozier", t: "Heat", i: "1626179"}, {n: "CJ McCollum", t: "Pelicans", i: "203468"}, {n: "Anfernee Simons", t: "Blazers", i: "1629014"}, {n: "Scoot Henderson", t: "Blazers", i: "1630703"}, {n: "Cade Cunningham", t: "Pistons", i: "1630595"},
+                {n: "Josh Giddey", t: "Bulls", i: "1630581"}, {n: "Jalen Suggs", t: "Magic", i: "1630591"}, {n: "Anthony Black", t: "Magic", i: "1641710"}, {n: "Tyus Jones", t: "Suns", i: "1626145"}, {n: "Tre Jones", t: "Spurs", i: "1630200"},
+                {n: "Coby White", t: "Bulls", i: "1629632"}, {n: "Ayo Dosunmu", t: "Bulls", i: "1630544"}, {n: "Josh Green", t: "Hornets", i: "1630182"}, {n: "Dennis Schroder", t: "Nets", i: "203471"}, {n: "Spencer Dinwiddie", t: "Mavs", i: "203915"},
+                {n: "Malcolm Brogdon", t: "Wizards", i: "1627763"}, {n: "Jordan Clarkson", t: "Jazz", i: "203903"}, {n: "Collin Sexton", t: "Jazz", i: "1629012"}, {n: "Payton Pritchard", t: "Celtics", i: "1630202"}, {n: "T.J. McConnell", t: "Pacers", i: "204456"},
+                {n: "Alex Caruso", t: "Thunder", i: "1628210"}, {n: "Lonzo Ball", t: "Bulls", i: "1628366"}, {n: "Patrick Beverley", t: "H. Sheers", i: "201976"}, {n: "Reggie Jackson", t: "76ers", i: "202704"}, {n: "Russell Westbrook", t: "Nuggets", i: "201566"}
+            ]
+        };
+
+
+        const ORDER = ['C', 'PF', 'SF', 'SG', 'PG'];
+        let gameState = {
+            p1Name: "", p2Name: "",
+            p1Team: [], p2Team: [],
+            currentPlayer: 1,
+            currentPosIndex: 0,
+            match: { qtr: 1, clock: 720, p1Score: 0, p2Score: 0, interval: null }
+        };
+
+
+        // --- CORE FUNCTIONS ---
+
+
+        function switchScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+
+        function showTransition(title, sub, color, callback) {
+            const overlay = document.getElementById('turn-overlay');
+            document.getElementById('transition-title').innerText = title;
+            document.getElementById('transition-sub').innerText = sub;
+            overlay.style.backgroundColor = color;
+            overlay.style.display = 'flex';
+            overlay.style.transform = 'translateY(100%)';
+            
+            setTimeout(() => overlay.style.transform = 'translateY(0)', 10);
+            
+            setTimeout(() => {
+                if(callback) callback();
+                overlay.style.transform = 'translateY(-100%)';
+                setTimeout(() => overlay.style.display = 'none', 800);
+            }, 1800);
+        }
+
+
+        function handleTeamName() {
+            const input = document.getElementById('team-input');
+            const name = input.value.trim() || `TEAM ${gameState.currentPlayer}`;
+            
+            if (gameState.currentPlayer === 1) {
+                gameState.p1Name = name;
+                input.value = "";
+                document.getElementById('player-label').innerText = "PLAYER 2: TEAM NAME";
+                document.getElementById('naming-box').style.borderColor = 'var(--p2-color)';
+                gameState.currentPlayer = 2;
+                showTransition(gameState.p1Name.toUpperCase(), "READY FOR PLAYER 2", 'var(--p1-color)');
+            } else {
+                gameState.p2Name = name;
+                gameState.currentPlayer = 1;
+                showTransition("DRAFT TIME", `${gameState.p1Name.toUpperCase()} STARTS`, 'var(--p2-color)', () => {
+                    startDraft();
+                });
+            }
+        }
+
+
+        function startDraft() {
+            switchScreen('screen-draft');
+            renderCards();
+            updateDraftUI();
+        }
+
+
+        function updateDraftUI() {
+            const name = gameState.currentPlayer === 1 ? gameState.p1Name : gameState.p2Name;
+            const pos = ORDER[gameState.currentPosIndex];
+            const nameEl = document.getElementById('drafting-player-name');
+            nameEl.innerText = `${name.toUpperCase()} DRAFTING`;
+            nameEl.style.color = gameState.currentPlayer === 1 ? 'var(--p1-color)' : 'var(--p2-color)';
+            document.getElementById('draft-pos').innerText = `${pos} - POSITION`;
+        }
+
+
+        function renderCards() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = "";
+            const shuffled = [...Array(50).keys()].sort(() => Math.random() - 0.5);
+            
+            for (let i = 0; i < 50; i++) {
+                const card = document.createElement('div');
+                card.className = 'card-slot';
+                card.innerText = i + 1;
+                card.onclick = () => selectPlayer(shuffled[i]);
+                container.appendChild(card);
+            }
+        }
+
+
+        function selectPlayer(dbIndex) {
+            const pos = ORDER[gameState.currentPosIndex];
+            const player = PLAYER_DB[pos][dbIndex];
+            const team = gameState.currentPlayer === 1 ? gameState.p1Team : gameState.p2Team;
+            
+            team.push({ ...player, pos, pts:0, reb:0, ast:0, blk:0 });
+            
+            // Reveal UI
+            const modal = document.getElementById('reveal-modal');
+            document.getElementById('rev-pos').innerText = pos;
+            document.getElementById('rev-name').innerText = player.n;
+            document.getElementById('rev-team').innerText = player.t;
+            document.getElementById('rev-photo').src = `https://www.nba.com/stats/lib/img/players/210x285/${player.i}.png`;
+            document.getElementById('rev-photo').onerror = function() { this.src = "https://cdn.pixabay.com/photo/2016/04/01/10/48/basketball-1299994_960_720.png"; };
+            
+            modal.style.display = 'flex';
+            modal.onclick = () => {
+                modal.style.display = 'none';
+                advanceDraft();
+            };
+        }
+
+
+        function advanceDraft() {
+            gameState.currentPosIndex++;
+            if (gameState.currentPosIndex >= 5) {
+                if (gameState.currentPlayer === 1) {
+                    gameState.currentPlayer = 2;
+                    gameState.currentPosIndex = 0;
+                    showTransition(gameState.p2Name.toUpperCase(), "YOUR TURN TO DRAFT", 'var(--p2-color)', () => {
+                        renderCards();
+                        updateDraftUI();
+                    });
+                } else {
+                    showLineups();
+                }
+            } else {
+                updateDraftUI();
+                renderCards();
+            }
+        }
+
+
+        function showLineups() {
+            switchScreen('screen-lineups');
+            renderTable('lineup-p1', gameState.p1Name, gameState.p1Team);
+            renderTable('lineup-p2', gameState.p2Name, gameState.p2Team);
+        }
+
+
+        function renderTable(id, teamName, team) {
+            let html = `<h2>${teamName}</h2><div class="stat-row"><strong>POS</strong><strong>PLAYER</strong><strong>PTS</strong><strong>REB</strong><strong>AST</strong><strong>BLK</strong></div>`;
+            team.forEach(p => {
+                html += `<div class="stat-row">
+                    <span style="color:var(--nba-gold)">${p.pos}</span>
+                    <span>${p.n}</span>
+                    <span>${p.pts}</span><span>${p.reb}</span><span>${p.ast}</span><span>${p.blk}</span>
+                </div>`;
+            });
+            document.getElementById(id).innerHTML = html;
+        }
+
+
+        // --- MATCH SIMULATION ---
+
+
+        function startMatch() {
+            switchScreen('screen-sim');
+            document.getElementById('sim-t1-name').innerText = gameState.p1Name;
+            document.getElementById('sim-t2-name').innerText = gameState.p2Name;
+            
+            gameState.match.p1Score = 0;
+            gameState.match.p2Score = 0;
+            gameState.match.qtr = 1;
+            gameState.match.clock = 720;
+            
+            gameState.match.interval = setInterval(gameTick, 400); // Fast simulation
+        }
+
+
+        function gameTick() {
+            gameState.match.clock -= 15; // 15 seconds per tick
+            
+            // Logic for a play
+            if (Math.random() > 0.4) {
+                const teamSide = Math.random() > 0.5 ? 1 : 2;
+                const team = teamSide === 1 ? gameState.p1Team : gameState.p2Team;
+                const player = team[Math.floor(Math.random() * 5)];
+                const action = Math.random();
+                
+                if (action > 0.6) { // Puntos
+                    const p = Math.random() > 0.8 ? 3 : 2;
+                    player.pts += p;
+                    if(teamSide === 1) gameState.match.p1Score += p; else gameState.match.p2Score += p;
+                    updateTicker(`${player.n} SCORES ${p} POINTS!`);
+                } else if (action > 0.4) { player.reb++; }
+                else if (action > 0.2) { player.ast++; }
+                else { player.blk++; }
+            }
+
+
+            if (gameState.match.clock <= 0) {
+                if (gameState.match.qtr < 4) {
+                    gameState.match.qtr++;
+                    gameState.match.clock = 720;
+                    updateTicker(`END OF ${gameState.match.qtr - 1}Q - QUARTER BREAK`);
+                } else {
+                    clearInterval(gameState.match.interval);
+                    finishMatch();
+                }
+            }
+            
+            updateSimUI();
+        }
+
+
+        function updateTicker(msg) {
+            document.getElementById('game-ticker').innerText = msg;
+        }
+
+
+        function updateSimUI() {
+            const m = Math.floor(gameState.match.clock / 60);
+            const s = gameState.match.clock % 60;
+            document.getElementById('sim-clock').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+            document.getElementById('sim-qtr').innerText = `${gameState.match.qtr}${gameState.match.qtr==1?'ST':gameState.match.qtr==2?'ND':gameState.match.qtr==3?'RD':'TH'} QTR`;
+            document.getElementById('score-1').innerText = gameState.match.p1Score.toString().padStart(2, '0');
+            document.getElementById('score-2').innerText = gameState.match.p2Score.toString().padStart(2, '0');
+            
+            renderTable('stats-p1', gameState.p1Name, gameState.p1Team);
+            renderTable('stats-p2', gameState.p2Name, gameState.p2Team);
+        }
+
+
+        function finishMatch() {
+            switchScreen('screen-results');
+            const winner = gameState.match.p1Score > gameState.match.p2Score ? gameState.p1Name : gameState.p2Name;
+            document.getElementById('winner-banner').innerText = `${winner.toUpperCase()} WINS!`;
+            
+            const all = [...gameState.p1Team, ...gameState.p2Team];
+            const mvp = all.sort((a,b) => (b.pts + b.reb + b.ast) - (a.pts + a.reb + a.ast))[0];
+            
+            document.getElementById('mvp-box').innerHTML = `
+                <h2 style="color:var(--nba-gold)">FINAL MVP</h2>
+                <img src="https://www.nba.com/stats/lib/img/players/210x285/${mvp.i}.png" style="width:100px; border-radius:50%; border:2px solid gold; margin: 10px 0;">
+                <h1>${mvp.n}</h1>
+                <p>${mvp.pts} PTS | ${mvp.reb} REB | ${mvp.ast} AST | ${mvp.blk} BLK</p>
+            `;
+        }
+
+
+        window.onload = () => {
+            // Ensure first screen is visible
+            switchScreen('screen-setup');
+        };
+    </script>
+</body>
+</html>
