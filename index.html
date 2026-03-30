@@ -859,13 +859,13 @@
                if (gameState.teams.p1.seriesWins >= limit || gameState.teams.p2.seriesWins >= limit) {
                    const champ = gameState.teams.p1.seriesWins >= limit ? gameState.teams.p1.name : gameState.teams.p2.name;
                    controls.innerHTML = `<div class="text-center">
-                       <h2 class="text-5xl font-bebas text-[var(--nba-gold)]">🏆 ${champ} CAMPEÓN DE LA SERIE 🏆</h2>
+                       <h2 class="text-5xl font-bebas text-[var(--nba-gold)]">🏆 ${champ} CAMPEÓN 🏆</h2>
                        <button onclick="location.reload()" class="btn-nba px-8 py-3 mt-4 rounded-xl">Menú Principal</button>
                    </div>`;
                } else {
                    controls.innerHTML = `
                        <div class="text-center">
-                           <p class="font-bebas text-xl mb-2">Serie: ${gameState.teams.p1.name} ${gameState.teams.p1.seriesWins} - ${gameState.teams.p2.seriesWins} ${gameState.teams.p2.name}</p>
+                           <p class="font-bebas text-xl mb-2">Serie:<br> ${gameState.teams.p1.name} ( ${gameState.teams.p1.seriesWins} - ${gameState.teams.p2.seriesWins} ) ${gameState.teams.p2.name}</p>
                            <button onclick="startSimulation()" class="btn-nba px-12 py-4 text-3xl rounded-xl">Siguiente Partido</button>
                        </div>
                    `;
