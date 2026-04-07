@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
    <meta charset="UTF-8">
@@ -107,6 +107,32 @@
        .table-container {
            overflow-x: auto;
            -webkit-overflow-scrolling: touch;
+       }
+       /* Modal Responsive Fixes */
+       #player-modal .bg-gray-900 {
+           max-height: 90vh;
+           overflow-y: auto;
+       }
+
+       /* Spatial TV Focus Mode */
+       body.is-tv *:focus-visible, body.is-tv *:focus {
+           outline: none !important;
+           box-shadow: 0 0 0 6px var(--nba-gold), 0 0 20px var(--nba-gold) !important;
+           transform: scale(1.02);
+           transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+           z-index: 50;
+       }
+       
+       body.is-tv .card-draft:focus-visible, body.is-tv .card-draft:focus {
+           transform: scale(1.08); /* Crecer un poco más la carta */
+           z-index: 20;
+       }
+
+       /* No hovers en móvil para no atascar clicks falsos */
+       @media (hover: none) {
+           .card-draft:hover { transform: none; box-shadow: none; }
+           .btn-nba:hover { transform: none; background-color: var(--nba-blue); }
+           .btn-scout:hover { background-color: var(--nba-gold); }
        }
    </style>
 </head>
@@ -476,6 +502,118 @@
 
        const IMG_URL = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/";
 
+       // --- SISTEMA MULTI-DISPOSITIVO Y SPATIAL NAV ---
+       function initDeviceDetection() {
+           const urlParams = new URLSearchParams(window.location.search);
+           const forceTV = urlParams.get('forceTV') === 'true';
+           const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+           const isTV = forceTV || navigator.userAgent.toLowerCase().includes('tv') || navigator.userAgent.toLowerCase().includes('smart-tv') || window.innerWidth > 1920;
+           if (isTV) document.body.classList.add('is-tv');
+           if (isTouch) document.body.classList.add('is-touch');
+           else document.body.classList.add('is-desktop');
+       }
+       
+       class SpatialNav {
+           constructor() {
+               this.focusableElements = [];
+               this.currentIndex = -1;
+               this.init();
+           }
+
+           init() {
+               document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+               this.updateElements();
+           }
+
+           updateElements() {
+               this.focusableElements = Array.from(document.querySelectorAll('button:not(.hidden):not(:disabled), [tabindex="0"]:not(.hidden)'))
+                   .filter(el => {
+                       const style = window.getComputedStyle(el);
+                       return style.display !== 'none' && style.visibility !== 'hidden' && el.offsetWidth > 0;
+                   });
+               if (this.currentIndex >= this.focusableElements.length) {
+                   this.currentIndex = 0;
+               }
+           }
+
+           focusCurrent() {
+               if (this.focusableElements[this.currentIndex]) {
+                   this.focusableElements[this.currentIndex].focus();
+               }
+           }
+
+           handleKeyDown(e) {
+               if (!document.body.classList.contains('is-tv')) return;
+               this.updateElements();
+               if (this.focusableElements.length === 0) return;
+
+               const { key } = e;
+               if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+                   e.preventDefault();
+                   if (this.currentIndex === -1 || !this.focusableElements[this.currentIndex]) {
+                       this.currentIndex = 0;
+                       this.focusCurrent();
+                       return;
+                   }
+
+                   const currentRect = this.focusableElements[this.currentIndex].getBoundingClientRect();
+                   let bestIndex = -1;
+                   let minDistance = Infinity;
+
+                   this.focusableElements.forEach((el, index) => {
+                       if (index === this.currentIndex) return;
+                       const rect = el.getBoundingClientRect();
+                       let dx = 0; let dy = 0;
+
+                       if (key === 'ArrowLeft' && rect.right <= currentRect.left + 5) {
+                           dx = currentRect.left - rect.right;
+                           dy = Math.abs(currentRect.top - rect.top);
+                       } else if (key === 'ArrowRight' && rect.left >= currentRect.right - 5) {
+                           dx = rect.left - currentRect.right;
+                           dy = Math.abs(currentRect.top - rect.top);
+                       } else if (key === 'ArrowUp' && rect.bottom <= currentRect.top + 5) {
+                           dy = currentRect.top - rect.bottom;
+                           dx = Math.abs(currentRect.left - rect.left);
+                       } else if (key === 'ArrowDown' && rect.top >= currentRect.bottom - 5) {
+                           dy = rect.top - currentRect.bottom;
+                           dx = Math.abs(currentRect.left - rect.left);
+                       }
+
+                       if (dx > 0 || dy > 0) {
+                           const distance = Math.sqrt((dx * dx * 2) + (dy * dy));
+                           if (distance < minDistance) {
+                               minDistance = distance;
+                               bestIndex = index;
+                           }
+                       }
+                   });
+
+                   if (bestIndex !== -1) {
+                       this.currentIndex = bestIndex;
+                       this.focusCurrent();
+                   }
+               } else if (key === 'Enter') {
+                   if (this.currentIndex !== -1 && document.activeElement !== this.focusableElements[this.currentIndex]) {
+                       this.focusableElements[this.currentIndex].click();
+                       e.preventDefault();
+                   }
+               } else if (key === 'Escape' || key === 'Backspace') {
+                   if (!document.getElementById('player-modal').classList.contains('hidden')) {
+                       closePlayerModal();
+                   }
+               }
+           }
+       }
+       
+       let spatialNav;
+       window.addEventListener('DOMContentLoaded', () => {
+           initDeviceDetection();
+           spatialNav = new SpatialNav();
+           
+           const observer = new MutationObserver(() => setTimeout(() => spatialNav.updateElements(), 100));
+           observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+       });
+
        // --- NAVEGACIÓN ---
        function changeScreen(screenId) {
            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
@@ -531,13 +669,17 @@
 
            gameState.draft.pool.forEach((player, index) => {
                const card = document.createElement('div');
+               card.setAttribute('tabindex', '0');
                card.className = `card-draft rounded-lg ${gameState.mode === 'normal' && !gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer] ? 'card-hidden' : ''}`;
                
                if (gameState.mode !== 'normal' || gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer]) {
                    card.innerHTML = `
-                       <img src="${IMG_URL}${player.id}.png" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/260x190?text=NBA'">
+                       <div class="absolute top-1 left-2 text-white/80 font-bebas text-lg z-10 drop-shadow-md">${index + 1}</div>
+                       <img src="${IMG_URL}${player.id}.png" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTkwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjE5MCI+PHJlY3Qgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxOTAiIGZpbGw9IiMyYTJhMmEiLz48dGV4dCB4PSIxMzAiIHk9IjEwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM0YTRhNGEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNpbiBGb3RvPC90ZXh0Pjwvc3ZnPg=='">
                        <div class="absolute bottom-0 left-0 right-0 bg-black/80 p-1 text-[10px] text-center font-bold truncate">${player.n}</div>
                    `;
+               } else {
+                   card.innerHTML = `<div class="absolute top-1 left-2 text-white/50 font-bebas text-xl z-10">${index + 1}</div>`;
                }
                
                card.onclick = () => openPlayerModal(player);
@@ -743,7 +885,7 @@
            entry.className = `p-1 border-l-4 ${teamKey === 'p1' ? 'border-[var(--nba-red)]' : 'border-[var(--nba-blue)]'} bg-white/5`;
            entry.innerText = msg;
            logDiv.prepend(entry);
-           if (logDiv.childNodes.length > 20) logDiv.removeChild(logDiv.lastChild);
+           if (logDiv.childNodes.length > 10) logDiv.removeChild(logDiv.lastChild);
        }
 
        function renderStatsTable() {
@@ -842,10 +984,11 @@
            document.getElementById('mvp-name').innerText = mvp.n;
            document.getElementById('mvp-team').innerText = mvp.t;
            document.getElementById('mvp-stats-line').innerText = `${mvp.stats.pts} PTS | ${mvp.stats.reb} REB | ${mvp.stats.ast} AST | ${mvp.stats.blk} BLK`;
-           document.getElementById('mvp-img-box').innerHTML = `<img src="${IMG_URL}${mvp.id}.png" class="w-full h-full object-contain">`;
+           document.getElementById('mvp-img-box').innerHTML = `<img src="${IMG_URL}${mvp.id}.png" class="w-full h-full object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTkwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjE5MCI+PHJlY3Qgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxOTAiIGZpbGw9IiMyYTJhMmEiLz48dGV4dCB4PSIxMzAiIHk9IjEwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM0YTRhNGEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNpbiBGb3RvPC90ZXh0Pjwvc3ZnPg=='">`;
            
            const mvpCard = document.getElementById('mvp-card');
-           mvpCard.style.borderColor = winnerKey === 'p1' ? 'var(--nba-red)' : 'var(--nba-blue)';
+           const isMvpP1 = gameState.teams.p1.roster.some(p => p.id === mvp.id);
+           mvpCard.style.borderColor = isMvpP1 ? 'var(--nba-red)' : 'var(--nba-blue)';
 
            // Box Scores
            renderBoxTable('res-table-t1', gameState.teams.p1.roster, mvp.id);

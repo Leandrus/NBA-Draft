@@ -89,9 +89,10 @@ El juego debe seguir estrictamente este orden de pantallas:
 ## **6\. Interfaz y Diseño (UI/UX)**
 
 * **Estética:** Tema oscuro (\#020b13), fuentes tipográficas tipo "Bebas Neue" o "Inter Black", colores NBA (Rojo: \#C9082A, Azul: \#17408B, Oro: \#f1c40f).  
-* **Responsividad (Muy importante):**  
-  * **Mobile:** Grid de cartas de 3 o 4 columnas. Tablas con scroll horizontal o compactas. Todos los elementos deben ser responsivos permitiendo una visualización de todo de forma agradable al usuario.  
-  * **PC/TV:** Marcadores gigantes y tablas de estadísticas.  
+* **Responsividad y Multi-Dispositivo (TV, PC, Mobile):**
+  * **TV (Smart TVs y Consolas):** Navegación Espacial (Spatial Navigation) integrada. Toda la UI debe poder manejarse integralmente utilizando un control remoto direccional (DPad: Arriba, Abajo, Izq, Der, OK/Enter, Back). Escalar textos y elementos (10ft UI) para alta visibilidad a distancia. Uso de resaltado de foco de alto contraste para ayudar al jugador a entender qué botón tiene el enfoque.
+  * **PC:** Adaptabilidad total al redimensionamiento de navegadores. Soporte interactivo de mouse (hovers) y utilidades de teclado completo.
+  * **Mobile / Teléfonos:** Diseño "Touch-first". Evitar la dependencia exclusiva de los hovers. Grid de cartas adaptativo (2 o 3 columnas) sin romper la legibilidad. Tablas con desbordamiento horizontal (`overflow-x: scroll`) e interactividad por toques o gestos fluidos.
 * **Historial de Jugadas (Logs):** Una columna con texto alineado a la **izquierda** para que los emojis sean legibles al inicio. Mínimo 5 líneas de log visible, máximo 10 líneas visibles.  
 * **Pantalla de Resultados:**  
   * Marcador final gigante y centrado.  
