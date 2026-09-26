@@ -39,8 +39,8 @@ El juego debe seguir estrictamente este orden de pantallas:
 
 ### **4.1 Base de Datos de Jugadores**
 
-* **Volumen:** Si una BD no se otorga, entonces generar el TOP 50 jugadores reales únicos por posición (C, PF, SF, SG, PG). Total: 250 jugadores.  
-  * Importante: Es estrictamente necesario que los 50 jugadores de cada posición, realmente pertenezcan y jueguen esa posición y pertenezcan al top 50 en la historia de la NBA.  
+* **Volumen:** Si una BD no se otorga, entonces generar el TOP 200 jugadores reales únicos por posición (C, PF, SF, SG, PG). Total: 1000 jugadores.  
+  * Importante: Es estrictamente necesario que los 200 jugadores de cada posición, realmente pertenezcan y jueguen esa posición y pertenezcan al top 200 en la historia de la NBA.  
 * **Atributos por Jugador:**  
   * id: ID oficial de la NBA para imágenes.  
   * n: Nombre completo.  
@@ -69,7 +69,7 @@ El juego debe seguir estrictamente este orden de pantallas:
 * **Duración del Cuarto:** Exactamente 30 segundos reales.  
 * **Cronómetro (Clock):** Debe descender de 12:00 a 0:00 (segundos NBA simulados) de forma ultra fluida (segundo a segundo).  
 * **Pausa entre Cuartos:** 3 segundos reales. Durante la pausa, mostrar un modal centrado con el marcador parcial y el aviso del siguiente periodo.  
-* **Overtime (OT):** Si hay empate al final del 4to cuarto, simular periodos extra de 5 minutos ( NBA) hasta que haya un ganador.
+* **Overtime (OT):** Si hay empate al final del 4to cuarto, simular periodos extra de 5 minutos (NBA) hasta que haya un ganador.
 
 ### **5.2 Lógica Probabilística**
 
@@ -90,7 +90,7 @@ El juego debe seguir estrictamente este orden de pantallas:
 
 * **Estética:** Tema oscuro (\#020b13), fuentes tipográficas tipo "Bebas Neue" o "Inter Black", colores NBA (Rojo: \#C9082A, Azul: \#17408B, Oro: \#f1c40f).  
 * **Responsividad y Multi-Dispositivo (TV, PC, Mobile):**
-  * **TV (Smart TVs y Consolas):** Navegación Espacial (Spatial Navigation) integrada. Toda la UI debe poder manejarse integralmente utilizando un control remoto direccional (DPad: Arriba, Abajo, Izq, Der, OK/Enter, Back). Escalar textos y elementos (10ft UI) para alta visibilidad a distancia. Uso de resaltado de foco de alto contraste para ayudar al jugador a entender qué botón tiene el enfoque.
+  * **TV (Smart TVs y Consolas):** Adaptabilidad total al redimensionamiento de navegadores. Navegación Espacial (Spatial Navigation) integrada. Toda la UI debe poder manejarse integralmente utilizando un control remoto direccional (DPad: Arriba, Abajo, Izq, Der, OK/Enter, Back). Escalar textos y elementos (10ft UI) para alta visibilidad a distancia. Uso de resaltado de foco de alto contraste para ayudar al jugador a entender qué botón tiene el enfoque.
   * **PC:** Adaptabilidad total al redimensionamiento de navegadores. Soporte interactivo de mouse (hovers) y utilidades de teclado completo.
   * **Mobile / Teléfonos:** Diseño "Touch-first". Evitar la dependencia exclusiva de los hovers. Grid de cartas adaptativo (2 o 3 columnas) sin romper la legibilidad. Tablas con desbordamiento horizontal (`overflow-x: scroll`) e interactividad por toques o gestos fluidos.
 * **Historial de Jugadas (Logs):** Una columna con texto alineado a la **izquierda** para que los emojis sean legibles al inicio. Mínimo 5 líneas de log visible, máximo 10 líneas visibles.  
@@ -106,5 +106,8 @@ El juego debe seguir estrictamente este orden de pantallas:
 * **Estado:** Manejar estados independientes para gameMode, matchStatus, p1\_stats y p2\_stats.  
 * **Sin duplicados:** Validar simplemente que los 20 jugadores de cada turno sean únicos entre sí.  
 * **Responsivo**: todos los elementos del juego deben ser responsivos y adaptarse a pantallas pequeñas o grandes.
+* **Animaciones**: simepre mostrar animaciones claras que ayuden al usuario a identificar cambio entre menues, seleccion de jugadores, fin de partido, fin de serie, etc. 
+* **Feedback visual**: simpre mostrar feedback visual al usuario de que algo esta sucediendo, por ejemplo, resaltar el jugador seleccionado, mostrar un mensaje de que el jugador esta siendo seleccionado, etc.
+* **Feedback auditivo**: siempre mostrar feedback auditivo al usuario de que algo esta sucediendo, por ejemplo, sonidos al seleccionar jugadores, sonidos al simular partidos, sonidos al ganar, sonidos al perder, etc.
 
 **FIN DEL DOCUMENTO**

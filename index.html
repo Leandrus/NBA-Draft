@@ -1,1083 +1,482 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>NBA Ultimate Draft - Pro v1.5</title>
-   <script src="https://cdn.tailwindcss.com"></script>
-   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-   <style>
-       :root {
-           --nba-red: #C9082A;
-           --nba-blue: #17408B;
-           --nba-gold: #f1c40f;
-           --dark-bg: #020b13;
-       }
-
-       body {
-           background-color: var(--dark-bg);
-           color: white;
-           font-family: 'Inter', sans-serif;
-           overflow-x: hidden;
-           margin: 0;
-       }
-
-       .font-bebas { font-family: 'Bebas Neue', cursive; }
-       
-       .nba-gradient-red { background: linear-gradient(135deg, #C9082A 0%, #8b051d 100%); }
-       .nba-gradient-blue { background: linear-gradient(135deg, #17408B 0%, #0d2654 100%); }
-
-       .card-draft {
-           transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
-           cursor: pointer;
-           aspect-ratio: 2/3;
-           position: relative;
-           overflow: hidden;
-       }
-
-       .card-draft:hover {
-           transform: scale(1.05);
-           box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
-           z-index: 10;
-       }
-
-       .card-hidden {
-           background: linear-gradient(45deg, #1a1a1a, #333);
-           display: flex;
-           align-items: center;
-           justify-content: center;
-       }
-
-       .card-hidden::after {
-           content: '?';
-           font-family: 'Bebas Neue';
-           font-size: 4rem;
-           color: rgba(255,255,255,0.1);
-       }
-
-       /* Simulación Log */
-       #sim-log::-webkit-scrollbar { width: 4px; }
-       #sim-log::-webkit-scrollbar-thumb { background: var(--nba-gold); border-radius: 10px; }
-
-       .stat-row-highlight {
-           animation: highlight-flash 1s ease-out;
-       }
-
-       @keyframes highlight-flash {
-           0% { background-color: rgba(241, 196, 15, 0.5); }
-           100% { background-color: transparent; }
-       }
-
-       .score-blink {
-           animation: blink 0.5s ease-in-out 2;
-       }
-
-       @keyframes blink {
-           50% { opacity: 0.5; transform: scale(1.1); }
-       }
-
-       .modal-enter {
-           animation: modal-in 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-       }
-
-       @keyframes modal-in {
-           from { transform: scale(0.8); opacity: 0; }
-           to { transform: scale(1); opacity: 1; }
-       }
-
-       .btn-nba {
-           background-color: var(--nba-blue);
-           transition: all 0.2s;
-           text-transform: uppercase;
-           font-family: 'Bebas Neue';
-           letter-spacing: 1px;
-       }
-
-       .btn-nba:hover {
-           background-color: #1e52b1;
-           transform: translateY(-2px);
-       }
-
-       .btn-scout {
-           background-color: var(--nba-gold);
-           color: black;
-       }
-
-       /* Responsividad Tablas */
-       .table-container {
-           overflow-x: auto;
-           -webkit-overflow-scrolling: touch;
-       }
-       /* Modal Responsive Fixes */
-       #player-modal .bg-gray-900 {
-           max-height: 90vh;
-           overflow-y: auto;
-       }
-
-       /* Spatial TV Focus Mode */
-       body.is-tv *:focus-visible, body.is-tv *:focus {
-           outline: none !important;
-           box-shadow: 0 0 0 6px var(--nba-gold), 0 0 20px var(--nba-gold) !important;
-           transform: scale(1.02);
-           transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-           z-index: 50;
-       }
-       
-       body.is-tv .card-draft:focus-visible, body.is-tv .card-draft:focus {
-           transform: scale(1.08); /* Crecer un poco más la carta */
-           z-index: 20;
-       }
-
-       /* No hovers en móvil para no atascar clicks falsos */
-       @media (hover: none) {
-           .card-draft:hover { transform: none; box-shadow: none; }
-           .btn-nba:hover { transform: none; background-color: var(--nba-blue); }
-           .btn-scout:hover { background-color: var(--nba-gold); }
-       }
-   </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Ultimate Draft Pro - Simulador Competitivo de Baloncesto</title>
+    <meta name="description" content="Simulador web competitivo de baloncesto para dos jugadores locales. Crea tu quinteto ideal mediante Draft de cartas aleatorias y enfréntate con 1,000 jugadores reales y estadísticas históricas de la NBA.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Design System Styles -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="bg-[#020b13] text-white">
 
-   <!-- Contenedor Principal -->
-   <div id="app" class="min-h-screen flex flex-col p-4 md:p-8">
-       
-       <!-- PANTALLA: MENÚ INICIAL -->
-       <section id="screen-menu" class="flex-1 flex flex-col items-center justify-center space-y-8">
-           <h1 class="text-6xl md:text-8xl font-bebas text-center leading-none">
-               NBA <span class="text-[var(--nba-red)]">ULTIMATE</span> <br>DRAFT <span class="text-[var(--nba-gold)]">PRO</span>
-           </h1>
-           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
-               <button onclick="setMode('normal')" class="btn-nba p-6 text-3xl rounded-xl border-b-4 border-black">Modo Normal</button>
-               <button onclick="setMode('libre')" class="btn-nba p-6 text-3xl rounded-xl border-b-4 border-black">Modo Libre</button>
-               <button onclick="setMode('3x3')" class="btn-nba p-6 text-3xl rounded-xl border-b-4 border-black">Duelo 3x3</button>
-               <button onclick="setMode('finales')" class="btn-nba p-6 text-3xl rounded-xl border-b-4 border-black">Las Finales (Bo7)</button>
-           </div>
-           <button onclick="showSettings()" class="opacity-50 hover:opacity-100 transition font-bebas text-xl underline">Ver Base de Datos</button>
-<p>Versión 1.5<p/>
-       </section>
-
-       <!-- PANTALLA: CONFIGURACIÓN EQUIPOS -->
-       <section id="screen-config" class="hidden flex-1 flex flex-col items-center justify-center space-y-8">
-           <h2 class="text-5xl font-bebas">Configuración de Equipos</h2>
-           <div class="flex flex-col md:flex-row gap-8 w-full max-w-3xl">
-               <div class="flex-1 space-y-2">
-                   <label class="font-bebas text-2xl text-[var(--nba-red)]">Equipo 1</label>
-                   <input id="p1-name" type="text" placeholder="Nombre P1..." class="w-full bg-gray-800 border-2 border-red-600 p-4 text-2xl rounded-lg outline-none focus:ring-2 ring-red-400">
-               </div>
-               <div class="flex-1 space-y-2">
-                   <label class="font-bebas text-2xl text-[var(--nba-blue)]">Equipo 2</label>
-                   <input id="p2-name" type="text" placeholder="Nombre P2..." class="w-full bg-gray-800 border-2 border-blue-600 p-4 text-2xl rounded-lg outline-none focus:ring-2 ring-blue-400">
-               </div>
-           </div>
-           <button onclick="startDraft()" class="btn-nba px-12 py-4 text-3xl rounded-full">Comenzar Draft</button>
-       </section>
-
-       <!-- PANTALLA: FASE DE DRAFT -->
-       <section id="screen-draft" class="hidden flex-1 flex flex-col">
-           <div class="flex justify-between items-center mb-6">
-               <div>
-                   <h3 id="draft-turn-title" class="text-3xl md:text-5xl font-bebas"></h3>
-                   <p id="draft-pos-subtitle" class="text-xl text-gray-400 uppercase tracking-widest font-bold"></p>
-               </div>
-               <button id="scout-btn" onclick="applyScout()" class="btn-nba btn-scout px-6 py-2 rounded-lg text-xl hidden">Scout (-5% Stats)</button>
-           </div>
-           
-           <div id="draft-cards-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-3">
-               <!-- Cards dynamic inject -->
-           </div>
-       </section>
-
-       <!-- PANTALLA: ARENA READY (MATCHUP) -->
-       <section id="screen-matchup" class="hidden flex-1 flex flex-col items-center justify-center space-y-8">
-           <div class="w-full flex flex-col md:flex-row justify-around items-center gap-8">
-               <div class="text-center space-y-4">
-                   <div id="m-team1-color" class="w-24 h-24 rounded-full mx-auto nba-gradient-red flex items-center justify-center border-4 border-white">
-                       <span id="m-team1-rating" class="text-4xl font-black">99</span>
-                   </div>
-                   <h4 id="m-team1-name" class="text-4xl font-bebas"></h4>
-                   <div id="m-team1-roster" class="flex gap-2 justify-center flex-wrap max-w-xs"></div>
-               </div>
-
-               <div class="text-7xl font-bebas italic text-[var(--nba-gold)]">VS</div>
-
-               <div class="text-center space-y-4">
-                   <div id="m-team2-color" class="w-24 h-24 rounded-full mx-auto nba-gradient-blue flex items-center justify-center border-4 border-white">
-                       <span id="m-team2-rating" class="text-4xl font-black">99</span>
-                   </div>
-                   <h4 id="m-team2-name" class="text-4xl font-bebas"></h4>
-                   <div id="m-team2-roster" class="flex gap-2 justify-center flex-wrap max-w-xs"></div>
-               </div>
-           </div>
-           <button onclick="startSimulation()" class="btn-nba px-16 py-6 text-5xl rounded-xl mt-8">TIP OFF</button>
-       </section>
-
-
-
-<!-- PANTALLA: SIMULACIÓN EN VIVO -->
-<section id="screen-sim" class="hidden flex-1 flex flex-col space-y-4">
-    <!-- Marcador y Reloj -->
-    <div class="grid grid-cols-3 items-center bg-gray-900 p-4 rounded-xl border-b-4 border-[var(--nba-gold)]">
-        <div class="text-center">
-            <h5 id="s-t1-name" class="font-bebas text-2xl md:text-4xl truncate"></h5>
-            <div id="s-t1-score" class="text-5xl md:text-7xl font-black text-[var(--nba-red)]">0</div>
+    <!-- Top App Bar / Status -->
+    <header class="w-full px-4 py-3 flex justify-between items-center z-30">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="App.changeScreen('menu')">
+            <span class="text-2xl md:text-3xl font-bebas tracking-wider text-white">
+                NBA <span class="text-[var(--nba-red)]">ULTIMATE</span> DRAFT <span class="text-[var(--nba-gold)]">PRO</span>
+            </span>
         </div>
-        <div class="text-center">
-            <div id="s-clock" class="text-4xl md:text-6xl font-mono font-bold text-white">12:00</div>
-            <div id="s-quarter" class="text-xl font-bebas text-[var(--nba-gold)]">1ER CUARTO</div>
+        
+        <div class="flex items-center gap-3">
+            <button id="audio-toggle-btn" 
+                    onclick="App.toggleAudio()" 
+                    class="audio-toggle-btn"
+                    title="Silenciar / Activar Sonido" 
+                    aria-label="Silenciar sonido">
+                🔊
+            </button>
+            <button onclick="App.showSettings()" 
+                    class="btn-nba px-4 py-2 text-sm rounded-lg border border-white/20 hidden sm:inline-flex">
+                📊 Base de Datos
+            </button>
         </div>
-        <div class="text-center">
-            <h5 id="s-t2-name" class="font-bebas text-2xl md:text-4xl truncate"></h5>
-            <div id="s-t2-score" class="text-5xl md:text-7xl font-black text-[var(--nba-blue)]">0</div>
-        </div>
-    </div>
+    </header>
 
-    <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-0">
-        <!-- Stats -->
-        <div class="lg:col-span-2 bg-black/50 p-4 rounded-xl flex flex-col overflow-hidden">
-            <div class="table-container">
-                <table class="w-full text-left text-xs md:text-sm">
-                    <thead>
-                        <tr class="border-b border-gray-700 text-gray-400 font-bebas text-lg">
-                            <th class="p-2">JUGADOR</th>
-                            <th class="p-2">PTS</th>
-                            <th class="p-2">REB</th>
-                            <th class="p-2">AST</th>
-                            <th class="p-2">STL</th>
-                            <th class="p-2">BLK</th>
-                        </tr>
-                    </thead>
-                    <tbody id="stats-table-body">
-                        <!-- Stats dynamic -->
-                    </tbody>
-                </table>
+    <!-- Main Application Container -->
+    <main id="app" class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col">
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 1: MENÚ INICIAL Y SELECCIÓN MODO  -->
+        <!-- ========================================== -->
+        <section id="screen-menu" class="flex-1 flex flex-col items-center justify-center space-y-8 my-auto py-8">
+            <div class="text-center space-y-2">
+                <span class="text-xs md:text-sm tracking-widest uppercase font-bold text-gray-400 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+                    Simulador Competitivo 2 Jugadores • 1,000 Jugadores Reales NBA
+                </span>
+                <h1 class="text-6xl sm:text-7xl md:text-9xl font-bebas leading-none tracking-tight">
+                    NBA <span class="text-[var(--nba-red)]">ULTIMATE</span><br>
+                    DRAFT <span class="text-[var(--nba-gold)]">PRO</span>
+                </h1>
+                <p class="text-gray-400 text-sm md:text-lg max-w-xl mx-auto">
+                    Arma tu quinteto de ensueño seleccionando cartas de jugadores históricos y actuales de la NBA. ¡Compite en partidas ultra veloces!
+                </p>
             </div>
-        </div>
-        <!-- Logs -->
-        <div class="lg:col-span-1 bg-black/50 p-4 rounded-xl flex flex-col">
-            <h6 class="font-bebas text-xl mb-2 text-gray-400 border-b border-gray-700">HISTORIAL DE JUEGO</h6>
-            <div id="sim-log" class="flex-1 overflow-y-auto font-medium text-sm md:text-base space-y-1 pr-2">
-                <!-- Play by play logs -->
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+                <button onclick="App.setMode('normal')" 
+                        class="btn-nba p-6 text-2xl md:text-3xl rounded-2xl flex flex-col items-center">
+                    <span>Modo Normal</span>
+                    <span class="text-xs font-sans tracking-normal opacity-75 normal-case font-normal">20 cartas ocultas • Botón Scout (-5%)</span>
+                </button>
+
+                <button onclick="App.setMode('libre')" 
+                        class="btn-nba p-6 text-2xl md:text-3xl rounded-2xl flex flex-col items-center">
+                    <span>Modo Libre</span>
+                    <span class="text-xs font-sans tracking-normal opacity-75 normal-case font-normal">20 cartas visibles • Sin penalización</span>
+                </button>
+
+                <button onclick="App.setMode('3x3')" 
+                        class="btn-nba p-6 text-2xl md:text-3xl rounded-2xl flex flex-col items-center">
+                    <span>Duelo 3x3</span>
+                    <span class="text-xs font-sans tracking-normal opacity-75 normal-case font-normal">3 jugadores • Aleros y Bases mezclados</span>
+                </button>
+
+                <button onclick="App.setMode('finales')" 
+                        class="btn-nba btn-nba-gold p-6 text-2xl md:text-3xl rounded-2xl flex flex-col items-center">
+                    <span>Las Finales (Bo7)</span>
+                    <span class="text-xs font-sans tracking-normal opacity-90 normal-case font-normal">Serie al mejor de 7 partidos</span>
+                </button>
             </div>
-        </div>
-    </div>
-</section>
 
-       <!-- PANTALLA: RESULTADOS -->
-       <section id="screen-results" class="hidden flex-1 flex flex-col items-center justify-center">
-           <h2 class="text-4xl md:text-6xl font-bebas mb-2">FINAL DEL PARTIDO</h2>
-           <div id="final-score-box" class="flex items-center gap-8 mb-8">
-               <!-- Dinámico -->
-           </div>
+            <div class="flex flex-col items-center gap-2 pt-4">
+                <button onclick="App.showSettings()" 
+                        class="text-gray-400 hover:text-[var(--nba-gold)] transition font-bebas text-xl underline tracking-wide">
+                    Ver Base de Datos (1,000 Jugadores NBA)
+                </button>
+                <div class="flex items-center gap-4 text-xs text-gray-500">
+                    <span>v2.0 Pro</span>
+                    <span>•</span>
+                    <span>Soporte Smart TV / D-Pad</span>
+                    <span>•</span>
+                    <span>Audio WebAPI</span>
+                </div>
+            </div>
+        </section>
 
-           <!-- MVP Card -->
-           <div id="mvp-card" class="w-full max-w-md p-6 rounded-2xl mb-8 flex items-center gap-6 border-4 border-[var(--nba-gold)] bg-gray-900 relative">
-                <div class="absolute top-0 right-0 p-2 font-bebas text-2xl text-[var(--nba-gold)]">MVP</div>
-                <div id="mvp-img-box" class="w-32 h-32 rounded-lg bg-gray-800 flex-shrink-0"></div>
+        <!-- ========================================== -->
+        <!-- PANTALLA 2: CONFIGURACIÓN DE EQUIPOS       -->
+        <!-- ========================================== -->
+        <section id="screen-config" class="hidden flex-1 flex flex-col items-center justify-center space-y-8 my-auto py-8">
+            <div class="text-center space-y-2">
+                <span id="config-mode-badge" class="px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[var(--nba-gold)]/20 text-[var(--nba-gold)] border border-[var(--nba-gold)]/30">
+                    Modo Normal
+                </span>
+                <h2 class="text-4xl md:text-6xl font-bebas">Configuración de Equipos</h2>
+                <p class="text-gray-400 text-sm md:text-base">Personaliza el nombre de cada franquicia para el enfrentamiento.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 w-full max-w-3xl">
+                <!-- Equipo 1 -->
+                <div class="flex-1 glass-panel p-6 space-y-3 border-t-4 border-t-[var(--nba-red)]">
+                    <div class="flex items-center justify-between">
+                        <label class="font-bebas text-2xl text-[var(--nba-red)]">Equipo 1 (P1)</label>
+                        <span class="w-4 h-4 rounded-full bg-[var(--nba-red)]"></span>
+                    </div>
+                    <input id="p1-name" 
+                           type="text" 
+                           value="Lakers All-Stars" 
+                           placeholder="Nombre Equipo 1..." 
+                           class="w-full bg-black/60 border border-red-500/40 p-4 text-xl rounded-xl outline-none focus:ring-2 ring-[var(--nba-red)] text-white">
+                </div>
+
+                <!-- Equipo 2 -->
+                <div class="flex-1 glass-panel p-6 space-y-3 border-t-4 border-t-[var(--nba-blue)]">
+                    <div class="flex items-center justify-between">
+                        <label class="font-bebas text-2xl text-[var(--nba-blue)]">Equipo 2 (P2)</label>
+                        <span class="w-4 h-4 rounded-full bg-[var(--nba-blue)]"></span>
+                    </div>
+                    <input id="p2-name" 
+                           type="text" 
+                           value="Bulls Legends" 
+                           placeholder="Nombre Equipo 2..." 
+                           class="w-full bg-black/60 border border-blue-500/40 p-4 text-xl rounded-xl outline-none focus:ring-2 ring-[var(--nba-blue)] text-white">
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="App.changeScreen('menu')" 
+                        class="btn-nba px-8 py-4 text-2xl rounded-xl bg-gray-800 hover:bg-gray-700">
+                    Volver
+                </button>
+                <button onclick="App.startDraft()" 
+                        class="btn-nba btn-nba-gold px-12 py-4 text-3xl rounded-xl">
+                    Comenzar Draft
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 3 & 4: FASE DE DRAFT              -->
+        <!-- ========================================== -->
+        <section id="screen-draft" class="hidden flex-1 flex flex-col space-y-4">
+            <div class="glass-panel p-4 md:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <span id="draft-player-badge" class="px-3 py-1 rounded-full text-lg font-bebas nba-gradient-red">P1</span>
+                    <div>
+                        <h3 id="draft-turn-title" class="text-2xl md:text-4xl font-bebas leading-tight"></h3>
+                        <p id="draft-pos-subtitle" class="text-sm md:text-base text-gray-400 font-bold uppercase tracking-wider"></p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <button id="scout-btn" 
+                            onclick="App.applyScout()" 
+                            class="btn-nba btn-scout px-6 py-2.5 rounded-xl text-lg md:text-xl hidden">
+                        🔍 Scout (-5% Rendimiento)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pool of 20 Cards Grid -->
+            <div id="draft-cards-grid" class="cards-grid flex-1">
+                <!-- Dynamically injected cards -->
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 5: ARENA READY (MATCHUP)          -->
+        <!-- ========================================== -->
+        <section id="screen-matchup" class="hidden flex-1 flex flex-col items-center justify-center space-y-8 my-auto py-8">
+            <div class="text-center space-y-2">
+                <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-300">
+                    Matchup Listo • Arena Preparada
+                </span>
+                <h2 class="text-5xl md:text-7xl font-bebas">ARENA READY</h2>
+            </div>
+
+            <div class="w-full max-w-5xl flex flex-col md:flex-row justify-around items-center gap-8 glass-panel p-8">
+                <!-- Team 1 Side -->
+                <div class="text-center space-y-4 flex-1">
+                    <div class="w-28 h-28 rounded-full mx-auto nba-gradient-red flex flex-col items-center justify-center border-4 border-white shadow-2xl">
+                        <span id="m-team1-rating" class="text-5xl font-black font-bebas leading-none">95</span>
+                        <span class="text-[10px] tracking-widest uppercase font-bold text-white/80">OVR</span>
+                    </div>
+                    <h4 id="m-team1-name" class="text-3xl md:text-4xl font-bebas text-[var(--nba-red)]"></h4>
+                    <div id="m-team1-roster" class="flex gap-2 justify-center flex-wrap max-w-sm mx-auto"></div>
+                </div>
+
+                <!-- VS Divider -->
+                <div class="text-6xl md:text-8xl font-bebas italic text-[var(--nba-gold)] px-4">
+                    VS
+                </div>
+
+                <!-- Team 2 Side -->
+                <div class="text-center space-y-4 flex-1">
+                    <div class="w-28 h-28 rounded-full mx-auto nba-gradient-blue flex flex-col items-center justify-center border-4 border-white shadow-2xl">
+                        <span id="m-team2-rating" class="text-5xl font-black font-bebas leading-none">95</span>
+                        <span class="text-[10px] tracking-widest uppercase font-bold text-white/80">OVR</span>
+                    </div>
+                    <h4 id="m-team2-name" class="text-3xl md:text-4xl font-bebas text-[var(--nba-blue)]"></h4>
+                    <div id="m-team2-roster" class="flex gap-2 justify-center flex-wrap max-w-sm mx-auto"></div>
+                </div>
+            </div>
+
+            <button id="tipoff-btn" 
+                    onclick="App.startSimulation()" 
+                    class="btn-nba btn-nba-gold px-16 py-6 text-4xl md:text-6xl rounded-2xl shadow-2xl">
+                🏀 TIP OFF 🏀
+            </button>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 6: SIMULACIÓN EN VIVO             -->
+        <!-- ========================================== -->
+        <section id="screen-sim" class="hidden flex-1 flex flex-col space-y-4">
+            <!-- Marcador y Reloj Oficial NBA -->
+            <div class="scoreboard p-4 md:p-6 rounded-2xl flex items-center justify-between">
+                <!-- Team 1 Score -->
+                <div class="flex-1 text-center">
+                    <h5 id="s-t1-name" class="font-bebas text-xl md:text-3xl truncate text-gray-300"></h5>
+                    <div id="s-t1-score" class="score-num text-[var(--nba-red)]">0</div>
+                </div>
+
+                <!-- Game Clock & Quarter -->
+                <div class="px-4 text-center border-x-2 border-white/10">
+                    <div id="s-clock" class="text-4xl sm:text-5xl md:text-7xl font-mono font-bold tracking-tight text-white">12:00</div>
+                    <div id="s-quarter" class="text-lg md:text-2xl font-bebas text-[var(--nba-gold)] uppercase tracking-wider">1ER CUARTO</div>
+                </div>
+
+                <!-- Team 2 Score -->
+                <div class="flex-1 text-center">
+                    <h5 id="s-t2-name" class="font-bebas text-xl md:text-3xl truncate text-gray-300"></h5>
+                    <div id="s-t2-score" class="score-num text-[var(--nba-blue)]">0</div>
+                </div>
+            </div>
+
+            <!-- Contenido Simulación: Estadísticas en vivo e Historial de Jugadas -->
+            <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-0">
+                <!-- Tabla Estadísticas en Vivo -->
+                <div class="lg:col-span-2 glass-panel p-4 flex flex-col overflow-hidden">
+                    <h6 class="font-bebas text-xl text-gray-400 mb-2 border-b border-gray-700 pb-1">
+                        ESTADÍSTICAS DEL PARTIDO EN VIVO
+                    </h6>
+                    <div class="table-responsive flex-1">
+                        <table class="stat-table">
+                            <thead>
+                                <tr>
+                                    <th>JUGADOR</th>
+                                    <th>PTS</th>
+                                    <th>REB</th>
+                                    <th>AST</th>
+                                    <th>ROB</th>
+                                    <th>TAP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stats-table-body">
+                                <!-- Filas de estadísticas generadas en tiempo real -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Historial de Jugadas (Logs alineados a la izquierda) -->
+                <div class="lg:col-span-1 glass-panel p-4 flex flex-col min-h-[300px]">
+                    <h6 class="font-bebas text-xl text-gray-400 mb-2 border-b border-gray-700 pb-1">
+                        HISTORIAL DE JUEGO (PLAY BY PLAY)
+                    </h6>
+                    <div id="sim-log" class="sim-log-container flex-1 overflow-y-auto pr-1">
+                        <!-- Entradas de log dinámicas -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 7: RESULTADOS FINALES Y BOX SCORE -->
+        <!-- ========================================== -->
+        <section id="screen-results" class="hidden flex-1 flex flex-col items-center justify-center space-y-6 my-auto py-6">
+            <h2 class="text-4xl md:text-7xl font-bebas text-center tracking-wide">
+                FINAL DEL PARTIDO
+            </h2>
+
+            <!-- Marcador Final Centrado -->
+            <div id="final-score-box" class="flex items-center justify-center gap-6 glass-panel px-8 py-4 rounded-2xl w-full max-w-2xl">
+                <!-- Contenido dinámico -->
+            </div>
+
+            <!-- MVP Card -->
+            <div id="mvp-card" class="mvp-banner w-full max-w-lg p-6 rounded-2xl flex items-center gap-6">
+                <div id="mvp-img-box" class="w-28 h-32 md:w-36 md:h-40 rounded-xl bg-gray-900 flex-shrink-0 overflow-hidden border border-white/10 shadow-lg"></div>
+                <div class="flex-1">
+                    <span class="text-xs font-bold tracking-widest uppercase bg-[var(--nba-gold)] text-black px-2.5 py-0.5 rounded font-bebas text-base">
+                        MVP DEL PARTIDO
+                    </span>
+                    <h3 id="mvp-name" class="text-3xl md:text-4xl font-bebas leading-tight mt-1 text-white"></h3>
+                    <p id="mvp-team" class="text-sm md:text-base text-gray-400 font-medium"></p>
+                    <div id="mvp-stats-line" class="font-bold text-sm md:text-lg mt-2 text-[var(--nba-gold)] font-mono"></div>
+                </div>
+            </div>
+
+            <!-- Box Scores de Ambos Equipos -->
+            <div class="w-full max-w-5xl space-y-6">
+                <div class="glass-panel p-4">
+                    <h4 class="font-bebas text-2xl text-[var(--nba-red)] mb-2 border-b border-red-900 pb-1">
+                        BOX SCORE - <span id="res-t1-name"></span>
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="stat-table text-sm" id="res-table-t1"></table>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4">
+                    <h4 class="font-bebas text-2xl text-[var(--nba-blue)] mb-2 border-b border-blue-900 pb-1">
+                        BOX SCORE - <span id="res-t2-name"></span>
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="stat-table text-sm" id="res-table-t2"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles Finales (Serie Bo7 o Menú Principal) -->
+            <div id="finales-controls" class="mt-4 flex gap-4 justify-center">
+                <!-- Dinámico -->
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PANTALLA 9: SETTINGS / BASE DE DATOS       -->
+        <!-- ========================================== -->
+        <section id="screen-settings" class="hidden flex-1 flex flex-col space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
                 <div>
-                    <h3 id="mvp-name" class="text-3xl font-bebas leading-tight"></h3>
-                    <p id="mvp-team" class="text-lg text-gray-400"></p>
-                    <div id="mvp-stats-line" class="font-bold text-xl mt-2 text-[var(--nba-gold)]"></div>
+                    <h2 class="text-4xl md:text-6xl font-bebas text-white">Base de Datos Oficial NBA</h2>
+                    <p class="text-gray-400 text-sm">
+                        Catálogo de 1,000 jugadores reales con IDs de fotos oficiales y estadísticas calibradas.
+                    </p>
                 </div>
-           </div>
-
-           <div class="w-full max-w-4xl space-y-8">
-                <div class="table-container bg-black/50 rounded-xl p-4">
-                    <h4 class="font-bebas text-2xl mb-2 text-[var(--nba-red)] border-b border-red-900">BOX SCORE - <span id="res-t1-name"></span></h4>
-                    <table class="w-full text-left text-sm" id="res-table-t1"></table>
+                <div class="flex items-center gap-3">
+                    <span id="db-player-count" class="text-lg font-bebas text-[var(--nba-gold)] bg-black/40 px-3 py-1.5 rounded-lg border border-white/10">1000 Jugadores</span>
+                    <button onclick="App.changeScreen('menu')" class="btn-nba px-6 py-2 rounded-xl text-lg">Volver al Menú</button>
                 </div>
-                <div class="table-container bg-black/50 rounded-xl p-4">
-                    <h4 class="font-bebas text-2xl mb-2 text-[var(--nba-blue)] border-b border-blue-900">BOX SCORE - <span id="res-t2-name"></span></h4>
-                    <table class="w-full text-left text-sm" id="res-table-t2"></table>
+            </div>
+
+            <!-- Filtros por Posición & Búsqueda -->
+            <div class="glass-panel p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+                <!-- Tabs Posiciones -->
+                <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <button onclick="App.setDbPositionFilter('all')" data-pos="all" class="db-pos-tab px-4 py-2 rounded-lg font-bebas text-lg btn-nba btn-nba-gold">TODAS (1000)</button>
+                    <button onclick="App.setDbPositionFilter('pg')" data-pos="pg" class="db-pos-tab px-4 py-2 rounded-lg font-bebas text-lg bg-gray-800 hover:bg-gray-700 text-gray-300">BASE / PG</button>
+                    <button onclick="App.setDbPositionFilter('sg')" data-pos="sg" class="db-pos-tab px-4 py-2 rounded-lg font-bebas text-lg bg-gray-800 hover:bg-gray-700 text-gray-300">ESCOLTA / SG</button>
+                    <button onclick="App.setDbPositionFilter('sf')" data-pos="sf" class="db-pos-tab px-4 py-2 rounded-lg font-bebas text-lg bg-gray-800 hover:bg-gray-700 text-gray-300">ALERO / SF</button>
+                    <button onclick="App.setDbPositionFilter('pf')" data-pos="pf" class="db-pos-tab px-4 py-2 rounded-lg font-bebas text-lg bg-gray-800 hover:bg-gray-700 text-gray-300">ALA-PÍVOT / PF</button>
+                    <button onclick="App.setDbPositionFilter('c')" data-pos="c" class="db-pos-tab px-4 py-2 rounded-lg font-bebas text-lg bg-gray-800 hover:bg-gray-700 text-gray-300">PÍVOT / C</button>
                 </div>
-           </div>
 
-           <div id="finales-controls" class="mt-8 flex gap-4">
-               <!-- Botón siguiente partido o volver -->
-           </div>
-       </section>
+                <!-- Search Input & Sort Selector -->
+                <div class="flex gap-2 w-full md:w-auto">
+                    <input id="db-search-input" 
+                           type="text" 
+                           placeholder="Buscar por jugador o equipo..." 
+                           class="flex-1 md:w-64 bg-black/60 border border-gray-700 p-2.5 rounded-lg text-sm outline-none focus:ring-2 ring-[var(--nba-gold)] text-white">
+
+                    <select id="db-sort-select" class="bg-gray-900 border border-gray-700 text-sm text-gray-200 p-2.5 rounded-lg outline-none font-medium">
+                        <option value="rat-desc">Rating General (Mayor a Menor)</option>
+                        <option value="rat-asc">Rating General (Menor a Mayor)</option>
+                        <option value="name-asc">Nombre (A-Z)</option>
+                        <option value="t2-desc">Anotación T2 (Max)</option>
+                        <option value="t3-desc">Triples T3 (Max)</option>
+                        <option value="reb-desc">Rebotes (Max)</option>
+                        <option value="ast-desc">Asistencias (Max)</option>
+                        <option value="stl-desc">Robos (Max)</option>
+                        <option value="blk-desc">Bloqueos (Max)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabla Base de Datos -->
+            <div class="glass-panel flex-1 p-4 overflow-hidden flex flex-col">
+                <div class="table-responsive flex-1">
+                    <table class="stat-table">
+                        <thead class="sticky top-0 bg-[#071524] z-10">
+                            <tr>
+                                <th>POS</th>
+                                <th>JUGADOR</th>
+                                <th>OVR</th>
+                                <th>T2</th>
+                                <th>T3</th>
+                                <th>REB</th>
+                                <th>AST</th>
+                                <th>ROB</th>
+                                <th>TAP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="db-table-body">
+                            <!-- Filas dinámicas -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- MODAL REVELAR JUGADOR (DRAFT SELECTION)    -->
+    <!-- ========================================== -->
+    <div id="player-modal" class="hidden modal-overlay">
+        <div class="glass-panel border-2 border-[var(--nba-gold)] rounded-3xl max-w-xl w-full p-6 md:p-8 modal-enter relative overflow-hidden shadow-2xl">
+            <div class="flex flex-col md:flex-row gap-6 items-center md:items-start relative z-10">
+                <div class="w-44 h-52 bg-gray-900/90 rounded-2xl flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center p-2 shadow-inner" id="modal-img"></div>
+                <div class="flex-1 text-center md:text-left">
+                    <span class="text-xs uppercase font-bold tracking-widest text-[var(--nba-gold)] bg-black/40 px-3 py-1 rounded">Carta Revelada</span>
+                    <h2 id="modal-name" class="text-4xl md:text-5xl font-bebas leading-tight mt-1 text-white"></h2>
+                    <p id="modal-team" class="text-xl text-gray-400 font-bebas mb-3"></p>
+                    
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">T2 (Tiro 2pt): <span id="m-t2" class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">T3 (Triples): <span id="m-t3" class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">REB (Rebotes): <span id="m-reb" class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">AST (Pases): <span id="m-ast" class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">STL (Robos): <span id="m-stl" class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">BLK (Bloqueos): <span id="m-blk" class="text-white font-bold"></span></div>
+                    </div>
+
+                    <div class="mt-4 text-center nba-gradient-gold text-black p-2.5 rounded-xl font-black text-3xl font-bebas tracking-wider" id="m-rat">
+                        99 OVR
+                    </div>
+                </div>
+            </div>
+
+            <button id="modal-select-btn" 
+                    onclick="App.closePlayerModal()" 
+                    class="mt-6 w-full btn-nba btn-nba-gold py-4 text-3xl rounded-xl">
+                SELECCIONAR JUGADOR
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL ENTRETIEMPO / PAUSA DE CUARTOS       -->
+    <!-- ========================================== -->
+    <div id="period-modal" class="hidden modal-overlay">
+        <div class="glass-panel border border-[var(--nba-gold)] p-8 md:p-12 rounded-3xl text-center modal-enter max-w-md w-full shadow-2xl">
+            <h2 id="period-title" class="text-3xl md:text-5xl font-bebas mb-4 text-[var(--nba-gold)] tracking-wide">FIN DEL CUARTO</h2>
+            <div class="flex items-center justify-center gap-6 text-6xl md:text-7xl font-bebas">
+                <span id="p-m-s1" class="text-[var(--nba-red)]">0</span>
+                <span class="text-gray-500 font-mono">-</span>
+                <span id="p-m-s2" class="text-[var(--nba-blue)]">0</span>
+            </div>
+            <p class="mt-4 font-bold text-gray-400 tracking-widest uppercase text-sm md:text-base" id="next-period-msg"></p>
+        </div>
+    </div>
+
+    <!-- Application Script Modules -->
+    <script src="js/data/players.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/spatial-nav.js"></script>
+    <script src="js/simulation.js"></script>
+    <script src="js/app.js"></script>
 
-       <!-- PANTALLA: SETTINGS / DATABASE -->
-       <section id="screen-settings" class="hidden flex-1 flex flex-col">
-           <div class="flex justify-between items-center mb-6">
-               <h2 class="text-5xl font-bebas">Base de Datos de Jugadores</h2>
-               <button onclick="changeScreen('menu')" class="btn-nba px-6 py-2 rounded">Volver</button>
-           </div>
-           <div class="table-container bg-gray-900 flex-1 rounded-xl p-4">
-               <table class="w-full text-left">
-                   <thead class="sticky top-0 bg-gray-900 border-b-2 border-gray-700">
-                       <tr class="font-bebas text-xl">
-                           <th class="p-2">Pos</th>
-                           <th class="p-2">Jugador</th>
-                           <th class="p-2">Equipo</th>
-                           <th class="p-2">Rat</th>
-                           <th class="p-2">T2</th>
-                           <th class="p-2">T3</th>
-                           <th class="p-2">REB</th>
-                       </tr>
-                   </thead>
-                   <tbody id="db-table-body"></tbody>
-               </table>
-           </div>
-       </section>
-
-   </div>
-
-   <!-- MODALES -->
-   <div id="player-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
-       <div class="bg-gray-900 border-4 border-[var(--nba-gold)] rounded-3xl max-w-xl w-full p-8 modal-enter relative overflow-hidden">
-           <div id="modal-accent" class="absolute inset-0 opacity-10 pointer-events-none"></div>
-           <div class="flex flex-col md:flex-row gap-8 relative z-10">
-               <div class="w-48 h-56 bg-gray-800 rounded-2xl flex-shrink-0" id="modal-img"></div>
-               <div class="flex-1">
-                   <h2 id="modal-name" class="text-5xl font-bebas leading-none"></h2>
-                   <p id="modal-team" class="text-2xl text-gray-400 font-bebas mb-4"></p>
-                   <div class="grid grid-cols-2 gap-2 text-lg">
-                       <div class="bg-black/40 p-2 rounded">T2: <span id="m-t2" class="text-white font-bold"></span></div>
-                       <div class="bg-black/40 p-2 rounded">T3: <span id="m-t3" class="text-white font-bold"></span></div>
-                       <div class="bg-black/40 p-2 rounded">REB: <span id="m-reb" class="text-white font-bold"></span></div>
-                       <div class="bg-black/40 p-2 rounded">BLK: <span id="m-blk" class="text-white font-bold"></span></div>
-                       <div class="bg-black/40 p-2 rounded">AST: <span id="m-ast" class="text-white font-bold"></span></div>
-                       <div class="bg-black/40 p-2 rounded">STL: <span id="m-stl" class="text-white font-bold"></span></div>
-                   </div>
-                   <div class="mt-6 text-center bg-[var(--nba-gold)] text-black p-2 rounded-xl font-black text-3xl font-bebas" id="m-rat">99 OVR</div>
-               </div>
-           </div>
-           <button onclick="closePlayerModal()" class="mt-8 w-full btn-nba py-4 text-3xl rounded-xl">SELECCIONAR JUGADOR</button>
-       </div>
-   </div>
-
-   <div id="period-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-       <div class="bg-white text-black p-12 rounded-3xl text-center modal-enter">
-           <h2 id="period-title" class="text-4xl font-bebas mb-4">ENTRETIEMPO</h2>
-           <div class="flex items-center justify-center gap-8 text-6xl font-black">
-               <span id="p-m-s1" class="text-[var(--nba-red)]">0</span>
-               <span>-</span>
-               <span id="p-m-s2" class="text-[var(--nba-blue)]">0</span>
-           </div>
-           <p class="mt-4 font-bold text-gray-500 tracking-widest uppercase" id="next-period-msg"></p>
-       </div>
-   </div>
-
-   <script>
-       // --- BASE DE DATOS EXTENDIDA (Basada en el archivo proporcionado) ---
-       const RAW_DATABASE = {
-           "pg": [
-               { "id": 77145, "n": "Magic Johnson", "t": "L.A. Lakers", "t2": 95, "t3": 75, "reb": 88, "blk": 65, "ast": 99, "stl": 85, "rat": 98 },
-               { "id": 201939, "n": "Stephen Curry", "t": "G.S. Warriors", "t2": 92, "t3": 99, "reb": 65, "blk": 45, "ast": 94, "stl": 82, "rat": 97 },
-               { "id": 78002, "n": "Oscar Robertson", "t": "Bucks", "t2": 94, "t3": 70, "reb": 92, "blk": 60, "ast": 96, "stl": 80, "rat": 97 },
-               { "id": 304, "n": "John Stockton", "t": "Utah Jazz", "t2": 88, "t3": 90, "reb": 55, "blk": 40, "ast": 99, "stl": 96, "rat": 96 },
-               { "id": 78318, "n": "Isiah Thomas", "t": "Pistons", "t2": 91, "t3": 80, "reb": 58, "blk": 42, "ast": 95, "stl": 88, "rat": 95 },
-               { "id": 101108, "n": "Chris Paul", "t": "Phoenix Suns", "t2": 90, "t3": 88, "reb": 62, "blk": 40, "ast": 97, "stl": 94, "rat": 94 },
-               { "id": 959, "n": "Steve Nash", "t": "Phoenix Suns", "t2": 89, "t3": 95, "reb": 50, "blk": 35, "ast": 98, "stl": 65, "rat": 93 },
-               { "id": 467, "n": "Jason Kidd", "t": "Nets", "t2": 82, "t3": 85, "reb": 82, "blk": 50, "ast": 97, "stl": 89, "rat": 93 },
-               { "id": 56, "n": "Gary Payton", "t": "Sonics", "t2": 88, "t3": 80, "reb": 65, "blk": 45, "ast": 88, "stl": 98, "rat": 92 },
-               { "id": 201566, "n": "R. Westbrook", "t": "OKC Thunder", "t2": 92, "t3": 78, "reb": 92, "blk": 55, "ast": 90, "stl": 85, "rat": 91 },
-               { "id": 202681, "n": "Kyrie Irving", "t": "Cavs", "t2": 96, "t3": 92, "reb": 55, "blk": 40, "ast": 88, "stl": 78, "rat": 91 },
-               { "id": 203081, "n": "Damian Lillard", "t": "Blazers", "t2": 90, "t3": 96, "reb": 62, "blk": 40, "ast": 88, "stl": 75, "rat": 92 },
-               { "id": 1630178, "n": "T. Haliburton", "t": "Pacers", "t2": 88, "t3": 92, "reb": 60, "blk": 50, "ast": 98, "stl": 85, "rat": 92 },
-               { "id": 201565, "n": "Derrick Rose", "t": "Bulls", "t2": 94, "t3": 78, "reb": 60, "blk": 45, "ast": 85, "stl": 75, "rat": 90 },
-               { "id": 101114, "n": "Deron Williams", "t": "Utah Jazz", "t2": 88, "t3": 85, "reb": 55, "blk": 35, "ast": 92, "stl": 75, "rat": 89 },
-               { "id": 202689, "n": "Kemba Walker", "t": "Hornets", "t2": 88, "t3": 90, "reb": 40, "blk": 30, "ast": 80, "stl": 75, "rat": 88 },
-               { "id": 1629630, "n": "Ja Morant", "t": "Grizzlies", "t2": 94, "t3": 80, "reb": 65, "blk": 50, "ast": 88, "stl": 78, "rat": 91 },
-               { "id": 201943, "n": "Jrue Holiday", "t": "Celtics", "t2": 86, "t3": 88, "reb": 60, "blk": 60, "ast": 82, "stl": 92, "rat": 90 },
-               { "id": 1630163, "n": "LaMelo Ball", "t": "Hornets", "t2": 88, "t3": 90, "reb": 75, "blk": 45, "ast": 92, "stl": 85, "rat": 90 },
-               { "id": 200746, "n": "LaMarcus Aldridge", "t": "Blazers", "t2": 94, "t3": 70, "reb": 85, "blk": 70, "ast": 60, "stl": 55, "rat": 88 }
-           ],
-           "sg": [
-               { "id": 893, "n": "Michael Jordan", "t": "Bulls", "t2": 99, "t3": 82, "reb": 82, "blk": 78, "ast": 85, "stl": 96, "rat": 99 },
-               { "id": 977, "n": "Kobe Bryant", "t": "L.A. Lakers", "t2": 98, "t3": 88, "reb": 78, "blk": 70, "ast": 82, "stl": 85, "rat": 98 },
-               { "id": 2548, "n": "Dwyane Wade", "t": "Miami Heat", "t2": 96, "t3": 78, "reb": 72, "blk": 82, "ast": 85, "stl": 88, "rat": 96 },
-               { "id": 947, "n": "Allen Iverson", "t": "76ers", "t2": 92, "t3": 80, "reb": 55, "blk": 35, "ast": 88, "stl": 95, "rat": 95 },
-               { "id": 201935, "n": "James Harden", "t": "Rockets", "t2": 90, "t3": 92, "reb": 78, "blk": 55, "ast": 94, "stl": 82, "rat": 94 },
-               { "id": 258, "n": "Clyde Drexler", "t": "Blazers", "t2": 92, "t3": 80, "reb": 85, "blk": 65, "ast": 82, "stl": 88, "rat": 94 },
-               { "id": 397, "n": "Reggie Miller", "t": "Pacers", "t2": 85, "t3": 98, "reb": 55, "blk": 40, "ast": 65, "stl": 75, "rat": 92 },
-               { "id": 951, "n": "Ray Allen", "t": "Celtics", "t2": 87, "t3": 98, "reb": 65, "blk": 45, "ast": 70, "stl": 78, "rat": 91 },
-               { "id": 1713, "n": "Vince Carter", "t": "Raptors", "t2": 94, "t3": 88, "reb": 72, "blk": 65, "ast": 75, "stl": 78, "rat": 91 },
-               { "id": 202691, "n": "Klay Thompson", "t": "G.S. Warriors", "t2": 88, "t3": 97, "reb": 60, "blk": 65, "ast": 55, "stl": 75, "rat": 90 },
-               { "id": 203504, "n": "Devin Booker", "t": "Phoenix Suns", "t2": 94, "t3": 89, "reb": 65, "blk": 45, "ast": 80, "stl": 75, "rat": 92 },
-               { "id": 1628378, "n": "Donovan Mitchell", "t": "Cavs", "t2": 92, "t3": 90, "reb": 60, "blk": 45, "ast": 82, "stl": 80, "rat": 91 },
-               { "id": 203078, "n": "Bradley Beal", "t": "Wizards", "t2": 90, "t3": 88, "reb": 65, "blk": 45, "ast": 80, "stl": 72, "rat": 89 },
-               { "id": 104, "n": "Chris Mullin", "t": "G.S. Warriors", "t2": 92, "t3": 92, "reb": 60, "blk": 50, "ast": 75, "stl": 85, "rat": 90 },
-               { "id": 111, "n": "Mitch Richmond", "t": "Kings", "t2": 90, "t3": 90, "reb": 62, "blk": 40, "ast": 70, "stl": 78, "rat": 89 },
-               { "id": 1628386, "n": "Jarrett Allen", "t": "Cavs", "t2": 90, "t3": 50, "reb": 94, "blk": 92, "ast": 60, "stl": 65, "rat": 88 },
-               { "id": 1630162, "n": "Anthony Edwards", "t": "Wolves", "t2": 94, "t3": 88, "reb": 68, "blk": 55, "ast": 78, "stl": 82, "rat": 92 },
-               { "id": 1627736, "n": "Alex Caruso", "t": "Bulls", "t2": 78, "t3": 82, "reb": 55, "blk": 55, "ast": 65, "stl": 94, "rat": 85 },
-               { "id": 1626156, "n": "D'Angelo Russell", "t": "Lakers", "t2": 88, "t3": 92, "reb": 50, "blk": 35, "ast": 85, "stl": 70, "rat": 87 },
-               { "id": 203114, "n": "Khris Middleton", "t": "Bucks", "t2": 90, "t3": 92, "reb": 70, "blk": 45, "ast": 75, "stl": 75, "rat": 89 }
-           ],
-           "sf": [
-               { "id": 2544, "n": "LeBron James", "t": "Cavs", "t2": 98, "t3": 88, "reb": 92, "blk": 82, "ast": 96, "stl": 85, "rat": 99 },
-               { "id": 1449, "n": "Larry Bird", "t": "Celtics", "t2": 96, "t3": 96, "reb": 94, "blk": 70, "ast": 94, "stl": 88, "rat": 98 },
-               { "id": 201142, "n": "Kevin Durant", "t": "G.S. Warriors", "t2": 99, "t3": 96, "reb": 88, "blk": 82, "ast": 80, "stl": 75, "rat": 97 },
-               { "id": 76681, "n": "Julius Erving", "t": "76ers", "t2": 96, "t3": 75, "reb": 88, "blk": 82, "ast": 80, "stl": 88, "rat": 96 },
-               { "id": 711, "n": "Scottie Pippen", "t": "Bulls", "t2": 88, "t3": 82, "reb": 88, "blk": 85, "ast": 88, "stl": 96, "rat": 95 },
-               { "id": 202695, "n": "Kawhi Leonard", "t": "Spurs", "t2": 95, "t3": 92, "reb": 82, "blk": 78, "ast": 75, "stl": 97, "rat": 95 },
-               { "id": 1629029, "n": "Luka Doncic", "t": "Mavericks", "t2": 92, "t3": 90, "reb": 92, "blk": 50, "ast": 96, "stl": 78, "rat": 95 },
-               { "id": 1718, "n": "Paul Pierce", "t": "Celtics", "t2": 90, "t3": 90, "reb": 78, "blk": 60, "ast": 78, "stl": 80, "rat": 92 },
-               { "id": 202331, "n": "Paul George", "t": "Pacers", "t2": 88, "t3": 92, "reb": 78, "blk": 65, "ast": 70, "stl": 88, "rat": 91 },
-               { "id": 202710, "n": "Jimmy Butler", "t": "Miami Heat", "t2": 90, "t3": 82, "reb": 82, "blk": 65, "ast": 85, "stl": 92, "rat": 91 },
-               { "id": 1628369, "n": "Jayson Tatum", "t": "Celtics", "t2": 94, "t3": 92, "reb": 85, "blk": 65, "ast": 80, "stl": 78, "rat": 95 },
-               { "id": 224, "n": "Grant Hill", "t": "Pistons", "t2": 92, "t3": 75, "reb": 82, "blk": 60, "ast": 88, "stl": 82, "rat": 91 },
-               { "id": 76102, "n": "Rick Barry", "t": "Warriors", "t2": 92, "t3": 85, "reb": 80, "blk": 55, "ast": 85, "stl": 88, "rat": 93 },
-               { "id": 1629673, "n": "Brandon Ingram", "t": "Pelicans", "t2": 90, "t3": 88, "reb": 65, "blk": 50, "ast": 75, "stl": 65, "rat": 88 },
-               { "id": 1627783, "n": "Pascal Siakam", "t": "Raptors", "t2": 88, "t3": 82, "reb": 85, "blk": 60, "ast": 75, "stl": 70, "rat": 88 },
-               { "id": 201144, "n": "Mike Conley", "t": "Wolves", "t2": 85, "t3": 90, "reb": 50, "blk": 35, "ast": 85, "stl": 82, "rat": 87 },
-               { "id": 201145, "n": "Jeff Green", "t": "Rockets", "t2": 84, "t3": 85, "reb": 60, "blk": 55, "ast": 60, "stl": 60, "rat": 83 },
-               { "id": 203115, "n": "Tobias Harris", "t": "76ers", "t2": 88, "t3": 88, "reb": 75, "blk": 50, "ast": 65, "stl": 65, "rat": 86 },
-               { "id": 203926, "n": "Bogdan Bogdanovic", "t": "Hawks", "t2": 82, "t3": 92, "reb": 55, "blk": 35, "ast": 70, "stl": 75, "rat": 86 },
-               { "id": 1630567, "n": "Scottie Barnes", "t": "Raptors", "t2": 88, "t3": 80, "reb": 88, "blk": 78, "ast": 82, "stl": 82, "rat": 90 }
-           ],
-           "pf": [
-               { "id": 1495, "n": "Tim Duncan", "t": "Spurs", "t2": 97, "t3": 65, "reb": 99, "blk": 97, "ast": 75, "stl": 70, "rat": 98 },
-               { "id": 252, "n": "Karl Malone", "t": "Utah Jazz", "t2": 96, "t3": 65, "reb": 96, "blk": 72, "ast": 78, "stl": 82, "rat": 97 },
-               { "id": 708, "n": "Kevin Garnett", "t": "Wolves", "t2": 94, "t3": 78, "reb": 97, "blk": 94, "ast": 85, "stl": 85, "rat": 97 },
-               { "id": 787, "n": "Charles Barkley", "t": "Suns", "t2": 95, "t3": 80, "reb": 99, "blk": 75, "ast": 80, "stl": 85, "rat": 96 },
-               { "id": 1717, "n": "Dirk Nowitzki", "t": "Mavericks", "t2": 96, "t3": 96, "reb": 90, "blk": 75, "ast": 70, "stl": 65, "rat": 96 },
-               { "id": 203507, "n": "Giannis Anteto.", "t": "Bucks", "t2": 98, "t3": 72, "reb": 97, "blk": 90, "ast": 85, "stl": 80, "rat": 96 },
-               { "id": 203076, "n": "Anthony Davis", "t": "Pelicans", "t2": 94, "t3": 82, "reb": 95, "blk": 96, "ast": 65, "stl": 78, "rat": 94 },
-               { "id": 185, "n": "Chris Webber", "t": "Kings", "t2": 92, "t3": 78, "reb": 92, "blk": 82, "ast": 85, "stl": 80, "rat": 91 },
-               { "id": 422, "n": "Shawn Kemp", "t": "Sonics", "t2": 94, "t3": 70, "reb": 92, "blk": 85, "ast": 60, "stl": 75, "rat": 90 },
-               { "id": 23, "n": "Dennis Rodman", "t": "Pistons", "t2": 70, "t3": 60, "reb": 99, "blk": 75, "ast": 65, "stl": 80, "rat": 88 },
-               { "id": 201933, "n": "Blake Griffin", "t": "Clippers", "t2": 93, "t3": 82, "reb": 86, "blk": 65, "ast": 78, "stl": 70, "rat": 88 },
-               { "id": 1629027, "n": "Zion Williamson", "t": "Pelicans", "t2": 98, "t3": 70, "reb": 85, "blk": 65, "ast": 70, "stl": 68, "rat": 91 },
-               { "id": 1628368, "n": "De'Aaron Fox", "t": "Kings", "t2": 92, "t3": 85, "reb": 55, "blk": 45, "ast": 88, "stl": 88, "rat": 90 },
-               { "id": 1628391, "n": "Isaiah Hartenstein", "t": "Knicks", "t2": 82, "t3": 60, "reb": 90, "blk": 85, "ast": 65, "stl": 60, "rat": 84 },
-               { "id": 1629631, "n": "Zion Williamson", "t": "Pelicans", "t2": 98, "t3": 65, "reb": 88, "blk": 70, "ast": 65, "stl": 70, "rat": 91 },
-               { "id": 203920, "n": "Aaron Gordon", "t": "Nuggets", "t2": 88, "t3": 75, "reb": 85, "blk": 75, "ast": 65, "stl": 65, "rat": 87 },
-               { "id": 203944, "n": "Julius Randle", "t": "Knicks", "t2": 90, "t3": 82, "reb": 92, "blk": 50, "ast": 78, "stl": 65, "rat": 89 },
-               { "id": 1627742, "n": "Brandon Ingram", "t": "Pelicans", "t2": 90, "t3": 88, "reb": 70, "blk": 55, "ast": 75, "stl": 65, "rat": 88 },
-               { "id": 1630180, "n": "Evan Mobley", "t": "Cavs", "t2": 86, "t3": 65, "reb": 92, "blk": 94, "ast": 65, "stl": 65, "rat": 89 },
-               { "id": 203991, "n": "Clint Capela", "t": "Hawks", "t2": 82, "t3": 40, "reb": 96, "blk": 92, "ast": 45, "stl": 60, "rat": 86 }
-           ],
-           "c": [
-               { "id": 76003, "n": "K. Abdul-Jabbar", "t": "L.A. Lakers", "t2": 99, "t3": 60, "reb": 96, "blk": 98, "ast": 82, "stl": 70, "rat": 99 },
-               { "id": 76375, "n": "Wilt Chamberlain", "t": "76ers", "t2": 98, "t3": 55, "reb": 99, "blk": 98, "ast": 85, "stl": 75, "rat": 98 },
-               { "id": 78049, "n": "Bill Russell", "t": "Celtics", "t2": 85, "t3": 55, "reb": 99, "blk": 99, "ast": 82, "stl": 85, "rat": 98 },
-               { "id": 406, "n": "Shaquille O'Neal", "t": "L.A. Lakers", "t2": 99, "t3": 55, "reb": 99, "blk": 95, "ast": 70, "stl": 60, "rat": 98 },
-               { "id": 165, "n": "H. Olajuwon", "t": "Rockets", "t2": 97, "t3": 65, "reb": 97, "blk": 99, "ast": 75, "stl": 92, "rat": 98 },
-               { "id": 203999, "n": "Nikola Jokic", "t": "Nuggets", "t2": 96, "t3": 88, "reb": 95, "blk": 75, "ast": 99, "stl": 82, "rat": 98 },
-               { "id": 192, "n": "David Robinson", "t": "Spurs", "t2": 94, "t3": 68, "reb": 95, "blk": 97, "ast": 75, "stl": 82, "rat": 96 },
-               { "id": 203954, "n": "Joel Embiid", "t": "76ers", "t2": 95, "t3": 85, "reb": 95, "blk": 92, "ast": 72, "stl": 75, "rat": 96 },
-               { "id": 121, "n": "Patrick Ewing", "t": "Knicks", "t2": 92, "t3": 65, "reb": 93, "blk": 94, "ast": 65, "stl": 70, "rat": 94 },
-               { "id": 164, "n": "D. Mutombo", "t": "Hawks", "t2": 78, "t3": 50, "reb": 94, "blk": 98, "ast": 50, "stl": 65, "rat": 89 },
-               { "id": 162, "n": "Alonzo Mourning", "t": "Heat", "t2": 90, "t3": 55, "reb": 92, "blk": 95, "ast": 55, "stl": 65, "rat": 90 },
-               { "id": 2406, "n": "Yao Ming", "t": "Rockets", "t2": 94, "t3": 65, "reb": 92, "blk": 88, "ast": 65, "stl": 45, "rat": 91 },
-               { "id": 203497, "n": "Rudy Gobert", "t": "Wolves", "t2": 78, "t3": 50, "reb": 97, "blk": 98, "ast": 50, "stl": 65, "rat": 89 },
-               { "id": 1628389, "n": "Bam Adebayo", "t": "Heat", "t2": 88, "t3": 65, "reb": 92, "blk": 85, "ast": 80, "stl": 82, "rat": 90 },
-               { "id": 201599, "n": "DeAndre Jordan", "t": "Clippers", "t2": 80, "t3": 50, "reb": 96, "blk": 88, "ast": 55, "stl": 65, "rat": 87 },
-               { "id": 1630165, "n": "Alperen Sengun", "t": "Rockets", "t2": 90, "t3": 75, "reb": 94, "blk": 78, "ast": 88, "stl": 75, "rat": 91 },
-               { "id": 1629011, "n": "Mitchell Robinson", "t": "Knicks", "t2": 78, "t3": 40, "reb": 95, "blk": 96, "ast": 40, "stl": 70, "rat": 85 },
-               { "id": 1628991, "n": "Jaren Jackson Jr.", "t": "Grizzlies", "t2": 88, "t3": 85, "reb": 80, "blk": 98, "ast": 55, "stl": 75, "rat": 91 },
-               { "id": 1628976, "n": "Wendell Carter Jr.", "t": "Magic", "t2": 86, "t3": 82, "reb": 88, "blk": 75, "ast": 65, "stl": 60, "rat": 86 },
-               { "id": 1629675, "n": "Naz Reid", "t": "Wolves", "t2": 88, "t3": 92, "reb": 78, "blk": 75, "ast": 60, "stl": 65, "rat": 87 }
-           ]
-       };
-
-       // --- ESTADO GLOBAL ---
-       let gameState = {
-           screen: 'menu',
-           mode: 'normal',
-           teams: {
-               p1: { name: 'Equipo 1', roster: [], scout: false, seriesWins: 0, currentScore: 0, stats: {} },
-               p2: { name: 'Equipo 2', roster: [], scout: false, seriesWins: 0, currentScore: 0, stats: {} }
-           },
-           draft: {
-               currentPlayer: 1, // 1 o 2
-               currentPosIndex: 0,
-               positions: ['c', 'pf', 'sf', 'sg', 'pg'],
-               pool: [],
-               scoutPenaltyActive: { 1: false, 2: false }
-           },
-           sim: {
-               quarter: 1,
-               time: 720, // 12:00 en segundos NBA
-               realTimeTotal: 30, // Segundos reales por cuarto
-               isRunning: false,
-               logs: [],
-               interval: null,
-               isOT: false,
-               mvp: null
-           }
-       };
-
-       const IMG_URL = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/";
-
-       // --- SISTEMA MULTI-DISPOSITIVO Y SPATIAL NAV ---
-       function initDeviceDetection() {
-           const urlParams = new URLSearchParams(window.location.search);
-           const forceTV = urlParams.get('forceTV') === 'true';
-           const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-           const isTV = forceTV || navigator.userAgent.toLowerCase().includes('tv') || navigator.userAgent.toLowerCase().includes('smart-tv') || window.innerWidth > 1920;
-           if (isTV) document.body.classList.add('is-tv');
-           if (isTouch) document.body.classList.add('is-touch');
-           else document.body.classList.add('is-desktop');
-       }
-       
-       class SpatialNav {
-           constructor() {
-               this.focusableElements = [];
-               this.currentIndex = -1;
-               this.init();
-           }
-
-           init() {
-               document.addEventListener('keydown', (e) => this.handleKeyDown(e));
-               this.updateElements();
-           }
-
-           updateElements() {
-               this.focusableElements = Array.from(document.querySelectorAll('button:not(.hidden):not(:disabled), [tabindex="0"]:not(.hidden)'))
-                   .filter(el => {
-                       const style = window.getComputedStyle(el);
-                       return style.display !== 'none' && style.visibility !== 'hidden' && el.offsetWidth > 0;
-                   });
-               if (this.currentIndex >= this.focusableElements.length) {
-                   this.currentIndex = 0;
-               }
-           }
-
-           focusCurrent() {
-               if (this.focusableElements[this.currentIndex]) {
-                   this.focusableElements[this.currentIndex].focus();
-               }
-           }
-
-           handleKeyDown(e) {
-               if (!document.body.classList.contains('is-tv')) return;
-               this.updateElements();
-               if (this.focusableElements.length === 0) return;
-
-               const { key } = e;
-               if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
-                   e.preventDefault();
-                   if (this.currentIndex === -1 || !this.focusableElements[this.currentIndex]) {
-                       this.currentIndex = 0;
-                       this.focusCurrent();
-                       return;
-                   }
-
-                   const currentRect = this.focusableElements[this.currentIndex].getBoundingClientRect();
-                   let bestIndex = -1;
-                   let minDistance = Infinity;
-
-                   this.focusableElements.forEach((el, index) => {
-                       if (index === this.currentIndex) return;
-                       const rect = el.getBoundingClientRect();
-                       let dx = 0; let dy = 0;
-
-                       if (key === 'ArrowLeft' && rect.right <= currentRect.left + 5) {
-                           dx = currentRect.left - rect.right;
-                           dy = Math.abs(currentRect.top - rect.top);
-                       } else if (key === 'ArrowRight' && rect.left >= currentRect.right - 5) {
-                           dx = rect.left - currentRect.right;
-                           dy = Math.abs(currentRect.top - rect.top);
-                       } else if (key === 'ArrowUp' && rect.bottom <= currentRect.top + 5) {
-                           dy = currentRect.top - rect.bottom;
-                           dx = Math.abs(currentRect.left - rect.left);
-                       } else if (key === 'ArrowDown' && rect.top >= currentRect.bottom - 5) {
-                           dy = rect.top - currentRect.bottom;
-                           dx = Math.abs(currentRect.left - rect.left);
-                       }
-
-                       if (dx > 0 || dy > 0) {
-                           const distance = Math.sqrt((dx * dx * 2) + (dy * dy));
-                           if (distance < minDistance) {
-                               minDistance = distance;
-                               bestIndex = index;
-                           }
-                       }
-                   });
-
-                   if (bestIndex !== -1) {
-                       this.currentIndex = bestIndex;
-                       this.focusCurrent();
-                   }
-               } else if (key === 'Enter') {
-                   if (this.currentIndex !== -1 && document.activeElement !== this.focusableElements[this.currentIndex]) {
-                       this.focusableElements[this.currentIndex].click();
-                       e.preventDefault();
-                   }
-               } else if (key === 'Escape' || key === 'Backspace') {
-                   if (!document.getElementById('player-modal').classList.contains('hidden')) {
-                       closePlayerModal();
-                   }
-               }
-           }
-       }
-       
-       let spatialNav;
-       window.addEventListener('DOMContentLoaded', () => {
-           initDeviceDetection();
-           spatialNav = new SpatialNav();
-           
-           const observer = new MutationObserver(() => setTimeout(() => spatialNav.updateElements(), 100));
-           observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
-       });
-
-       // --- NAVEGACIÓN ---
-       function changeScreen(screenId) {
-           document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-           document.getElementById(`screen-${screenId}`).classList.remove('hidden');
-           gameState.screen = screenId;
-           window.scrollTo(0,0);
-       }
-
-       function setMode(mode) {
-           gameState.mode = mode;
-           if (mode === '3x3') {
-               gameState.draft.positions = ['pg', 'sf', 'c']; // Simplificado para 3x3
-           } else {
-               gameState.draft.positions = ['c', 'pf', 'sf', 'sg', 'pg'];
-           }
-           changeScreen('config');
-       }
-
-       // --- LÓGICA DE DRAFT ---
-       function startDraft() {
-           gameState.teams.p1.name = document.getElementById('p1-name').value || 'Equipo 1';
-           gameState.teams.p2.name = document.getElementById('p2-name').value || 'Equipo 2';
-           gameState.draft.currentPlayer = 1;
-           gameState.draft.currentPosIndex = 0;
-           renderDraftTurn();
-           changeScreen('draft');
-       }
-
-       function renderDraftTurn() {
-           const posKey = gameState.draft.positions[gameState.draft.currentPosIndex];
-           const pName = gameState.draft.currentPlayer === 1 ? gameState.teams.p1.name : gameState.teams.p2.name;
-           
-           document.getElementById('draft-turn-title').innerText = `Turno: ${pName}`;
-           document.getElementById('draft-pos-subtitle').innerText = `Selecciona tu ${posKey.toUpperCase()}`;
-
-           // Botón Scout
-           const scoutBtn = document.getElementById('scout-btn');
-           if (gameState.mode === 'normal') {
-               scoutBtn.classList.remove('hidden');
-               scoutBtn.innerText = gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer] ? "Scout Activado" : "Scout (-5% Stats)";
-               scoutBtn.disabled = gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer];
-           } else {
-               scoutBtn.classList.add('hidden');
-           }
-
-           // Generar pool de 20
-           let allPosPlayers = [...RAW_DATABASE[posKey]];
-           // Mezclar y tomar 20
-           gameState.draft.pool = allPosPlayers.sort(() => 0.5 - Math.random()).slice(0, 20);
-
-           const grid = document.getElementById('draft-cards-grid');
-           grid.innerHTML = '';
-
-           gameState.draft.pool.forEach((player, index) => {
-               const card = document.createElement('div');
-               card.setAttribute('tabindex', '0');
-               card.className = `card-draft rounded-lg ${gameState.mode === 'normal' && !gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer] ? 'card-hidden' : ''}`;
-               
-               if (gameState.mode !== 'normal' || gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer]) {
-                   card.innerHTML = `
-                       <div class="absolute top-1 left-2 text-white/80 font-bebas text-lg z-10 drop-shadow-md">${index + 1}</div>
-                       <img src="${IMG_URL}${player.id}.png" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTkwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjE5MCI+PHJlY3Qgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxOTAiIGZpbGw9IiMyYTJhMmEiLz48dGV4dCB4PSIxMzAiIHk9IjEwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM0YTRhNGEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNpbiBGb3RvPC90ZXh0Pjwvc3ZnPg=='">
-                       <div class="absolute bottom-0 left-0 right-0 bg-black/80 p-1 text-[10px] text-center font-bold truncate">${player.n}</div>
-                   `;
-               } else {
-                   card.innerHTML = `<div class="absolute top-1 left-2 text-white/50 font-bebas text-xl z-10">${index + 1}</div>`;
-               }
-               
-               card.onclick = () => openPlayerModal(player);
-               grid.appendChild(card);
-           });
-       }
-
-       function applyScout() {
-           gameState.draft.scoutPenaltyActive[gameState.draft.currentPlayer] = true;
-           renderDraftTurn();
-       }
-
-       let selectedPlayerRef = null;
-       function openPlayerModal(player) {
-           selectedPlayerRef = player;
-           document.getElementById('modal-name').innerText = player.n;
-           document.getElementById('modal-team').innerText = player.t;
-           document.getElementById('modal-img').innerHTML = `<img src="${IMG_URL}${player.id}.png" class="w-full h-full object-contain">`;
-           document.getElementById('m-t2').innerText = player.t2;
-           document.getElementById('m-t3').innerText = player.t3;
-           document.getElementById('m-reb').innerText = player.reb;
-           document.getElementById('m-blk').innerText = player.blk;
-           document.getElementById('m-ast').innerText = player.ast;
-           document.getElementById('m-stl').innerText = player.stl;
-           document.getElementById('m-rat').innerText = `${player.rat} OVR`;
-           
-           document.getElementById('player-modal').classList.remove('hidden');
-       }
-
-       function closePlayerModal() {
-           const pKey = gameState.draft.currentPlayer === 1 ? 'p1' : 'p2';
-           gameState.teams[pKey].roster.push({...selectedPlayerRef, stats: { pts:0, reb:0, ast:0, stl:0, blk:0, fga:0, fgm:0 }});
-           
-           document.getElementById('player-modal').classList.add('hidden');
-           
-           // Avanzar draft
-           gameState.draft.currentPosIndex++;
-           if (gameState.draft.currentPosIndex >= gameState.draft.positions.length) {
-               if (gameState.draft.currentPlayer === 1) {
-                   gameState.draft.currentPlayer = 2;
-                   gameState.draft.currentPosIndex = 0;
-                   renderDraftTurn();
-               } else {
-                   prepareMatchup();
-               }
-           } else {
-               renderDraftTurn();
-           }
-       }
-
-       // --- MATCHUP ---
-       function prepareMatchup() {
-           changeScreen('matchup');
-           
-           const calcTeamRating = (roster) => Math.round(roster.reduce((a, b) => a + b.rat, 0) / roster.length);
-           
-           const r1 = calcTeamRating(gameState.teams.p1.roster);
-           const r2 = calcTeamRating(gameState.teams.p2.roster);
-
-           document.getElementById('m-team1-name').innerText = gameState.teams.p1.name;
-           document.getElementById('m-team1-rating').innerText = r1;
-           document.getElementById('m-team2-name').innerText = gameState.teams.p2.name;
-           document.getElementById('m-team2-rating').innerText = r2;
-
-           const renderSmallRoster = (teamKey, targetId) => {
-               const target = document.getElementById(targetId);
-               target.innerHTML = '';
-               gameState.teams[teamKey].roster.forEach(p => {
-                   const img = document.createElement('img');
-                   img.src = `${IMG_URL}${p.id}.png`;
-                   img.className = "w-10 h-10 rounded-full border border-white bg-gray-800";
-                   target.appendChild(img);
-               });
-           };
-
-           renderSmallRoster('p1', 'm-team1-roster');
-           renderSmallRoster('p2', 'm-team2-roster');
-       }
-
-       // --- SIMULACIÓN MOTOR ---
-       function startSimulation() {
-           changeScreen('sim');
-           gameState.sim.quarter = 1;
-           gameState.sim.time = 720;
-           gameState.sim.isRunning = true;
-           gameState.teams.p1.currentScore = 0;
-           gameState.teams.p2.currentScore = 0;
-           gameState.sim.logs = [];
-           
-           // Reset player stats
-           [gameState.teams.p1, gameState.teams.p2].forEach(team => {
-               team.roster.forEach(p => {
-                   p.stats = { pts:0, reb:0, ast:0, stl:0, blk:0, fga:0, fgm:0 };
-               });
-           });
-
-           document.getElementById('s-t1-name').innerText = gameState.teams.p1.name;
-           document.getElementById('s-t2-name').innerText = gameState.teams.p2.name;
-           document.getElementById('sim-log').innerHTML = '';
-           
-           runSimLoop();
-       }
-
-       function runSimLoop() {
-           const ticksPerSecond = 10;
-           const totalTicks = gameState.sim.realTimeTotal * ticksPerSecond; // 300 ticks en 30s
-           const nbaSecondsPerTick = 720 / totalTicks; // 2.4s por tick
-
-           gameState.sim.interval = setInterval(() => {
-               if (!gameState.sim.isRunning) return;
-
-               gameState.sim.time -= nbaSecondsPerTick;
-               if (gameState.sim.time <= 0) {
-                   gameState.sim.time = 0;
-                   pauseForQuarter();
-               }
-
-               updateSimUI();
-               processGameTick();
-
-           }, 1000 / ticksPerSecond);
-       }
-
-       function updateSimUI() {
-           const minutes = Math.floor(gameState.sim.time / 60);
-           const seconds = Math.floor(gameState.sim.time % 60);
-           document.getElementById('s-clock').innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-           document.getElementById('s-t1-score').innerText = gameState.teams.p1.currentScore;
-           document.getElementById('s-t2-score').innerText = gameState.teams.p2.currentScore;
-           
-           const qNames = ["1ER CUARTO", "2DO CUARTO", "3ER CUARTO", "4TO CUARTO", "OVERTIME"];
-           document.getElementById('s-quarter').innerText = gameState.sim.isOT ? "OVERTIME" : qNames[gameState.sim.quarter - 1];
-
-           renderStatsTable();
-       }
-
-       function processGameTick() {
-           // Probabilidad de acción en este tick (aprox 15% de los ticks generan acción)
-           if (Math.random() > 0.18) return;
-
-           const attackingTeam = Math.random() > 0.5 ? 'p1' : 'p2';
-           const defendingTeam = attackingTeam === 'p1' ? 'p2' : 'p1';
-           
-           const shooter = gameState.teams[attackingTeam].roster[Math.floor(Math.random() * gameState.teams[attackingTeam].roster.length)];
-           const defender = gameState.teams[defendingTeam].roster[Math.floor(Math.random() * gameState.teams[defendingTeam].roster.length)];
-
-           // Aplicar penalización Scout si existe
-           const scoutPenalty = gameState.draft.scoutPenaltyActive[attackingTeam === 'p1' ? 1 : 2] ? 0.95 : 1.0;
-           
-           // Lógica de Robo/Bloqueo
-           if (Math.random() * 100 < (defender.stl * 0.1)) {
-               logPlay(`🥷 Robo de ${defender.n} (${gameState.teams[defendingTeam].name})`, defendingTeam);
-               defender.stats.stl++;
-               return;
-           }
-
-           if (Math.random() * 100 < (defender.blk * 0.1)) {
-               logPlay(`🚫 Bloqueo de ${defender.n} (${gameState.teams[defendingTeam].name})`, defendingTeam);
-               defender.stats.blk++;
-               return;
-           }
-
-           // Tiro
-           const isThree = Math.random() < 0.35;
-           const rating = (isThree ? shooter.t3 : shooter.t2) * scoutPenalty;
-           const successProb = rating * 0.5; // Factor base
-
-           shooter.stats.fga++;
-           if (Math.random() * 100 < successProb) {
-               const pts = isThree ? 3 : 2;
-               shooter.stats.pts += pts;
-               shooter.stats.fgm++;
-               gameState.teams[attackingTeam].currentScore += pts;
-               
-               // Asistencia?
-               if (Math.random() < 0.6) {
-                   const passer = gameState.teams[attackingTeam].roster.filter(p => p.id !== shooter.id)[Math.floor(Math.random() * (gameState.teams[attackingTeam].roster.length - 1))];
-                   passer.stats.ast++;
-                   logPlay(`🏀 ${shooter.n} anota ${pts}pt (Asist: ${passer.n})`, attackingTeam);
-               } else {
-                   logPlay(`🏀 ${shooter.n} anota ${pts}pt solo`, attackingTeam);
-               }
-               
-               // Blink score
-               const scoreId = attackingTeam === 'p1' ? 's-t1-score' : 's-t2-score';
-               document.getElementById(scoreId).classList.add('score-blink');
-               setTimeout(() => document.getElementById(scoreId).classList.remove('score-blink'), 500);
-
-           } else {
-               // Rebote
-               const reboteador = [...gameState.teams.p1.roster, ...gameState.teams.p2.roster]
-                   .sort((a, b) => (b.reb * Math.random()) - (a.reb * Math.random()))[0];
-               
-               const rebTeam = gameState.teams.p1.roster.find(p => p.id === reboteador.id) ? 'p1' : 'p2';
-               reboteador.stats.reb++;
-               logPlay(`👐 Rebote de ${reboteador.n} (${gameState.teams[rebTeam].name})`, rebTeam);
-           }
-       }
-
-       function logPlay(msg, teamKey) {
-           const logDiv = document.getElementById('sim-log');
-           const entry = document.createElement('div');
-           entry.className = `p-1 border-l-4 ${teamKey === 'p1' ? 'border-[var(--nba-red)]' : 'border-[var(--nba-blue)]'} bg-white/5`;
-           entry.innerText = msg;
-           logDiv.prepend(entry);
-           if (logDiv.childNodes.length > 10) logDiv.removeChild(logDiv.lastChild);
-       }
-
-       function renderStatsTable() {
-           const body = document.getElementById('stats-table-body');
-           body.innerHTML = '';
-           [gameState.teams.p1, gameState.teams.p2].forEach((team, tIdx) => {
-               team.roster.forEach(p => {
-                   const tr = document.createElement('tr');
-                   tr.className = "border-b border-gray-800 hover:bg-white/5 transition";
-                   tr.innerHTML = `
-                       <td class="p-2 truncate max-w-[100px] font-bold ${tIdx === 0 ? 'text-red-400' : 'text-blue-400'}">${p.n}</td>
-                       <td class="p-2">${p.stats.pts}</td>
-                       <td class="p-2">${p.stats.reb}</td>
-                       <td class="p-2">${p.stats.ast}</td>
-                       <td class="p-2">${p.stats.stl}</td>
-                       <td class="p-2">${p.stats.blk}</td>
-                   `;
-                   body.appendChild(tr);
-               });
-           });
-       }
-
-       function pauseForQuarter() {
-           clearInterval(gameState.sim.interval);
-           gameState.sim.isRunning = false;
-
-           if (gameState.sim.quarter < 4) {
-               showPeriodModal(`FIN DEL CUARTO ${gameState.sim.quarter}`, `Siguiente: Cuarto ${gameState.sim.quarter + 1}`);
-               setTimeout(() => {
-                   hidePeriodModal();
-                   gameState.sim.quarter++;
-                   gameState.sim.time = 720;
-                   gameState.sim.isRunning = true;
-                   runSimLoop();
-               }, 3000);
-           } else {
-               // Final o OT?
-               if (gameState.teams.p1.currentScore === gameState.teams.p2.currentScore) {
-                   gameState.sim.isOT = true;
-                   showPeriodModal(`¡EMPATE!`, `Iniciando Tiempo Extra (5 min NBA)`);
-                   setTimeout(() => {
-                       hidePeriodModal();
-                       gameState.sim.time = 300; // 5 mins
-                       gameState.sim.isRunning = true;
-                       runSimLoop();
-                   }, 3000);
-               } else {
-                   finishGame();
-               }
-           }
-       }
-
-       function showPeriodModal(title, msg) {
-           document.getElementById('period-title').innerText = title;
-           document.getElementById('next-period-msg').innerText = msg;
-           document.getElementById('p-m-s1').innerText = gameState.teams.p1.currentScore;
-           document.getElementById('p-m-s2').innerText = gameState.teams.p2.currentScore;
-           document.getElementById('period-modal').classList.remove('hidden');
-       }
-
-       function hidePeriodModal() {
-           document.getElementById('period-modal').classList.add('hidden');
-       }
-
-       function finishGame() {
-           changeScreen('results');
-           const winner = gameState.teams.p1.currentScore > gameState.teams.p2.currentScore ? 'p1' : 'p2';
-           gameState.teams[winner].seriesWins++;
-
-           // Calcular MVP
-           let allPlayers = [...gameState.teams.p1.roster, ...gameState.teams.p2.roster];
-           const mvp = allPlayers.sort((a, b) => {
-               const scoreA = a.stats.pts + a.stats.reb + a.stats.ast + a.stats.stl + a.stats.blk;
-               const scoreB = b.stats.pts + b.stats.reb + b.stats.ast + b.stats.stl + b.stats.blk;
-               return scoreB - scoreA;
-           })[0];
-           gameState.sim.mvp = mvp;
-
-           renderFinalResults(winner, mvp);
-       }
-
-       function renderFinalResults(winnerKey, mvp) {
-           const scoreBox = document.getElementById('final-score-box');
-           scoreBox.innerHTML = `
-               <div class="text-center">
-                   <p class="font-bebas text-2xl">${gameState.teams.p1.name}</p>
-                   <p class="text-7xl font-black ${winnerKey==='p1'?'text-[var(--nba-red)]':''}">${gameState.teams.p1.currentScore}</p>
-               </div>
-               <div class="text-4xl font-bebas text-gray-600">vs</div>
-               <div class="text-center">
-                   <p class="font-bebas text-2xl">${gameState.teams.p2.name}</p>
-                   <p class="text-7xl font-black ${winnerKey==='p2'?'text-[var(--nba-blue)]':''}">${gameState.teams.p2.currentScore}</p>
-               </div>
-           `;
-
-           document.getElementById('mvp-name').innerText = mvp.n;
-           document.getElementById('mvp-team').innerText = mvp.t;
-           document.getElementById('mvp-stats-line').innerText = `${mvp.stats.pts} PTS | ${mvp.stats.reb} REB | ${mvp.stats.ast} AST | ${mvp.stats.blk} BLK`;
-           document.getElementById('mvp-img-box').innerHTML = `<img src="${IMG_URL}${mvp.id}.png" class="w-full h-full object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTkwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjE5MCI+PHJlY3Qgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxOTAiIGZpbGw9IiMyYTJhMmEiLz48dGV4dCB4PSIxMzAiIHk9IjEwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM0YTRhNGEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNpbiBGb3RvPC90ZXh0Pjwvc3ZnPg=='">`;
-           
-           const mvpCard = document.getElementById('mvp-card');
-           const isMvpP1 = gameState.teams.p1.roster.some(p => p.id === mvp.id);
-           mvpCard.style.borderColor = isMvpP1 ? 'var(--nba-red)' : 'var(--nba-blue)';
-
-           // Box Scores
-           renderBoxTable('res-table-t1', gameState.teams.p1.roster, mvp.id);
-           renderBoxTable('res-table-t2', gameState.teams.p2.roster, mvp.id);
-           document.getElementById('res-t1-name').innerText = gameState.teams.p1.name;
-           document.getElementById('res-t2-name').innerText = gameState.teams.p2.name;
-
-           const controls = document.getElementById('finales-controls');
-           controls.innerHTML = '';
-
-           if (gameState.mode === 'finales') {
-               const limit = 4;
-               if (gameState.teams.p1.seriesWins >= limit || gameState.teams.p2.seriesWins >= limit) {
-                   const champ = gameState.teams.p1.seriesWins >= limit ? gameState.teams.p1.name : gameState.teams.p2.name;
-                   controls.innerHTML = `<div class="text-center">
-                       <h2 class="text-5xl font-bebas text-[var(--nba-gold)]">🏆 ${champ} CAMPEÓN 🏆</h2>
-                       <button onclick="location.reload()" class="btn-nba px-8 py-3 mt-4 rounded-xl">Menú Principal</button>
-                   </div>`;
-               } else {
-                   controls.innerHTML = `
-                       <div class="text-center">
-                           <p class="font-bebas text-xl mb-2">Serie:<br> <span class=" text-[var(--nba-red)]">${gameState.teams.p1.name}</span> ( ${gameState.teams.p1.seriesWins} - ${gameState.teams.p2.seriesWins} ) <span class=" text-[var(--nba-blue)]">${gameState.teams.p2.name}</span></p>
-                           <button onclick="startSimulation()" class="btn-nba px-12 py-4 text-3xl rounded-xl">Siguiente Partido</button>
-                       </div>
-                   `;
-               }
-           } else {
-               controls.innerHTML = `<button onclick="location.reload()" class="btn-nba px-12 py-4 text-3xl rounded-xl">Menú Principal</button>`;
-           }
-       }
-
-       function renderBoxTable(tableId, roster, mvpId) {
-           const table = document.getElementById(tableId);
-           table.innerHTML = `
-               <thead>
-                   <tr class="text-gray-500 text-xs font-bebas">
-                       <th class="p-1">JUGADOR</th><th class="p-1">PTS</th><th class="p-1">REB</th><th class="p-1">AST</th><th class="p-1">FG%</th>
-                   </tr>
-               </thead>
-               <tbody></tbody>
-           `;
-           const tbody = table.querySelector('tbody');
-           roster.forEach(p => {
-               const fgPercent = p.stats.fga > 0 ? Math.round((p.stats.fgm / p.stats.fga) * 100) : 0;
-               const tr = document.createElement('tr');
-               tr.className = p.id === mvpId ? 'bg-yellow-500/20 font-bold' : 'border-b border-gray-800';
-               tr.innerHTML = `
-                   <td class="p-1">${p.n} ${p.id === mvpId ? '⭐' : ''}</td>
-                   <td class="p-1">${p.stats.pts}</td>
-                   <td class="p-1">${p.stats.reb}</td>
-                   <td class="p-1">${p.stats.ast}</td>
-                   <td class="p-1">${fgPercent}%</td>
-               `;
-               tbody.appendChild(tr);
-           });
-       }
-
-       // --- SETTINGS / DB ---
-       function showSettings() {
-           changeScreen('settings');
-           const body = document.getElementById('db-table-body');
-           body.innerHTML = '';
-           
-           const all = [];
-           Object.keys(RAW_DATABASE).forEach(pos => {
-               RAW_DATABASE[pos].forEach(p => all.push({...p, pos: pos.toUpperCase()}));
-           });
-
-           all.sort((a,b) => b.rat - a.rat).forEach(p => {
-               const tr = document.createElement('tr');
-               tr.className = "border-b border-gray-800 text-sm";
-               tr.innerHTML = `
-                   <td class="p-2 font-bebas">${p.pos}</td>
-                   <td class="p-2">${p.n}</td>
-                   <td class="p-2 text-gray-400">${p.t}</td>
-                   <td class="p-2 font-bold text-[var(--nba-gold)]">${p.rat}</td>
-                   <td class="p-2">${p.t2}</td>
-                   <td class="p-2">${p.t3}</td>
-                   <td class="p-2">${p.reb}</td>
-               `;
-               body.appendChild(tr);
-           });
-       }
-
-       // Inicialización
-       window.onload = () => {
-           console.log("NBA Ultimate Draft Cargado");
-       };
-
-   </script>
 </body>
 </html>
