@@ -45,6 +45,37 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Global Stylized Scrollbars across all elements & browsers */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--nba-gold) rgba(7, 21, 36, 0.8);
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(2, 11, 19, 0.75);
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--nba-gold) 0%, #b78900 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--nba-gold-light);
+    box-shadow: 0 0 8px var(--nba-gold-glow);
+}
+
+*::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
 html, body {
     height: 100%;
     height: 100dvh;
@@ -404,14 +435,14 @@ header.app-header {
 
 .score-num {
     font-family: var(--font-heading);
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     line-height: 1;
     font-variant-numeric: tabular-nums;
     text-shadow: 0 0 16px currentColor;
 }
 
 @media (min-width: 768px) {
-    .score-num { font-size: 4.8rem; }
+    .score-num { font-size: 3.5rem; }
 }
 
 .score-flash-red {
@@ -452,11 +483,12 @@ header.app-header {
 
 .log-entry {
     animation: logSlideIn 0.25s ease-out;
-    padding: 0.4rem 0.65rem;
+    padding: 0.25rem 0.5rem;
     border-radius: var(--radius-sm);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.25;
     font-weight: 500;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.25rem;
     text-align: left;
     background: rgba(255, 255, 255, 0.04);
 }
@@ -496,16 +528,16 @@ header.app-header {
 }
 
 .stat-table th {
-    padding: 0.45rem 0.65rem;
+    padding: 0.25rem 0.45rem;
     color: var(--text-secondary);
     font-family: var(--font-heading);
-    font-size: 1.05rem;
+    font-size: 0.9rem;
     letter-spacing: 0.5px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat-table td {
-    padding: 0.4rem 0.65rem;
+    padding: 0.2rem 0.45rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-variant-numeric: tabular-nums;
 }

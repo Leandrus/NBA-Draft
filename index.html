@@ -275,32 +275,62 @@
             <!-- Contenido Simulación: Estadísticas en vivo e Historial de Jugadas -->
             <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3 min-h-0 overflow-hidden">
                 <!-- Tabla Estadísticas en Vivo (2 cols) -->
-                <div class="lg:col-span-2 glass-panel p-3 flex flex-col min-h-0 overflow-hidden">
-                    <h6 class="font-bebas text-lg text-gray-400 mb-1 border-b border-gray-700 pb-1 flex-shrink-0">
+                <div class="lg:col-span-2 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
+                    <h6 class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
                         ESTADÍSTICAS DEL PARTIDO EN VIVO
                     </h6>
-                    <div class="table-responsive flex-1 min-h-0">
-                        <table class="stat-table">
-                            <thead>
-                                <tr>
-                                    <th>JUGADOR</th>
-                                    <th>PTS</th>
-                                    <th>REB</th>
-                                    <th>AST</th>
-                                    <th>ROB</th>
-                                    <th>TAP</th>
-                                </tr>
-                            </thead>
-                            <tbody id="stats-table-body">
-                                <!-- Filas de estadísticas generadas en tiempo real -->
-                            </tbody>
-                        </table>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1 min-h-0 overflow-hidden">
+                        <!-- Subtabla Equipo 1 -->
+                        <div class="flex flex-col min-h-0 overflow-hidden">
+                            <div class="flex justify-between items-center px-1 mb-0.5 border-b border-red-900/60 pb-0.5 flex-shrink-0">
+                                <span id="sim-t1-stat-title" class="font-bebas text-xs sm:text-sm text-[var(--nba-red)] truncate">Equipo 1</span>
+                                <span class="text-[9px] bg-red-950/70 text-red-300 font-bold px-1.5 py-0.2 rounded">P1</span>
+                            </div>
+                            <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
+                                <table class="stat-table text-[11px] sm:text-xs">
+                                    <thead>
+                                        <tr>
+                                            <th>JUGADOR</th>
+                                            <th>PTS</th>
+                                            <th>REB</th>
+                                            <th>AST</th>
+                                            <th>ROB</th>
+                                            <th>TAP</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stats-table-body-t1"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Subtabla Equipo 2 -->
+                        <div class="flex flex-col min-h-0 overflow-hidden">
+                            <div class="flex justify-between items-center px-1 mb-0.5 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
+                                <span id="sim-t2-stat-title" class="font-bebas text-xs sm:text-sm text-[var(--nba-blue)] truncate">Equipo 2</span>
+                                <span class="text-[9px] bg-blue-950/70 text-blue-300 font-bold px-1.5 py-0.2 rounded">P2</span>
+                            </div>
+                            <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
+                                <table class="stat-table text-[11px] sm:text-xs">
+                                    <thead>
+                                        <tr>
+                                            <th>JUGADOR</th>
+                                            <th>PTS</th>
+                                            <th>REB</th>
+                                            <th>AST</th>
+                                            <th>ROB</th>
+                                            <th>TAP</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stats-table-body-t2"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Historial de Jugadas (Play by Play - 1 col) -->
-                <div class="lg:col-span-1 glass-panel p-3 flex flex-col min-h-0 overflow-hidden">
-                    <h6 class="font-bebas text-lg text-gray-400 mb-1 border-b border-gray-700 pb-1 flex-shrink-0">
+                <div class="lg:col-span-1 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
+                    <h6 class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
                         HISTORIAL DE JUEGO (PLAY BY PLAY)
                     </h6>
                     <div id="sim-log" class="sim-log-container flex-1 overflow-y-auto pr-1 min-h-0">
@@ -313,52 +343,57 @@
         <!-- ========================================== -->
         <!-- PANTALLA 7: RESULTADOS FINALES Y BOX SCORE -->
         <!-- ========================================== -->
-        <section id="screen-results" class="hidden flex-1 flex flex-col space-y-4 my-auto py-2 min-h-0 overflow-y-auto">
-            <h2 class="text-3xl sm:text-5xl font-bebas text-center tracking-wide flex-shrink-0">
-                FINAL DEL PARTIDO
-            </h2>
+        <section id="screen-results" class="hidden flex-1 flex flex-col justify-between py-1 min-h-0 overflow-hidden space-y-2">
+            <!-- Header + Scoreboard + MVP Row (Grid 2 cols) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 w-full max-w-5xl mx-auto flex-shrink-0">
+                <!-- Marcador Final Centrado -->
+                <div id="final-score-box" class="glass-panel p-2.5 sm:p-3 flex items-center justify-around rounded-xl border border-white/10">
+                    <!-- Contenido dinámico -->
+                </div>
 
-            <!-- Marcador Final Centrado -->
-            <div id="final-score-box" class="flex items-center justify-center gap-6 glass-panel px-6 py-3 rounded-2xl w-full max-w-xl mx-auto flex-shrink-0">
-                <!-- Contenido dinámico -->
-            </div>
-
-            <!-- MVP Card -->
-            <div id="mvp-card" class="mvp-banner w-full max-w-md mx-auto p-4 rounded-2xl flex items-center gap-4 flex-shrink-0">
-                <div id="mvp-img-box" class="w-24 h-28 sm:w-28 sm:h-32 rounded-xl bg-gray-900 flex-shrink-0 overflow-hidden border border-white/10 shadow-lg"></div>
-                <div class="flex-1 min-w-0">
-                    <span class="text-xs font-bold tracking-widest uppercase bg-[var(--nba-gold)] text-black px-2 py-0.5 rounded font-bebas">
-                        MVP DEL PARTIDO
-                    </span>
-                    <h3 id="mvp-name" class="text-2xl sm:text-3xl font-bebas leading-tight mt-1 text-white truncate"></h3>
-                    <p id="mvp-team" class="text-xs sm:text-sm text-gray-400 font-medium truncate"></p>
-                    <div id="mvp-stats-line" class="font-bold text-xs sm:text-sm mt-1 text-[var(--nba-gold)] font-mono"></div>
+                <!-- MVP Card Compact -->
+                <div id="mvp-card" class="mvp-banner p-2.5 sm:p-3 rounded-xl flex items-center gap-3">
+                    <div id="mvp-img-box" class="w-16 h-20 sm:w-20 sm:h-24 rounded-lg bg-gray-900 flex-shrink-0 overflow-hidden border border-white/10 shadow-lg"></div>
+                    <div class="flex-1 min-w-0">
+                        <span class="text-[10px] sm:text-xs font-bold tracking-widest uppercase bg-[var(--nba-gold)] text-black px-1.5 py-0.5 rounded font-bebas">
+                            MVP DEL PARTIDO
+                        </span>
+                        <h3 id="mvp-name" class="text-xl sm:text-2xl font-bebas leading-tight mt-0.5 text-white truncate"></h3>
+                        <p id="mvp-team" class="text-[11px] sm:text-xs text-gray-400 font-medium truncate"></p>
+                        <div id="mvp-stats-line" class="font-bold text-[11px] sm:text-xs mt-0.5 text-[var(--nba-gold)] font-mono"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Box Scores de Ambos Equipos -->
-            <div class="w-full max-w-4xl mx-auto space-y-3">
-                <div class="glass-panel p-3">
-                    <h4 class="font-bebas text-lg text-[var(--nba-red)] mb-1 border-b border-red-900 pb-1">
-                        BOX SCORE - <span id="res-t1-name"></span>
-                    </h4>
-                    <div class="table-responsive">
-                        <table class="stat-table text-xs sm:text-sm" id="res-table-t1"></table>
+            <!-- Box Scores de Ambos Equipos Lado a Lado (Grid 2 cols) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 w-full max-w-5xl mx-auto flex-1 min-h-0 overflow-hidden">
+                <div class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-red)]">
+                    <div class="flex justify-between items-center mb-1 border-b border-red-900/60 pb-0.5 flex-shrink-0">
+                        <h4 class="font-bebas text-base sm:text-lg text-[var(--nba-red)]">
+                            BOX SCORE - <span id="res-t1-name"></span>
+                        </h4>
+                        <span class="text-[10px] uppercase font-bold text-red-400">P1</span>
+                    </div>
+                    <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
+                        <table class="stat-table text-[11px] sm:text-xs" id="res-table-t1"></table>
                     </div>
                 </div>
 
-                <div class="glass-panel p-3">
-                    <h4 class="font-bebas text-lg text-[var(--nba-blue)] mb-1 border-b border-blue-900 pb-1">
-                        BOX SCORE - <span id="res-t2-name"></span>
-                    </h4>
-                    <div class="table-responsive">
-                        <table class="stat-table text-xs sm:text-sm" id="res-table-t2"></table>
+                <div class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-blue)]">
+                    <div class="flex justify-between items-center mb-1 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
+                        <h4 class="font-bebas text-base sm:text-lg text-[var(--nba-blue)]">
+                            BOX SCORE - <span id="res-t2-name"></span>
+                        </h4>
+                        <span class="text-[10px] uppercase font-bold text-blue-400">P2</span>
+                    </div>
+                    <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
+                        <table class="stat-table text-[11px] sm:text-xs" id="res-table-t2"></table>
                     </div>
                 </div>
             </div>
 
             <!-- Controles Finales (Serie Bo7 o Menú Principal) -->
-            <div id="finales-controls" class="py-2 flex gap-4 justify-center flex-shrink-0">
+            <div id="finales-controls" class="py-1 flex gap-3 justify-center flex-shrink-0">
                 <!-- Dinámico -->
             </div>
         </section>

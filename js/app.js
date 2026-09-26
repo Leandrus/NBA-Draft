@@ -558,31 +558,44 @@ const App = {
     },
 
     initSimStatsTable() {
-        const tbody = document.getElementById('stats-table-body');
-        tbody.innerHTML = '';
+        const tbody1 = document.getElementById('stats-table-body-t1');
+        const tbody2 = document.getElementById('stats-table-body-t2');
 
-        [this.state.teams.p1, this.state.teams.p2].forEach((team, tIdx) => {
-            team.roster.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.id = `stat-row-${p.id}`;
-                tr.className = "border-b border-gray-800 transition duration-150";
-                tr.innerHTML = `
-                    <td class="p-1.5 font-bold ${tIdx === 0 ? 'text-red-400' : 'text-blue-400'} flex items-center gap-2">
-                        <img src="${this.CDN_URL}${p.id}.png" 
-                             class="w-6 h-6 rounded-full bg-gray-800 object-cover" 
-                             data-player-id="${p.id}"
-                             onerror="App.handleImageError(this, '${p.n.replace(/'/g, "\\'")}', '${p.t}', '')">
-                        <span class="truncate max-w-[110px] text-xs sm:text-sm">${p.n}</span>
-                    </td>
-                    <td id="p-pts-${p.id}" class="p-1.5 font-bold text-white">0</td>
-                    <td id="p-reb-${p.id}" class="p-1.5 text-gray-300">0</td>
-                    <td id="p-ast-${p.id}" class="p-1.5 text-gray-300">0</td>
-                    <td id="p-stl-${p.id}" class="p-1.5 text-gray-300">0</td>
-                    <td id="p-blk-${p.id}" class="p-1.5 text-gray-300">0</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        });
+        if (tbody1 && tbody2) {
+            tbody1.innerHTML = '';
+            tbody2.innerHTML = '';
+
+            const t1Label = document.getElementById('sim-t1-stat-title');
+            const t2Label = document.getElementById('sim-t2-stat-title');
+            if (t1Label) t1Label.innerText = this.state.teams.p1.name;
+            if (t2Label) t2Label.innerText = this.state.teams.p2.name;
+
+            const renderTeamRows = (team, tbody, isP1) => {
+                team.roster.forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.id = `stat-row-${p.id}`;
+                    tr.className = "border-b border-gray-800/70 transition duration-150";
+                    tr.innerHTML = `
+                        <td class="py-1 px-1 font-bold ${isP1 ? 'text-red-400' : 'text-blue-400'} flex items-center gap-1.5">
+                            <img src="${this.CDN_URL}${p.id}.png" 
+                                 class="w-5 h-5 rounded-full bg-gray-800 object-cover flex-shrink-0" 
+                                 data-player-id="${p.id}"
+                                 onerror="App.handleImageError(this, '${p.n.replace(/'/g, "\\'")}', '${p.t}', '')">
+                            <span class="truncate max-w-[85px] sm:max-w-[110px] text-[11px] sm:text-xs">${p.n}</span>
+                        </td>
+                        <td id="p-pts-${p.id}" class="py-1 px-1 font-bold text-white text-[11px] sm:text-xs">0</td>
+                        <td id="p-reb-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
+                        <td id="p-ast-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
+                        <td id="p-stl-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
+                        <td id="p-blk-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+
+            renderTeamRows(this.state.teams.p1, tbody1, true);
+            renderTeamRows(this.state.teams.p2, tbody2, false);
+        }
     },
 
     onSimTick(data) {
@@ -697,14 +710,14 @@ const App = {
         // Final Score Box
         const scoreBox = document.getElementById('final-score-box');
         scoreBox.innerHTML = `
-            <div class="text-center">
-                <p class="font-bebas text-2xl md:text-3xl text-gray-300">${this.state.teams.p1.name}</p>
-                <p class="text-6xl md:text-8xl font-black ${winnerKey === 'p1' ? 'text-[var(--nba-red)] font-bebas' : 'text-gray-400 font-bebas'}">${this.state.teams.p1.currentScore}</p>
+            <div class="text-center flex-1 min-w-0">
+                <p class="font-bebas text-sm sm:text-lg text-gray-300 truncate">${this.state.teams.p1.name}</p>
+                <p class="text-3xl sm:text-5xl font-black ${winnerKey === 'p1' ? 'text-[var(--nba-red)] font-bebas' : 'text-gray-400 font-bebas'} leading-none">${this.state.teams.p1.currentScore}</p>
             </div>
-            <div class="text-4xl md:text-6xl font-bebas text-[var(--nba-gold)] italic px-4">VS</div>
-            <div class="text-center">
-                <p class="font-bebas text-2xl md:text-3xl text-gray-300">${this.state.teams.p2.name}</p>
-                <p class="text-6xl md:text-8xl font-black ${winnerKey === 'p2' ? 'text-[var(--nba-blue)] font-bebas' : 'text-gray-400 font-bebas'}">${this.state.teams.p2.currentScore}</p>
+            <div class="text-2xl sm:text-3xl font-bebas text-[var(--nba-gold)] italic px-2">VS</div>
+            <div class="text-center flex-1 min-w-0">
+                <p class="font-bebas text-sm sm:text-lg text-gray-300 truncate">${this.state.teams.p2.name}</p>
+                <p class="text-3xl sm:text-5xl font-black ${winnerKey === 'p2' ? 'text-[var(--nba-blue)] font-bebas' : 'text-gray-400 font-bebas'} leading-none">${this.state.teams.p2.currentScore}</p>
             </div>
         `;
 
@@ -742,32 +755,32 @@ const App = {
             if (p1Wins >= limit || p2Wins >= limit) {
                 const champName = p1Wins >= limit ? this.state.teams.p1.name : this.state.teams.p2.name;
                 controls.innerHTML = `
-                    <div class="text-center space-y-3">
-                        <div class="text-4xl md:text-6xl font-bebas text-[var(--nba-gold)] animate-pulse">
+                    <div class="text-center space-y-1">
+                        <div class="text-2xl sm:text-3xl font-bebas text-[var(--nba-gold)] animate-pulse">
                             🏆 ¡${champName} ES EL CAMPEÓN DE LAS FINALES! 🏆
                         </div>
-                        <p class="text-lg text-gray-300 font-bebas">Serie Final: ${p1Wins} - ${p2Wins}</p>
-                        <div class="flex gap-4 justify-center">
-                            <button onclick="App.changeScreen('menu')" class="btn-nba btn-nba-gold px-12 py-3.5 text-2xl rounded-xl">Menú Principal</button>
+                        <p class="text-xs sm:text-sm text-gray-300 font-bebas">Serie Final: ${p1Wins} - ${p2Wins}</p>
+                        <div class="flex gap-3 justify-center pt-0.5">
+                            <button onclick="App.changeScreen('menu')" class="btn-nba btn-nba-gold px-8 py-2 text-lg sm:text-xl rounded-xl">Menú Principal</button>
                         </div>
                     </div>
                 `;
             } else {
                 controls.innerHTML = `
-                    <div class="text-center space-y-3">
-                        <div class="text-xl font-bebas text-gray-300">
+                    <div class="text-center space-y-1">
+                        <div class="text-xs sm:text-sm font-bebas text-gray-300">
                             Serie al mejor de 7: <span class="text-[var(--nba-red)] font-bold">${this.state.teams.p1.name} (${p1Wins})</span> - <span class="text-[var(--nba-blue)] font-bold">(${p2Wins}) ${this.state.teams.p2.name}</span>
                         </div>
-                        <div class="flex gap-4 justify-center">
-                            <button onclick="App.startSimulation()" class="btn-nba btn-nba-gold px-10 py-3.5 text-2xl rounded-xl">Siguiente Partido (Juego ${this.state.finals.gamesPlayed + 1})</button>
-                            <button onclick="App.changeScreen('menu')" class="btn-nba px-8 py-3.5 text-xl rounded-xl">Salir al Menú</button>
+                        <div class="flex gap-3 justify-center pt-0.5">
+                            <button onclick="App.startSimulation()" class="btn-nba btn-nba-gold px-6 sm:px-8 py-2 text-base sm:text-lg rounded-xl">Siguiente Partido (Juego ${this.state.finals.gamesPlayed + 1})</button>
+                            <button onclick="App.changeScreen('menu')" class="btn-nba px-5 py-2 text-sm sm:text-base rounded-xl">Salir al Menú</button>
                         </div>
                     </div>
                 `;
             }
         } else {
             controls.innerHTML = `
-                <button onclick="App.changeScreen('menu')" class="btn-nba btn-nba-gold px-12 py-3.5 text-2xl rounded-xl">Menú Principal</button>
+                <button onclick="App.changeScreen('menu')" class="btn-nba btn-nba-gold px-8 py-2 text-lg sm:text-xl rounded-xl">Menú Principal</button>
             `;
         }
     },
@@ -776,15 +789,15 @@ const App = {
         const table = document.getElementById(tableId);
         table.innerHTML = `
             <thead>
-                <tr class="text-gray-400 font-bebas text-xs sm:text-sm border-b border-gray-700">
-                    <th class="p-1.5">JUGADOR</th>
-                    <th class="p-1.5">PTS</th>
-                    <th class="p-1.5">REB</th>
-                    <th class="p-1.5">AST</th>
-                    <th class="p-1.5">ROB</th>
-                    <th class="p-1.5">TAP</th>
-                    <th class="p-1.5">TC</th>
-                    <th class="p-1.5">FG%</th>
+                <tr class="text-gray-400 font-bebas text-[11px] sm:text-xs border-b border-gray-700">
+                    <th class="py-1 px-1">JUGADOR</th>
+                    <th class="py-1 px-1">PTS</th>
+                    <th class="py-1 px-1">REB</th>
+                    <th class="py-1 px-1">AST</th>
+                    <th class="py-1 px-1">ROB</th>
+                    <th class="py-1 px-1">TAP</th>
+                    <th class="py-1 px-1">TC</th>
+                    <th class="py-1 px-1">FG%</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -797,23 +810,23 @@ const App = {
             const tr = document.createElement('tr');
             tr.className = isMvp 
                 ? 'bg-[var(--nba-gold)]/20 font-bold border-l-4 border-[var(--nba-gold)]' 
-                : 'border-b border-gray-800 hover:bg-white/5';
+                : 'border-b border-gray-800/80 hover:bg-white/5';
 
             tr.innerHTML = `
-                <td class="p-1.5 font-bold flex items-center gap-2">
+                <td class="py-0.5 px-1 font-bold flex items-center gap-1.5">
                     <img src="${this.CDN_URL}${p.id}.png" 
-                         class="w-5 h-5 rounded-full bg-gray-800 object-cover" 
+                         class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-800 object-cover flex-shrink-0" 
                          data-player-id="${p.id}"
                          onerror="App.handleImageError(this, '${p.n.replace(/'/g, "\\'")}', '${p.t}', '')">
-                    <span class="text-xs sm:text-sm">${p.n}</span> ${isMvp ? '⭐ <span class="text-[10px] text-[var(--nba-gold)] font-bebas">MVP</span>' : ''}
+                    <span class="text-[11px] sm:text-xs truncate max-w-[80px] sm:max-w-[105px]">${p.n}</span> ${isMvp ? '⭐' : ''}
                 </td>
-                <td class="p-1.5 font-bold text-white">${p.stats.pts}</td>
-                <td class="p-1.5">${p.stats.reb}</td>
-                <td class="p-1.5">${p.stats.ast}</td>
-                <td class="p-1.5">${p.stats.stl}</td>
-                <td class="p-1.5">${p.stats.blk}</td>
-                <td class="p-1.5">${p.stats.fgm}/${p.stats.fga}</td>
-                <td class="p-1.5">${fgPct}%</td>
+                <td class="py-0.5 px-1 font-bold text-white text-[11px] sm:text-xs">${p.stats.pts}</td>
+                <td class="py-0.5 px-1 text-[11px] sm:text-xs">${p.stats.reb}</td>
+                <td class="py-0.5 px-1 text-[11px] sm:text-xs">${p.stats.ast}</td>
+                <td class="py-0.5 px-1 text-[11px] sm:text-xs">${p.stats.stl}</td>
+                <td class="py-0.5 px-1 text-[11px] sm:text-xs">${p.stats.blk}</td>
+                <td class="py-0.5 px-1 text-[11px] sm:text-xs">${p.stats.fgm}/${p.stats.fga}</td>
+                <td class="py-0.5 px-1 text-[11px] sm:text-xs">${fgPct}%</td>
             `;
             tbody.appendChild(tr);
         });
