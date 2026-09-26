@@ -7,11 +7,13 @@
  * - Overtime support (5 mins NBA time) for ties.
  * - Probabilistic rating-based play-by-play with Scout penalty.
  * - MVP calculation and Box Score tracking.
+ * - Pause and Abort controls.
  */
 
 class SimulationEngine {
     constructor() {
         this.isRunning = false;
+        this.isPaused = false;
         this.interval = null;
         this.quarter = 1;
         this.timeRemaining = 720; // NBA seconds
@@ -21,6 +23,7 @@ class SimulationEngine {
         this.logs = [];
         this.mvp = null;
         this.onTick = null;
+        this.onPlay = null;
         this.onFinish = null;
     }
 
@@ -28,12 +31,15 @@ class SimulationEngine {
         this.teams = teams;
         this.scoutPenalties = scoutPenalties || { p1: false, p2: false };
         this.onTick = callbacks?.onTick || (() => {});
+        this.onPlay = callbacks?.onPlay || (() => {});
         this.onFinish = callbacks?.onFinish || (() => {});
         this.onQuarterEnd = callbacks?.onQuarterEnd || (() => {});
         
         this.quarter = 1;
         this.timeRemaining = 720;
         this.isOT = false;
+        this.isRunning = true;
+        this.isPaused = false;
         this.logs = [];
         this.mvp = null;
 
@@ -58,8 +64,15 @@ class SimulationEngine {
         });
 
         if (window.audio) window.audio.playWhistle();
-        this.isRunning = true;
         this.runLoop();
+    }
+
+    pause() {
+        this.isPaused = true;
+    }
+
+    resume() {
+        this.isPaused = false;
     }
 
     runLoop() {
@@ -69,7 +82,7 @@ class SimulationEngine {
 
         clearInterval(this.interval);
         this.interval = setInterval(() => {
-            if (!this.isRunning) return;
+            if (!this.isRunning || this.isPaused) return;
 
             this.timeRemaining -= nbaSecondsPerTick;
 
@@ -84,8 +97,7 @@ class SimulationEngine {
                 quarter: this.quarter,
                 timeRemaining: Math.max(0, Math.floor(this.timeRemaining)),
                 isOT: this.isOT,
-                scores: { p1: this.teams.p1.currentScore, p2: this.teams.p2.currentScore },
-                logs: this.logs
+                scores: { p1: this.teams.p1.currentScore, p2: this.teams.p2.currentScore }
             });
 
         }, 1000 / this.ticksPerSecond);
@@ -112,7 +124,7 @@ class SimulationEngine {
         const stealChance = (defender.stl / 100) * 0.16;
         if (Math.random() < stealChance) {
             defender.stats.stl++;
-            this.addLog(`🥷 Robo de ${defender.n} (${defendingTeam.name})`, defendKey, defender.id);
+            this.addPlayLog(`🥷 Robo de ${defender.n} (${defendingTeam.name})`, defendKey, defender.id, false);
             if (window.audio) window.audio.playDefensivePlay();
             return;
         }
@@ -122,7 +134,7 @@ class SimulationEngine {
         if (Math.random() < blockChance) {
             shooter.stats.fga++;
             defender.stats.blk++;
-            this.addLog(`🚫 Taponazo de ${defender.n} (${defendingTeam.name}) sobre ${shooter.n}`, defendKey, defender.id);
+            this.addPlayLog(`🚫 Taponazo de ${defender.n} (${defendingTeam.name}) sobre ${shooter.n}`, defendKey, defender.id, false);
             if (window.audio) window.audio.playDefensivePlay();
             return;
         }
@@ -130,14 +142,12 @@ class SimulationEngine {
         // 3. Shot attempt (2-pointer or 3-pointer)
         const isThree = Math.random() < 0.35;
         const shotRating = (isThree ? shooter.t3 : shooter.t2) * scoutPenalty;
-        // Base conversion probability: 3pt scaled ~35-48%, 2pt scaled ~45-62%
         const successRate = isThree ? (shotRating * 0.44) / 100 : (shotRating * 0.58) / 100;
 
         shooter.stats.fga++;
         if (isThree) shooter.stats.t3a++;
 
         if (Math.random() < successRate) {
-            // Basket made!
             const pts = isThree ? 3 : 2;
             shooter.stats.pts += pts;
             shooter.stats.fgm++;
@@ -149,34 +159,38 @@ class SimulationEngine {
             // Assist check
             const potentialPassers = attackingTeam.roster.filter(p => p.id !== shooter.id);
             if (potentialPassers.length > 0 && Math.random() < 0.65) {
-                // Weighted by passer's AST rating
                 const passer = potentialPassers.sort((a, b) => (b.ast * Math.random()) - (a.ast * Math.random()))[0];
                 passer.stats.ast++;
-                this.addLog(`🏀 ${shooter.n} anota ${pts}pt (Asist: ${passer.n})`, attackKey, shooter.id, true);
+                this.addPlayLog(`🏀 ${shooter.n} anota ${pts}pt (Asist: ${passer.n})`, attackKey, shooter.id, true);
             } else {
-                this.addLog(`🏀 ${shooter.n} anota ${pts}pt en jugada individual`, attackKey, shooter.id, true);
+                this.addPlayLog(`🏀 ${shooter.n} anota ${pts}pt en jugada individual`, attackKey, shooter.id, true);
             }
         } else {
-            // Missed shot -> Rebound battle
+            // Rebound battle
             const allPlayers = [...attackingTeam.roster, ...defendingTeam.roster];
             const rebounder = allPlayers.sort((a, b) => (b.reb * (0.5 + Math.random())) - (a.reb * (0.5 + Math.random())))[0];
             const rebTeamKey = attackingTeam.roster.some(p => p.id === rebounder.id) ? attackKey : defendKey;
             
             rebounder.stats.reb++;
-            this.addLog(`👐 Rebote de ${rebounder.n} (${this.teams[rebTeamKey].name})`, rebTeamKey, rebounder.id);
+            this.addPlayLog(`👐 Rebote de ${rebounder.n} (${this.teams[rebTeamKey].name})`, rebTeamKey, rebounder.id, false);
         }
     }
 
-    addLog(message, teamKey, playerId, isScore = false) {
-        this.logs.unshift({
+    addPlayLog(message, teamKey, playerId, isScore) {
+        const playItem = {
+            id: Date.now() + Math.random(),
             msg: message,
             team: teamKey,
             time: Math.floor(this.timeRemaining),
             pid: playerId,
             isScore: isScore
-        });
-        if (this.logs.length > 20) {
+        };
+        this.logs.unshift(playItem);
+        if (this.logs.length > 25) {
             this.logs.pop();
+        }
+        if (this.onPlay) {
+            this.onPlay(playItem);
         }
     }
 
@@ -186,7 +200,6 @@ class SimulationEngine {
         if (window.audio) window.audio.playBuzzer();
 
         if (this.quarter < 4) {
-            // Inter-quarter pause (3 real seconds)
             this.onQuarterEnd({
                 title: `FIN DEL CUARTO ${this.quarter}`,
                 subtitle: `Siguiente: Cuarto ${this.quarter + 1}`,
@@ -194,32 +207,34 @@ class SimulationEngine {
             });
 
             setTimeout(() => {
-                this.quarter++;
-                this.timeRemaining = 720;
-                this.isRunning = true;
-                if (window.audio) window.audio.playWhistle();
-                this.runLoop();
+                if (!this.isRunning && !this.isPaused) {
+                    this.quarter++;
+                    this.timeRemaining = 720;
+                    this.isRunning = true;
+                    if (window.audio) window.audio.playWhistle();
+                    this.runLoop();
+                }
             }, 3000);
 
         } else {
-            // 4th Quarter Finished: Check for Tie -> Overtime!
             if (this.teams.p1.currentScore === this.teams.p2.currentScore) {
                 this.isOT = true;
                 this.onQuarterEnd({
-                    title: `¡EMPATE AL FINAL DEL TIEMPO REGLAMENTARIO!`,
-                    subtitle: `Iniciando Tiempo Extra / Overtime (5:00 min NBA)`,
+                    title: `¡EMPATE! TIEMPO REGLAMENTARIO`,
+                    subtitle: `Iniciando Tiempo Extra (5:00 min NBA)`,
                     scores: { p1: this.teams.p1.currentScore, p2: this.teams.p2.currentScore }
                 });
 
                 setTimeout(() => {
-                    this.timeRemaining = 300; // 5 mins NBA
-                    this.isRunning = true;
-                    if (window.audio) window.audio.playWhistle();
-                    this.runLoop();
+                    if (!this.isRunning && !this.isPaused) {
+                        this.timeRemaining = 300;
+                        this.isRunning = true;
+                        if (window.audio) window.audio.playWhistle();
+                        this.runLoop();
+                    }
                 }, 3000);
 
             } else {
-                // Match concluded!
                 this.finishMatch();
             }
         }
@@ -231,8 +246,6 @@ class SimulationEngine {
 
         const winnerKey = this.teams.p1.currentScore > this.teams.p2.currentScore ? 'p1' : 'p2';
         
-        // MVP calculation based on Game Score metric:
-        // PTS + 1.2*REB + 1.5*AST + 2*STL + 2*BLK + FGM - 0.5*FGA
         const allRoster = [...this.teams.p1.roster, ...this.teams.p2.roster];
         allRoster.sort((a, b) => {
             const scoreA = (a.stats.pts) + (a.stats.reb * 1.2) + (a.stats.ast * 1.5) + (a.stats.stl * 2) + (a.stats.blk * 2) + (a.stats.fgm) - (a.stats.fga * 0.5);
@@ -244,7 +257,7 @@ class SimulationEngine {
 
         if (window.audio) {
             window.audio.playCheer();
-            setTimeout(() => window.audio.playFanfare(), 400);
+            setTimeout(() => window.audio.playFanfare(), 300);
         }
 
         this.onFinish({
@@ -257,6 +270,7 @@ class SimulationEngine {
     stop() {
         clearInterval(this.interval);
         this.isRunning = false;
+        this.isPaused = false;
     }
 }
 

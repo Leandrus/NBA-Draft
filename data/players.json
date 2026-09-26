@@ -1,7 +1,7 @@
 {
   "pg": [
     {
-      "id": 77145,
+      "id": 77142,
       "n": "Magic Johnson",
       "t": "L.A. Lakers",
       "t2": 95,
@@ -25,7 +25,7 @@
       "rat": 97
     },
     {
-      "id": 78002,
+      "id": 600015,
       "n": "Oscar Robertson",
       "t": "Bucks",
       "t2": 94,
@@ -97,7 +97,7 @@
       "rat": 93
     },
     {
-      "id": 76746,
+      "id": 76750,
       "n": "Walt Frazier",
       "t": "Knicks",
       "t2": 92,
@@ -121,7 +121,7 @@
       "rat": 92
     },
     {
-      "id": 76466,
+      "id": 600003,
       "n": "Bob Cousy",
       "t": "Celtics",
       "t2": 89,
@@ -145,7 +145,7 @@
       "rat": 92
     },
     {
-      "id": 1630178,
+      "id": 1630169,
       "n": "Tyrese Haliburton",
       "t": "Pacers",
       "t2": 88,
@@ -181,7 +181,7 @@
       "rat": 91
     },
     {
-      "id": 76059,
+      "id": 76054,
       "n": "Nate Archibald",
       "t": "Kings",
       "t2": 93,
@@ -253,7 +253,7 @@
       "rat": 90
     },
     {
-      "id": 283,
+      "id": 134,
       "n": "Kevin Johnson",
       "t": "Suns",
       "t2": 91,
@@ -289,7 +289,7 @@
       "rat": 90
     },
     {
-      "id": 201943,
+      "id": 201950,
       "n": "Jrue Holiday",
       "t": "Celtics",
       "t2": 86,
@@ -349,7 +349,7 @@
       "rat": 89
     },
     {
-      "id": 699,
+      "id": 899,
       "n": "Mark Price",
       "t": "Cavs",
       "t2": 88,
@@ -361,7 +361,7 @@
       "rat": 89
     },
     {
-      "id": 77107,
+      "id": 77141,
       "n": "Dennis Johnson",
       "t": "Celtics",
       "t2": 86,
@@ -385,7 +385,7 @@
       "rat": 89
     },
     {
-      "id": 1882,
+      "id": 1884,
       "n": "Baron Davis",
       "t": "Warriors",
       "t2": 89,
@@ -397,7 +397,7 @@
       "rat": 89
     },
     {
-      "id": 952,
+      "id": 950,
       "n": "Stephon Marbury",
       "t": "Knicks",
       "t2": 90,
@@ -409,7 +409,7 @@
       "rat": 89
     },
     {
-      "id": 78547,
+      "id": 78530,
       "n": "Lenny Wilkens",
       "t": "Hawks",
       "t2": 88,
@@ -421,7 +421,7 @@
       "rat": 89
     },
     {
-      "id": 76182,
+      "id": 76166,
       "n": "Dave Bing",
       "t": "Pistons",
       "t2": 90,
@@ -433,7 +433,7 @@
       "rat": 89
     },
     {
-      "id": 77953,
+      "id": 77952,
       "n": "Micheal Ray Richardson",
       "t": "Knicks",
       "t2": 86,
@@ -445,7 +445,7 @@
       "rat": 89
     },
     {
-      "id": 313,
+      "id": 77376,
       "n": "Fat Lever",
       "t": "Nuggets",
       "t2": 88,
@@ -529,7 +529,7 @@
       "rat": 88
     },
     {
-      "id": 76831,
+      "id": 76832,
       "n": "Gail Goodrich",
       "t": "Lakers",
       "t2": 91,
@@ -565,7 +565,7 @@
       "rat": 87
     },
     {
-      "id": 77977,
+      "id": 78003,
       "n": "Guy Rodgers",
       "t": "Warriors",
       "t2": 84,
@@ -577,7 +577,7 @@
       "rat": 87
     },
     {
-      "id": 78526,
+      "id": 78510,
       "n": "Jo Jo White",
       "t": "Celtics",
       "t2": 88,
@@ -589,7 +589,7 @@
       "rat": 87
     },
     {
-      "id": 78401,
+      "id": 78406,
       "n": "Norm Van Lier",
       "t": "Bulls",
       "t2": 84,
@@ -637,7 +637,7 @@
       "rat": 87
     },
     {
-      "id": 77472,
+      "id": 77480,
       "n": "Slater Martin",
       "t": "Lakers",
       "t2": 84,
@@ -685,7 +685,7 @@
       "rat": 85
     },
     {
-      "id": 180,
+      "id": 177,
       "n": "Muggsy Bogues",
       "t": "Hornets",
       "t2": 78,
@@ -2475,7 +2475,7 @@
       "rat": 94
     },
     {
-      "id": 258,
+      "id": 17,
       "n": "Clyde Drexler",
       "t": "Blazers",
       "t2": 92,
@@ -2583,7 +2583,7 @@
       "rat": 92
     },
     {
-      "id": 78330,
+      "id": 78326,
       "n": "David Thompson",
       "t": "Nuggets",
       "t2": 94,
@@ -2619,7 +2619,7 @@
       "rat": 91
     },
     {
-      "id": 104,
+      "id": 904,
       "n": "Chris Mullin",
       "t": "Warriors",
       "t2": 92,
@@ -2859,7 +2859,7 @@
       "rat": 86
     },
     {
-      "id": 124,
+      "id": 120,
       "n": "Steve Smith",
       "t": "Hawks",
       "t2": 88,
@@ -3795,7 +3795,7 @@
       "rat": 78
     },
     {
-      "id": 76176,
+      "id": 76188,
       "n": "Rolando Blackman",
       "t": "Bucks",
       "t2": 80,
@@ -4865,7 +4865,7 @@
       "rat": 96
     },
     {
-      "id": 711,
+      "id": 937,
       "n": "Scottie Pippen",
       "t": "Bulls",
       "t2": 88,
@@ -4913,7 +4913,7 @@
       "rat": 94
     },
     {
-      "id": 76102,
+      "id": 600013,
       "n": "Rick Barry",
       "t": "Warriors",
       "t2": 94,
@@ -5141,7 +5141,7 @@
       "rat": 89
     },
     {
-      "id": 76024,
+      "id": 76016,
       "n": "Mark Aguirre",
       "t": "Mavericks",
       "t2": 92,
@@ -5369,7 +5369,7 @@
       "rat": 85
     },
     {
-      "id": 2202,
+      "id": 2203,
       "n": "Shane Battier",
       "t": "Rockets",
       "t2": 80,
@@ -5405,7 +5405,7 @@
       "rat": 85
     },
     {
-      "id": 2440,
+      "id": 1477,
       "n": "Bruce Bowen",
       "t": "Spurs",
       "t2": 78,
@@ -7735,7 +7735,7 @@
       "rat": 87
     },
     {
-      "id": 893,
+      "id": 891,
       "n": "Charles Oakley",
       "t": "Knicks",
       "t2": 84,
@@ -7771,7 +7771,7 @@
       "rat": 87
     },
     {
-      "id": 211,
+      "id": 213,
       "n": "Antonio Davis",
       "t": "Pacers",
       "t2": 85,
@@ -7783,7 +7783,7 @@
       "rat": 85
     },
     {
-      "id": 4,
+      "id": 905,
       "n": "Dale Davis",
       "t": "Pacers",
       "t2": 84,
@@ -9681,7 +9681,7 @@
       "rat": 98
     },
     {
-      "id": 192,
+      "id": 764,
       "n": "David Robinson",
       "t": "Spurs",
       "t2": 95,
@@ -9849,7 +9849,7 @@
       "rat": 92
     },
     {
-      "id": 76140,
+      "id": 76144,
       "n": "Walt Bellamy",
       "t": "Bullets",
       "t2": 92,
