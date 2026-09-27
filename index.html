@@ -36,6 +36,15 @@
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Botón Abandonar Partido (Solo visible durante la Simulación) -->
+            <button id="abort-btn" onclick="App.promptAbortGame()"
+                class="hidden px-2.5 sm:px-3 py-1.5 rounded-lg bg-red-950/80 hover:bg-red-800 text-red-200 text-xs font-bold border border-red-700/50 flex items-center gap-1.5 transition shadow-sm"
+                title="Abandonar Partido">
+                <img src="icons/stop.svg" alt="Abandonar" class="icon-svg w-3.5 h-3.5">
+                <span class="hidden sm:inline">Abandonar Partido</span>
+                <span class="sm:hidden">Salir</span>
+            </button>
+
             <!-- Fullscreen Button -->
             <button id="fullscreen-btn" onclick="App.toggleFullscreen()" class="audio-toggle-btn"
                 title="Pantalla Completa" aria-label="Pantalla Completa">
@@ -254,30 +263,18 @@
         <!-- ========================================== -->
         <!-- PANTALLA 6: SIMULACIÓN EN VIVO             -->
         <!-- ========================================== -->
-        <section id="screen-sim" class="hidden flex-1 flex flex-col space-y-3 min-h-0 overflow-hidden">
-            <!-- Barra Superior del Partido: Abortar / Anular -->
-            <div class="flex justify-between items-center px-1 flex-shrink-0">
-                <span
-                    class="text-xs uppercase tracking-widest text-gray-400 font-bold bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                    Partido Oficial en Simulación
-                </span>
-                <button id="abort-btn" onclick="App.promptAbortGame()"
-                    class="px-3 py-1.5 rounded-lg bg-red-950/70 hover:bg-red-800 text-red-200 text-xs font-bold border border-red-700/50 flex items-center gap-1.5 transition">
-                    <img src="icons/stop.svg" alt="Abandonar" class="icon-svg w-3.5 h-3.5">
-                    <span>Abandonar Partido</span>
-                </button>
-            </div>
-
+        <section id="screen-sim" class="hidden flex-1 flex flex-col space-y-2 sm:space-y-3 min-h-0 overflow-hidden">
             <!-- Marcador y Reloj Oficial NBA -->
-            <div class="scoreboard p-3 sm:p-4 rounded-2xl flex items-center justify-between flex-shrink-0">
+            <div class="scoreboard p-2.5 sm:p-4 rounded-2xl flex items-center justify-between flex-shrink-0">
                 <!-- Team 1 Score -->
-                <div class="flex-1 text-center">
-                    <h5 id="s-t1-name" class="font-bebas text-lg sm:text-2xl truncate text-gray-300"></h5>
+                <div class="flex-1 text-center flex flex-col items-center justify-center">
+                    <h5 id="s-t1-name"
+                        class="font-bebas text-base sm:text-2xl whitespace-normal break-words leading-none sm:leading-tight max-w-[120px] sm:max-w-[200px] text-gray-300"></h5>
                     <div id="s-t1-score" class="score-num text-[var(--nba-red)]">0</div>
                 </div>
 
                 <!-- Game Clock & Quarter -->
-                <div class="px-3 sm:px-6 text-center border-x-2 border-white/10">
+                <div class="px-3 sm:px-6 text-center border-x-2 border-white/10 flex-shrink-0">
                     <div id="s-clock"
                         class="text-3xl sm:text-5xl md:text-6xl font-mono font-bold tracking-tight text-white">12:00
                     </div>
@@ -287,8 +284,9 @@
                 </div>
 
                 <!-- Team 2 Score -->
-                <div class="flex-1 text-center">
-                    <h5 id="s-t2-name" class="font-bebas text-lg sm:text-2xl truncate text-gray-300"></h5>
+                <div class="flex-1 text-center flex flex-col items-center justify-center">
+                    <h5 id="s-t2-name"
+                        class="font-bebas text-base sm:text-2xl whitespace-normal break-words leading-none sm:leading-tight max-w-[120px] sm:max-w-[200px] text-gray-300"></h5>
                     <div id="s-t2-score" class="score-num text-[var(--nba-blue)]">0</div>
                 </div>
             </div>

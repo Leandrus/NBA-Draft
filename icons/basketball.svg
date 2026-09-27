@@ -1,27 +1,132 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <defs>
-    <radialGradient id="ballShade" cx="35%" cy="30%" r="65%">
-      <stop offset="0%" stop-color="#ff9d42" />
-      <stop offset="50%" stop-color="#ea580c" />
-      <stop offset="100%" stop-color="#9a3412" />
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 64 64"
+   fill="none"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="basketball.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="3.231699"
+     inkscape:cx="-6.1886952"
+     inkscape:cy="48.735975"
+     inkscape:window-width="1440"
+     inkscape:window-height="829"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <defs
+     id="defs3">
+    <radialGradient
+       id="ballShade"
+       cx="35%"
+       cy="30%"
+       r="65%">
+      <stop
+         offset="0%"
+         stop-color="#ff9d42"
+         id="stop1" />
+      <stop
+         offset="50%"
+         stop-color="#ea580c"
+         id="stop2" />
+      <stop
+         offset="100%"
+         stop-color="#9a3412"
+         id="stop3" />
     </radialGradient>
-    <filter id="ballGlow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.4"/>
+    <filter
+       id="ballGlow"
+       x="-0.016666667"
+       y="-0.016666667"
+       width="1.0333333"
+       height="1.0333333">
+      <feDropShadow
+         dx="0"
+         dy="2"
+         stdDeviation="2"
+         flood-color="#000000"
+         flood-opacity="0.4" />
     </filter>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#ballShade"
+       id="radialGradient8"
+       cx="112"
+       cy="32"
+       fx="112"
+       fy="32"
+       r="32"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.96969697,0,0,0.96969697,-76.606061,0.96969697)" />
   </defs>
+  <circle
+     style="fill:url(#radialGradient8);stroke:#000000;stroke-width:1.93939;paint-order:markers fill stroke"
+     id="path7"
+     cx="32"
+     cy="32"
+     r="31.030304" />
   <!-- Ball Base Circle -->
-  <circle cx="32" cy="32" r="30" fill="url(#ballShade)" stroke="#271206" stroke-width="2" filter="url(#ballGlow)"/>
-  
   <!-- Ball Seams / Ribs -->
   <!-- Horizontal seam -->
-  <path d="M2 32h60" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round"/>
   <!-- Vertical seam -->
-  <path d="M32 2v60" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round"/>
   <!-- Left curved seam -->
-  <path d="M11 6C23 18 23 46 11 58" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round" fill="none"/>
   <!-- Right curved seam -->
-  <path d="M53 6C41 18 41 46 53 58" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-  
   <!-- Subtle Top Highlight -->
-  <ellipse cx="26" cy="14" rx="14" ry="6" fill="#ffffff" opacity="0.2" transform="rotate(-20 26 14)"/>
+  <g
+     id="g11"
+     transform="translate(-80)">
+    <path
+       d="m 82,32 h 60"
+       stroke="#1c0d02"
+       stroke-width="2.5"
+       stroke-linecap="round"
+       id="path8" />
+    <path
+       d="M 112,2 V 62"
+       stroke="#1c0d02"
+       stroke-width="2.5"
+       stroke-linecap="round"
+       id="path9"
+       style="stroke:#000000;fill:none" />
+    <path
+       d="m 93.875,8.1631159 c 11,11.0016381 11,36.6721291 0,47.6737681"
+       stroke="#1c0d02"
+       stroke-width="2.5"
+       stroke-linecap="round"
+       fill="none"
+       id="path10"
+       style="fill:none;stroke:#000000" />
+    <path
+       d="m 130.125,8.1631159 c -11,11.0016381 -11,36.6721291 0,47.6737681"
+       stroke="#1c0d02"
+       stroke-width="2.5"
+       stroke-linecap="round"
+       fill="none"
+       id="path11"
+       style="fill:none;stroke:#000000" />
+    <ellipse
+       cx="94.819138"
+       cy="49.409836"
+       rx="14"
+       ry="6"
+       fill="#ffffff"
+       opacity="0.2"
+       transform="rotate(-20)"
+       id="ellipse11" />
+  </g>
 </svg>

@@ -160,11 +160,21 @@ const App = {
 
     updateDbButtonVisibility() {
         const dbBtn = document.getElementById('header-db-btn');
-        if (!dbBtn) return;
-        if (this.state.screen === 'menu') {
-            dbBtn.classList.remove('hidden');
-        } else {
-            dbBtn.classList.add('hidden');
+        if (dbBtn) {
+            if (this.state.screen === 'menu') {
+                dbBtn.classList.remove('hidden');
+            } else {
+                dbBtn.classList.add('hidden');
+            }
+        }
+
+        const abortBtn = document.getElementById('abort-btn');
+        if (abortBtn) {
+            if (this.state.screen === 'sim') {
+                abortBtn.classList.remove('hidden');
+            } else {
+                abortBtn.classList.add('hidden');
+            }
         }
     },
 
