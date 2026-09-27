@@ -124,7 +124,7 @@ class SimulationEngine {
         const stealChance = (defender.stl / 100) * 0.16;
         if (Math.random() < stealChance) {
             defender.stats.stl++;
-            this.addPlayLog(`🥷 Robo de ${defender.n} (${defendingTeam.name})`, defendKey, defender.id, false);
+            this.addPlayLog(`Robo de ${defender.n} (${defendingTeam.name})`, defendKey, defender.id, false, 'steal');
             if (window.audio) window.audio.playDefensivePlay();
             return;
         }
@@ -134,7 +134,7 @@ class SimulationEngine {
         if (Math.random() < blockChance) {
             shooter.stats.fga++;
             defender.stats.blk++;
-            this.addPlayLog(`🚫 Taponazo de ${defender.n} (${defendingTeam.name}) sobre ${shooter.n}`, defendKey, defender.id, false);
+            this.addPlayLog(`Taponazo de ${defender.n} (${defendingTeam.name}) sobre ${shooter.n}`, defendKey, defender.id, false, 'block');
             if (window.audio) window.audio.playDefensivePlay();
             return;
         }
@@ -161,9 +161,9 @@ class SimulationEngine {
             if (potentialPassers.length > 0 && Math.random() < 0.65) {
                 const passer = potentialPassers.sort((a, b) => (b.ast * Math.random()) - (a.ast * Math.random()))[0];
                 passer.stats.ast++;
-                this.addPlayLog(`🏀 ${shooter.n} anota ${pts}pt (Asist: ${passer.n})`, attackKey, shooter.id, true);
+                this.addPlayLog(`${shooter.n} anota ${pts}pt (Asist: ${passer.n})`, attackKey, shooter.id, true, 'basketball');
             } else {
-                this.addPlayLog(`🏀 ${shooter.n} anota ${pts}pt en jugada individual`, attackKey, shooter.id, true);
+                this.addPlayLog(`${shooter.n} anota ${pts}pt en jugada individual`, attackKey, shooter.id, true, 'basketball');
             }
         } else {
             // Rebound battle
@@ -172,18 +172,19 @@ class SimulationEngine {
             const rebTeamKey = attackingTeam.roster.some(p => p.id === rebounder.id) ? attackKey : defendKey;
             
             rebounder.stats.reb++;
-            this.addPlayLog(`👐 Rebote de ${rebounder.n} (${this.teams[rebTeamKey].name})`, rebTeamKey, rebounder.id, false);
+            this.addPlayLog(`Rebote de ${rebounder.n} (${this.teams[rebTeamKey].name})`, rebTeamKey, rebounder.id, false, 'rebound');
         }
     }
 
-    addPlayLog(message, teamKey, playerId, isScore) {
+    addPlayLog(message, teamKey, playerId, isScore, icon = 'basketball') {
         const playItem = {
             id: Date.now() + Math.random(),
             msg: message,
             team: teamKey,
             time: Math.floor(this.timeRemaining),
             pid: playerId,
-            isScore: isScore
+            isScore: isScore,
+            icon: icon
         };
         this.logs.unshift(playItem);
         if (this.logs.length > 25) {

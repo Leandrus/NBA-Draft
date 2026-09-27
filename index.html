@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ultimate Draft v2.2 - Simulador Competitivo de Baloncesto</title>
-    <meta name="description" content="Simulador web competitivo de baloncesto para dos jugadores locales. Crea tu quinteto ideal mediante Draft de cartas aleatorias y enfréntate con 1,000 jugadores reales y estadísticas históricas de la NBA.">
-    
+    <meta name="description"
+        content="Simulador web competitivo de baloncesto para dos jugadores locales. Crea tu quinteto ideal mediante Draft de cartas aleatorias y enfréntate con 1,000 jugadores reales y estadísticas históricas de la NBA.">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Custom Design System Styles -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="bg-[#020b13] text-white">
 
     <!-- Top App Bar / Status -->
@@ -29,31 +34,25 @@
                 <span class="text-[var(--nba-red)]">ULTIMATE</span> <span class="text-[var(--nba-gold)]">DRAFT</span>
             </span>
         </div>
-        
+
         <div class="flex items-center gap-2 sm:gap-3">
             <!-- Fullscreen Button -->
-            <button id="fullscreen-btn" 
-                    onclick="App.toggleFullscreen()" 
-                    class="audio-toggle-btn"
-                    title="Pantalla Completa" 
-                    aria-label="Pantalla Completa">
-                ⛶
+            <button id="fullscreen-btn" onclick="App.toggleFullscreen()" class="audio-toggle-btn"
+                title="Pantalla Completa" aria-label="Pantalla Completa">
+                <img src="icons/fullscreen.svg" alt="Pantalla Completa" class="icon-svg w-4 h-4 sm:w-5 sm:h-5">
             </button>
 
             <!-- Audio Toggle Button -->
-            <button id="audio-toggle-btn" 
-                    onclick="App.toggleAudio()" 
-                    class="audio-toggle-btn"
-                    title="Silenciar / Activar Sonido" 
-                    aria-label="Silenciar sonido">
-                🔊
+            <button id="audio-toggle-btn" onclick="App.toggleAudio()" class="audio-toggle-btn"
+                title="Silenciar / Activar Sonido" aria-label="Silenciar sonido">
+                <img src="icons/volume-up.svg" alt="Sonido" class="icon-svg w-4 h-4 sm:w-5 sm:h-5">
             </button>
 
             <!-- Base de Datos (Only visible in Menu) -->
-            <button id="header-db-btn"
-                    onclick="App.showSettings()" 
-                    class="btn-nba px-3.5 py-1.5 text-xs sm:text-sm rounded-lg border border-white/20">
-                📊 Base de Datos
+            <button id="header-db-btn" onclick="App.showSettings()"
+                class="btn-nba px-3.5 py-1.5 text-xs sm:text-sm rounded-lg border border-white/20 flex items-center gap-1.5">
+                <img src="icons/chart.svg" alt="Base de Datos" class="icon-svg w-4 h-4">
+                <span>Base de Datos</span>
             </button>
         </div>
     </header>
@@ -64,47 +63,55 @@
         <!-- ========================================== -->
         <!-- PANTALLA 1: MENÚ INICIAL Y SELECCIÓN MODO  -->
         <!-- ========================================== -->
-        <section id="screen-menu" class="flex-1 flex flex-col items-center justify-center space-y-4 sm:space-y-6 my-auto py-2">
+        <section id="screen-menu"
+            class="flex-1 flex flex-col items-center justify-center space-y-4 sm:space-y-6 my-auto py-2">
             <div class="text-center space-y-1">
-                <span class="text-[11px] sm:text-xs tracking-widest uppercase font-bold text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                <span
+                    class="text-[11px] sm:text-xs tracking-widest uppercase font-bold text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
                     Simulador Competitivo 2 Jugadores • 1,000 Jugadores Reales NBA
                 </span>
                 <h1 class="text-5xl sm:text-7xl md:text-8xl font-bebas leading-none tracking-tight">
-                    <span class="text-[var(--nba-red)]">ULTIMATE</span> <span class="text-[var(--nba-gold)]">DRAFT</span>
+                    <span class="text-[var(--nba-red)]">ULTIMATE</span> <span
+                        class="text-[var(--nba-gold)]">DRAFT</span>
                 </h1>
                 <p class="text-gray-400 text-xs sm:text-base max-w-lg mx-auto">
-                    Arma tu quinteto de ensueño seleccionando cartas de jugadores históricos y actuales. ¡Compite en partidos rápidos y dinámicos!
+                    Arma tu quinteto de ensueño seleccionando cartas de jugadores históricos y actuales. ¡Compite en
+                    partidos rápidos y dinámicos!
                 </p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-2xl">
-                <button onclick="App.setMode('normal')" 
-                        class="btn-nba p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
+                <button onclick="App.setMode('normal')"
+                    class="btn-nba p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
                     <span>Modo Normal</span>
-                    <span class="text-[11px] font-sans tracking-normal opacity-80 normal-case font-normal">20 cartas ocultas • Botón Scout (-5%)</span>
+                    <span class="text-[11px] font-sans tracking-normal opacity-80 normal-case font-normal">20 cartas
+                        ocultas • Botón Scout (-5%)</span>
                 </button>
 
-                <button onclick="App.setMode('libre')" 
-                        class="btn-nba p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
+                <button onclick="App.setMode('libre')"
+                    class="btn-nba p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
                     <span>Modo Libre</span>
-                    <span class="text-[11px] font-sans tracking-normal opacity-80 normal-case font-normal">20 cartas visibles • Sin penalización</span>
+                    <span class="text-[11px] font-sans tracking-normal opacity-80 normal-case font-normal">20 cartas
+                        visibles • Sin penalización</span>
                 </button>
 
-                <button onclick="App.setMode('3x3')" 
-                        class="btn-nba p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
+                <button onclick="App.setMode('3x3')"
+                    class="btn-nba p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
                     <span>Duelo 3x3</span>
-                    <span class="text-[11px] font-sans tracking-normal opacity-80 normal-case font-normal">3 jugadores • Aleros y Bases mezclados</span>
+                    <span class="text-[11px] font-sans tracking-normal opacity-80 normal-case font-normal">3 jugadores •
+                        Aleros y Bases mezclados</span>
                 </button>
 
-                <button onclick="App.setMode('finales')" 
-                        class="btn-nba btn-nba-gold p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
+                <button onclick="App.setMode('finales')"
+                    class="btn-nba btn-nba-gold p-4 sm:p-5 text-xl sm:text-2xl rounded-xl flex flex-col items-center">
                     <span>Las Finales (Bo7)</span>
-                    <span class="text-[11px] font-sans tracking-normal opacity-90 normal-case font-normal">Serie al mejor de 7 partidos</span>
+                    <span class="text-[11px] font-sans tracking-normal opacity-90 normal-case font-normal">Serie al
+                        mejor de 7 partidos</span>
                 </button>
             </div>
 
             <div class="flex items-center gap-3 text-xs text-gray-500 pt-2">
-                <span class="text-[var(--nba-gold)] font-bold">v2.2 Pro</span>
+                <span class="text-[var(--nba-gold)] font-bold">v2.2 Demo</span>
                 <span>•</span>
                 <span>Soporte Smart TV / D-Pad</span>
                 <span>•</span>
@@ -115,50 +122,47 @@
         <!-- ========================================== -->
         <!-- PANTALLA 2: CONFIGURACIÓN DE EQUIPOS       -->
         <!-- ========================================== -->
-        <section id="screen-config" class="hidden flex-1 flex flex-col items-center justify-center space-y-6 my-auto py-4">
+        <section id="screen-config"
+            class="hidden flex-1 flex flex-col items-center justify-center space-y-6 my-auto py-4">
             <div class="text-center space-y-1">
-                <span id="config-mode-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[var(--nba-gold)]/20 text-[var(--nba-gold)] border border-[var(--nba-gold)]/30">
+                <span id="config-mode-badge"
+                    class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[var(--nba-gold)]/20 text-[var(--nba-gold)] border border-[var(--nba-gold)]/30">
                     Modo Normal
                 </span>
                 <h2 class="text-3xl sm:text-5xl font-bebas">Configuración de Equipos</h2>
-                <p class="text-gray-400 text-xs sm:text-sm">Personaliza el nombre de cada franquicia antes de comenzar el Draft.</p>
+                <p class="text-gray-400 text-xs sm:text-sm">Personaliza el nombre de cada franquicia antes de comenzar
+                    el Draft.</p>
             </div>
 
             <div class="flex flex-col md:flex-row gap-4 sm:gap-6 w-full max-w-3xl">
                 <!-- Equipo 1 -->
                 <div class="flex-1 glass-panel p-5 space-y-2 border-t-4 border-t-[var(--nba-red)]">
                     <div class="flex items-center justify-between">
-                        <label class="font-bebas text-xl sm:text-2xl text-[var(--nba-red)]">Equipo 1 (P1)</label>
+                        <label class="font-bebas text-xl sm:text-2xl text-[var(--nba-red)]">Equipo 1</label>
                         <span class="w-3.5 h-3.5 rounded-full bg-[var(--nba-red)]"></span>
                     </div>
-                    <input id="p1-name" 
-                           type="text" 
-                           value="Lakers All-Stars" 
-                           placeholder="Nombre Franquicia 1..." 
-                           class="w-full bg-black/60 border border-red-500/40 p-3 sm:p-3.5 text-lg sm:text-xl rounded-xl outline-none focus:ring-2 ring-[var(--nba-red)] text-white">
+                    <input id="p1-name" type="text" value="Lakers All-Stars" placeholder="Nombre Franquicia 1..."
+                        class="w-full bg-black/60 border border-red-500/40 p-3 sm:p-3.5 text-lg sm:text-xl rounded-xl outline-none focus:ring-2 ring-[var(--nba-red)] text-white">
                 </div>
 
                 <!-- Equipo 2 -->
                 <div class="flex-1 glass-panel p-5 space-y-2 border-t-4 border-t-[var(--nba-blue)]">
                     <div class="flex items-center justify-between">
-                        <label class="font-bebas text-xl sm:text-2xl text-[var(--nba-blue)]">Equipo 2 (P2)</label>
+                        <label class="font-bebas text-xl sm:text-2xl text-[var(--nba-blue)]">Equipo 2</label>
                         <span class="w-3.5 h-3.5 rounded-full bg-[var(--nba-blue)]"></span>
                     </div>
-                    <input id="p2-name" 
-                           type="text" 
-                           value="Bulls Legends" 
-                           placeholder="Nombre Franquicia 2..." 
-                           class="w-full bg-black/60 border border-blue-500/40 p-3 sm:p-3.5 text-lg sm:text-xl rounded-xl outline-none focus:ring-2 ring-[var(--nba-blue)] text-white">
+                    <input id="p2-name" type="text" value="Bulls Legends" placeholder="Nombre Franquicia 2..."
+                        class="w-full bg-black/60 border border-blue-500/40 p-3 sm:p-3.5 text-lg sm:text-xl rounded-xl outline-none focus:ring-2 ring-[var(--nba-blue)] text-white">
                 </div>
             </div>
 
             <div class="flex gap-4">
-                <button onclick="App.changeScreen('menu')" 
-                        class="btn-nba px-6 sm:px-8 py-3 text-xl rounded-xl bg-gray-800 hover:bg-gray-700">
+                <button onclick="App.changeScreen('menu')"
+                    class="btn-nba px-6 sm:px-8 py-3 text-xl rounded-xl bg-gray-800 hover:bg-gray-700">
                     Volver
                 </button>
-                <button onclick="App.startDraft()" 
-                        class="btn-nba btn-nba-gold px-8 sm:px-12 py-3 text-2xl sm:text-3xl rounded-xl shadow-lg">
+                <button onclick="App.startDraft()"
+                    class="btn-nba btn-nba-gold px-8 sm:px-12 py-3 text-2xl sm:text-3xl rounded-xl shadow-lg">
                     Comenzar Draft
                 </button>
             </div>
@@ -168,20 +172,23 @@
         <!-- PANTALLA 3 & 4: FASE DE DRAFT              -->
         <!-- ========================================== -->
         <section id="screen-draft" class="hidden flex-1 flex flex-col space-y-3 min-h-0 overflow-hidden">
-            <div class="glass-panel p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4 flex-shrink-0">
+            <div
+                class="glass-panel p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4 flex-shrink-0">
                 <div class="flex items-center gap-3">
-                    <span id="draft-player-badge" class="px-3 py-1 rounded-full text-base sm:text-lg font-bebas nba-gradient-red">P1</span>
+                    <span id="draft-player-badge"
+                        class="px-3 py-1 rounded-full text-base sm:text-lg font-bebas nba-gradient-red">J1</span>
                     <div>
                         <h3 id="draft-turn-title" class="text-xl sm:text-3xl font-bebas leading-tight"></h3>
-                        <p id="draft-pos-subtitle" class="text-xs sm:text-sm text-gray-400 font-bold uppercase tracking-wider"></p>
+                        <p id="draft-pos-subtitle"
+                            class="text-xs sm:text-sm text-gray-400 font-bold uppercase tracking-wider"></p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                    <button id="scout-btn" 
-                            onclick="App.applyScout()" 
-                            class="btn-nba btn-scout px-4 sm:px-6 py-2 rounded-xl text-base sm:text-lg hidden">
-                        🔍 Scout Posición (-5% Rendimiento)
+                    <button id="scout-btn" onclick="App.applyScout()"
+                        class="btn-nba btn-scout px-4 sm:px-6 py-2 rounded-xl text-base sm:text-lg hidden flex items-center gap-2">
+                        <img src="icons/search.svg" alt="Scout" class="icon-svg w-5 h-5">
+                        <span>Scout Posición (-5% Rendimiento)</span>
                     </button>
                 </div>
             </div>
@@ -195,9 +202,11 @@
         <!-- ========================================== -->
         <!-- PANTALLA 5: ARENA READY (MATCHUP)          -->
         <!-- ========================================== -->
-        <section id="screen-matchup" class="hidden flex-1 flex flex-col items-center justify-center space-y-6 my-auto py-4">
+        <section id="screen-matchup"
+            class="hidden flex-1 flex flex-col items-center justify-center space-y-6 my-auto py-4">
             <div class="text-center space-y-1">
-                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-300">
+                <span
+                    class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-300">
                     Enfrentamiento Listo • Cancha Preparada
                 </span>
                 <h2 class="text-4xl sm:text-6xl font-bebas">CANCHA LISTA</h2>
@@ -206,8 +215,10 @@
             <div class="w-full max-w-4xl flex flex-col md:flex-row justify-around items-center gap-6 glass-panel p-6">
                 <!-- Team 1 Side -->
                 <div class="text-center space-y-3 flex-1">
-                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto nba-gradient-red flex flex-col items-center justify-center border-4 border-white shadow-xl">
-                        <span id="m-team1-rating" class="text-4xl sm:text-5xl font-black font-bebas leading-none">95</span>
+                    <div
+                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto nba-gradient-red flex flex-col items-center justify-center border-4 border-white shadow-xl">
+                        <span id="m-team1-rating"
+                            class="text-4xl sm:text-5xl font-black font-bebas leading-none">95</span>
                         <span class="text-[9px] tracking-widest uppercase font-bold text-white/80">OVR</span>
                     </div>
                     <h4 id="m-team1-name" class="text-2xl sm:text-3xl font-bebas text-[var(--nba-red)]"></h4>
@@ -221,8 +232,10 @@
 
                 <!-- Team 2 Side -->
                 <div class="text-center space-y-3 flex-1">
-                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto nba-gradient-blue flex flex-col items-center justify-center border-4 border-white shadow-xl">
-                        <span id="m-team2-rating" class="text-4xl sm:text-5xl font-black font-bebas leading-none">95</span>
+                    <div
+                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto nba-gradient-blue flex flex-col items-center justify-center border-4 border-white shadow-xl">
+                        <span id="m-team2-rating"
+                            class="text-4xl sm:text-5xl font-black font-bebas leading-none">95</span>
                         <span class="text-[9px] tracking-widest uppercase font-bold text-white/80">OVR</span>
                     </div>
                     <h4 id="m-team2-name" class="text-2xl sm:text-3xl font-bebas text-[var(--nba-blue)]"></h4>
@@ -230,10 +243,11 @@
                 </div>
             </div>
 
-            <button id="tipoff-btn" 
-                    onclick="App.startSimulation()" 
-                    class="btn-nba btn-nba-gold px-12 sm:px-16 py-4 sm:py-5 text-3xl sm:text-5xl rounded-2xl shadow-2xl">
-                🏀 SALTO INICIAL 🏀
+            <button id="tipoff-btn" onclick="App.startSimulation()"
+                class="btn-nba btn-nba-gold px-8 sm:px-14 py-4 sm:py-5 text-3xl sm:text-5xl rounded-2xl shadow-2xl flex items-center justify-center gap-3 sm:gap-4 mx-auto">
+                <img src="icons/basketball.svg" alt="Balón" class="icon-svg w-7 h-7 sm:w-11 sm:h-11 animate-bounce">
+                <span>SALTO INICIAL</span>
+                <img src="icons/basketball.svg" alt="Balón" class="icon-svg w-7 h-7 sm:w-11 sm:h-11 animate-bounce">
             </button>
         </section>
 
@@ -243,13 +257,14 @@
         <section id="screen-sim" class="hidden flex-1 flex flex-col space-y-3 min-h-0 overflow-hidden">
             <!-- Barra Superior del Partido: Abortar / Anular -->
             <div class="flex justify-between items-center px-1 flex-shrink-0">
-                <span class="text-xs uppercase tracking-widest text-gray-400 font-bold bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                    Partido Oficial NBA en Simulación
+                <span
+                    class="text-xs uppercase tracking-widest text-gray-400 font-bold bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                    Partido Oficial en Simulación
                 </span>
-                <button id="abort-btn" 
-                        onclick="App.promptAbortGame()" 
-                        class="px-3 py-1.5 rounded-lg bg-red-950/70 hover:bg-red-800 text-red-200 text-xs font-bold border border-red-700/50 flex items-center gap-1.5 transition">
-                    <span>⏹</span> Anular / Abandonar Partido
+                <button id="abort-btn" onclick="App.promptAbortGame()"
+                    class="px-3 py-1.5 rounded-lg bg-red-950/70 hover:bg-red-800 text-red-200 text-xs font-bold border border-red-700/50 flex items-center gap-1.5 transition">
+                    <img src="icons/stop.svg" alt="Abandonar" class="icon-svg w-3.5 h-3.5">
+                    <span>Abandonar Partido</span>
                 </button>
             </div>
 
@@ -263,8 +278,12 @@
 
                 <!-- Game Clock & Quarter -->
                 <div class="px-3 sm:px-6 text-center border-x-2 border-white/10">
-                    <div id="s-clock" class="text-3xl sm:text-5xl md:text-6xl font-mono font-bold tracking-tight text-white">12:00</div>
-                    <div id="s-quarter" class="text-sm sm:text-xl font-bebas text-[var(--nba-gold)] uppercase tracking-wider">1ER CUARTO</div>
+                    <div id="s-clock"
+                        class="text-3xl sm:text-5xl md:text-6xl font-mono font-bold tracking-tight text-white">12:00
+                    </div>
+                    <div id="s-quarter"
+                        class="text-sm sm:text-xl font-bebas text-[var(--nba-gold)] uppercase tracking-wider">1ER CUARTO
+                    </div>
                 </div>
 
                 <!-- Team 2 Score -->
@@ -278,15 +297,19 @@
             <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3 min-h-0 overflow-hidden">
                 <!-- Tabla Estadísticas en Vivo (2 cols) -->
                 <div class="lg:col-span-2 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
-                    <h6 class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
+                    <h6
+                        class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
                         ESTADÍSTICAS DEL PARTIDO EN VIVO
                     </h6>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1 min-h-0 overflow-hidden">
                         <!-- Subtabla Equipo 1 -->
                         <div class="flex flex-col min-h-0 overflow-hidden">
-                            <div class="flex justify-between items-center px-1 mb-0.5 border-b border-red-900/60 pb-0.5 flex-shrink-0">
-                                <span id="sim-t1-stat-title" class="font-bebas text-xs sm:text-sm text-[var(--nba-red)] truncate">Equipo 1</span>
-                                <span class="text-[9px] bg-red-950/70 text-red-300 font-bold px-1.5 py-0.2 rounded">P1</span>
+                            <div
+                                class="flex justify-between items-center px-1 mb-0.5 border-b border-red-900/60 pb-0.5 flex-shrink-0">
+                                <span id="sim-t1-stat-title"
+                                    class="font-bebas text-xs sm:text-sm text-[var(--nba-red)] truncate">Equipo 1</span>
+                                <span
+                                    class="text-[9px] bg-red-950/70 text-red-300 font-bold px-1.5 py-0.2 rounded">J1</span>
                             </div>
                             <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
                                 <table class="stat-table text-[11px] sm:text-xs">
@@ -307,9 +330,13 @@
 
                         <!-- Subtabla Equipo 2 -->
                         <div class="flex flex-col min-h-0 overflow-hidden">
-                            <div class="flex justify-between items-center px-1 mb-0.5 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
-                                <span id="sim-t2-stat-title" class="font-bebas text-xs sm:text-sm text-[var(--nba-blue)] truncate">Equipo 2</span>
-                                <span class="text-[9px] bg-blue-950/70 text-blue-300 font-bold px-1.5 py-0.2 rounded">P2</span>
+                            <div
+                                class="flex justify-between items-center px-1 mb-0.5 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
+                                <span id="sim-t2-stat-title"
+                                    class="font-bebas text-xs sm:text-sm text-[var(--nba-blue)] truncate">Equipo
+                                    2</span>
+                                <span
+                                    class="text-[9px] bg-blue-950/70 text-blue-300 font-bold px-1.5 py-0.2 rounded">J2</span>
                             </div>
                             <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
                                 <table class="stat-table text-[11px] sm:text-xs">
@@ -332,7 +359,8 @@
 
                 <!-- Historial de Jugadas (Play by Play - 1 col) -->
                 <div class="lg:col-span-1 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
-                    <h6 class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
+                    <h6
+                        class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
                         HISTORIAL DE JUGADAS EN VIVO
                     </h6>
                     <div id="sim-log" class="sim-log-container flex-1 overflow-y-auto pr-1 min-h-0">
@@ -345,48 +373,59 @@
         <!-- ========================================== -->
         <!-- PANTALLA 7: RESULTADOS FINALES Y BOX SCORE -->
         <!-- ========================================== -->
-        <section id="screen-results" class="hidden flex-1 flex flex-col justify-between py-1 min-h-0 overflow-hidden space-y-2">
+        <section id="screen-results"
+            class="hidden flex-1 flex flex-col justify-between py-1 min-h-0 overflow-hidden space-y-2">
             <!-- Header + Scoreboard + MVP Row (Grid 2 cols) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 w-full max-w-5xl mx-auto flex-shrink-0">
                 <!-- Marcador Final Centrado -->
-                <div id="final-score-box" class="glass-panel p-2.5 sm:p-3 flex items-center justify-around rounded-xl border border-white/10">
+                <div id="final-score-box"
+                    class="glass-panel p-2.5 sm:p-3 flex items-center justify-around rounded-xl border border-white/10">
                     <!-- Contenido dinámico -->
                 </div>
 
                 <!-- MVP Card Compact -->
                 <div id="mvp-card" class="mvp-banner p-2.5 sm:p-3 rounded-xl flex items-center gap-3">
-                    <div id="mvp-img-box" class="w-16 h-20 sm:w-20 sm:h-24 rounded-lg bg-gray-900 flex-shrink-0 overflow-hidden border border-white/10 shadow-lg"></div>
+                    <div id="mvp-img-box"
+                        class="w-16 h-20 sm:w-20 sm:h-24 rounded-lg bg-gray-900 flex-shrink-0 overflow-hidden border border-white/10 shadow-lg">
+                    </div>
                     <div class="flex-1 min-w-0">
-                        <span class="text-[10px] sm:text-xs font-bold tracking-widest uppercase bg-[var(--nba-gold)] text-black px-1.5 py-0.5 rounded font-bebas">
+                        <span
+                            class="text-[10px] sm:text-xs font-bold tracking-widest uppercase bg-[var(--nba-gold)] text-black px-1.5 py-0.5 rounded font-bebas">
                             MVP DEL PARTIDO
                         </span>
-                        <h3 id="mvp-name" class="text-xl sm:text-2xl font-bebas leading-tight mt-0.5 text-white truncate"></h3>
+                        <h3 id="mvp-name"
+                            class="text-xl sm:text-2xl font-bebas leading-tight mt-0.5 text-white truncate"></h3>
                         <p id="mvp-team" class="text-[11px] sm:text-xs text-gray-400 font-medium truncate"></p>
-                        <div id="mvp-stats-line" class="font-bold text-[11px] sm:text-xs mt-0.5 text-[var(--nba-gold)] font-mono"></div>
+                        <div id="mvp-stats-line"
+                            class="font-bold text-[11px] sm:text-xs mt-0.5 text-[var(--nba-gold)] font-mono"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Box Scores de Ambos Equipos Lado a Lado (Grid 2 cols) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 w-full max-w-5xl mx-auto flex-1 min-h-0 overflow-hidden">
-                <div class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-red)]">
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-2.5 w-full max-w-5xl mx-auto flex-1 min-h-0 overflow-hidden">
+                <div
+                    class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-red)]">
                     <div class="flex justify-between items-center mb-1 border-b border-red-900/60 pb-0.5 flex-shrink-0">
                         <h4 class="font-bebas text-base sm:text-lg text-[var(--nba-red)]">
                             ESTADÍSTICAS - <span id="res-t1-name"></span>
                         </h4>
-                        <span class="text-[10px] uppercase font-bold text-red-400">P1</span>
+                        <span class="text-[10px] uppercase font-bold text-red-400">J1</span>
                     </div>
                     <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
                         <table class="stat-table text-[11px] sm:text-xs" id="res-table-t1"></table>
                     </div>
                 </div>
 
-                <div class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-blue)]">
-                    <div class="flex justify-between items-center mb-1 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
+                <div
+                    class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-blue)]">
+                    <div
+                        class="flex justify-between items-center mb-1 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
                         <h4 class="font-bebas text-base sm:text-lg text-[var(--nba-blue)]">
                             ESTADÍSTICAS - <span id="res-t2-name"></span>
                         </h4>
-                        <span class="text-[10px] uppercase font-bold text-blue-400">P2</span>
+                        <span class="text-[10px] uppercase font-bold text-blue-400">J2</span>
                     </div>
                     <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
                         <table class="stat-table text-[11px] sm:text-xs" id="res-table-t2"></table>
@@ -404,7 +443,8 @@
         <!-- PANTALLA 9: SETTINGS / BASE DE DATOS       -->
         <!-- ========================================== -->
         <section id="screen-settings" class="hidden flex-1 flex flex-col space-y-3 min-h-0 overflow-hidden">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-gray-800 pb-2 flex-shrink-0">
+            <div
+                class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-gray-800 pb-2 flex-shrink-0">
                 <div>
                     <h2 class="text-3xl sm:text-5xl font-bebas text-white">Base de Datos Oficial NBA</h2>
                     <p class="text-gray-400 text-xs sm:text-sm">
@@ -412,8 +452,11 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span id="db-player-count" class="text-base font-bebas text-[var(--nba-gold)] bg-black/40 px-3 py-1 rounded-lg border border-white/10">1000 Jugadores</span>
-                    <button onclick="App.changeScreen('menu')" class="btn-nba px-4 py-1.5 rounded-xl text-base">Volver al Menú</button>
+                    <span id="db-player-count"
+                        class="text-base font-bebas text-[var(--nba-gold)] bg-black/40 px-3 py-1 rounded-lg border border-white/10">1000
+                        Jugadores</span>
+                    <button onclick="App.changeScreen('menu')" class="btn-nba px-4 py-1.5 rounded-xl text-base">Volver
+                        al Menú</button>
                 </div>
             </div>
 
@@ -421,22 +464,33 @@
             <div class="glass-panel p-3 flex flex-col md:flex-row gap-3 items-center justify-between flex-shrink-0">
                 <!-- Tabs Posiciones -->
                 <div class="flex flex-wrap gap-1.5 w-full md:w-auto">
-                    <button onclick="App.setDbPositionFilter('all')" data-pos="all" class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base btn-nba btn-nba-gold">TODAS (1000)</button>
-                    <button onclick="App.setDbPositionFilter('pg')" data-pos="pg" class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">BASE / PG</button>
-                    <button onclick="App.setDbPositionFilter('sg')" data-pos="sg" class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">ESCOLTA / SG</button>
-                    <button onclick="App.setDbPositionFilter('sf')" data-pos="sf" class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">ALERO / SF</button>
-                    <button onclick="App.setDbPositionFilter('pf')" data-pos="pf" class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">ALA-PÍVOT / PF</button>
-                    <button onclick="App.setDbPositionFilter('c')" data-pos="c" class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">PÍVOT / C</button>
+                    <button onclick="App.setDbPositionFilter('all')" data-pos="all"
+                        class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base btn-nba btn-nba-gold">TODAS
+                        (1000)</button>
+                    <button onclick="App.setDbPositionFilter('pg')" data-pos="pg"
+                        class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">BASE
+                        / PG</button>
+                    <button onclick="App.setDbPositionFilter('sg')" data-pos="sg"
+                        class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">ESCOLTA
+                        / SG</button>
+                    <button onclick="App.setDbPositionFilter('sf')" data-pos="sf"
+                        class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">ALERO
+                        / SF</button>
+                    <button onclick="App.setDbPositionFilter('pf')" data-pos="pf"
+                        class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">ALA-PÍVOT
+                        / PF</button>
+                    <button onclick="App.setDbPositionFilter('c')" data-pos="c"
+                        class="db-pos-tab px-3 py-1.5 rounded-lg font-bebas text-base bg-gray-800 hover:bg-gray-700 text-gray-300">PÍVOT
+                        / C</button>
                 </div>
 
                 <!-- Search Input & Sort Selector -->
                 <div class="flex gap-2 w-full md:w-auto">
-                    <input id="db-search-input" 
-                           type="text" 
-                           placeholder="Buscar jugador o franquicia..." 
-                           class="flex-1 md:w-56 bg-black/60 border border-gray-700 p-2 rounded-lg text-xs sm:text-sm outline-none focus:ring-2 ring-[var(--nba-gold)] text-white">
+                    <input id="db-search-input" type="text" placeholder="Buscar jugador o franquicia..."
+                        class="flex-1 md:w-56 bg-black/60 border border-gray-700 p-2 rounded-lg text-xs sm:text-sm outline-none focus:ring-2 ring-[var(--nba-gold)] text-white">
 
-                    <select id="db-sort-select" class="bg-gray-900 border border-gray-700 text-xs sm:text-sm text-gray-200 p-2 rounded-lg outline-none font-medium">
+                    <select id="db-sort-select"
+                        class="bg-gray-900 border border-gray-700 text-xs sm:text-sm text-gray-200 p-2 rounded-lg outline-none font-medium">
                         <option value="rat-desc">Rating General (Mayor a Menor)</option>
                         <option value="rat-asc">Rating General (Menor a Mayor)</option>
                         <option value="name-asc">Nombre (A-Z)</option>
@@ -481,48 +535,64 @@
     <!-- MODAL REVELAR JUGADOR (DRAFT SELECTION)    -->
     <!-- ========================================== -->
     <div id="player-modal" class="hidden modal-overlay">
-        <div class="glass-panel border-2 border-[var(--nba-gold)] rounded-3xl max-w-xl w-full p-6 md:p-8 modal-enter relative overflow-hidden shadow-2xl">
+        <div
+            class="glass-panel border-2 border-[var(--nba-gold)] rounded-3xl max-w-xl w-full p-6 md:p-8 modal-enter relative overflow-hidden shadow-2xl">
             <div class="flex flex-col md:flex-row gap-6 items-center md:items-start relative z-10">
-                <div class="w-44 h-52 bg-gray-900/90 rounded-2xl flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center p-2 shadow-inner" id="modal-img"></div>
+                <div class="w-44 h-52 bg-gray-900/90 rounded-2xl flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center p-2 shadow-inner"
+                    id="modal-img"></div>
                 <div class="flex-1 text-center md:text-left">
-                    <span class="text-xs uppercase font-bold tracking-widest text-[var(--nba-gold)] bg-black/40 px-3 py-1 rounded">Carta Revelada</span>
+                    <span
+                        class="text-xs uppercase font-bold tracking-widest text-[var(--nba-gold)] bg-black/40 px-3 py-1 rounded">Carta
+                        Revelada</span>
                     <h2 id="modal-name" class="text-4xl md:text-5xl font-bebas leading-tight mt-1 text-white"></h2>
                     <p id="modal-team" class="text-xl text-gray-400 font-bebas mb-3"></p>
-                    
+
                     <div class="grid grid-cols-2 gap-2 text-sm">
-                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">T2 (Tiro 2pt): <span id="m-t2" class="text-white font-bold"></span></div>
-                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">T3 (Triples): <span id="m-t3" class="text-white font-bold"></span></div>
-                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">REB (Rebotes): <span id="m-reb" class="text-white font-bold"></span></div>
-                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">AST (Pases): <span id="m-ast" class="text-white font-bold"></span></div>
-                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">STL (Robos): <span id="m-stl" class="text-white font-bold"></span></div>
-                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">BLK (Bloqueos): <span id="m-blk" class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">T2 (Tiro 2pt): <span id="m-t2"
+                                class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">T3 (Triples): <span id="m-t3"
+                                class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">REB (Rebotes): <span id="m-reb"
+                                class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">AST (Pases): <span id="m-ast"
+                                class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">STL (Robos): <span id="m-stl"
+                                class="text-white font-bold"></span></div>
+                        <div class="bg-black/50 p-2 rounded-lg border border-white/5">BLK (Bloqueos): <span id="m-blk"
+                                class="text-white font-bold"></span></div>
                     </div>
 
-                    <div class="mt-4 text-center nba-gradient-gold text-black p-2.5 rounded-xl font-black text-3xl font-bebas tracking-wider" id="m-rat">
+                    <div class="mt-4 text-center nba-gradient-gold text-black p-2.5 rounded-xl font-black text-3xl font-bebas tracking-wider"
+                        id="m-rat">
                         99 OVR
                     </div>
                 </div>
             </div>
 
-            <button id="modal-select-btn" 
-                    onclick="App.closePlayerModal()" 
-                    class="mt-6 w-full btn-nba btn-nba-gold py-4 text-3xl rounded-xl">
+            <button id="modal-select-btn" onclick="App.closePlayerModal()"
+                class="mt-6 w-full btn-nba btn-nba-gold py-4 text-3xl rounded-xl">
                 SELECCIONAR JUGADOR
             </button>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- MODAL ANUNCIO DE TURNO (P1 / P2)           -->
+    <!-- MODAL ANUNCIO DE TURNO (J1 / J2)           -->
     <!-- ========================================== -->
     <div id="turn-announcement-modal" class="hidden modal-overlay cursor-pointer">
-        <div class="glass-panel turn-announcement-banner border-2 border-[var(--nba-gold)] p-8 md:p-12 rounded-3xl text-center max-w-lg w-full shadow-2xl relative overflow-hidden">
+        <div
+            class="glass-panel turn-announcement-banner border-2 border-[var(--nba-gold)] p-8 md:p-12 rounded-3xl text-center max-w-lg w-full shadow-2xl relative overflow-hidden">
             <div class="mb-4">
-                <span id="turn-announcement-badge" class="px-4 py-1.5 rounded-full text-xl font-bebas nba-gradient-red border border-white/20">JUGADOR 1</span>
+                <span id="turn-announcement-badge"
+                    class="px-4 py-1.5 rounded-full text-xl font-bebas nba-gradient-red border border-white/20">EQUIPO
+                    1</span>
             </div>
-            <h2 id="turn-announcement-title" class="text-3xl md:text-5xl font-bebas mb-2 text-white tracking-wide">¡COMIENZA EL DRAFT!</h2>
-            <p id="turn-announcement-team" class="text-4xl md:text-6xl font-bebas text-[var(--nba-red)] leading-none my-2"></p>
-            <p class="text-xs md:text-sm text-gray-400 font-bold uppercase tracking-widest mt-4">¡Toca en cualquier parte para continuar!</p>
+            <h2 id="turn-announcement-title" class="text-3xl md:text-5xl font-bebas mb-2 text-white tracking-wide">
+                ¡COMIENZA EL DRAFT!</h2>
+            <p id="turn-announcement-team"
+                class="text-4xl md:text-6xl font-bebas text-[var(--nba-red)] leading-none my-2"></p>
+            <p class="text-xs md:text-sm text-gray-400 font-bold uppercase tracking-widest mt-4">¡Toca en cualquier
+                parte para continuar!</p>
         </div>
     </div>
 
@@ -530,14 +600,17 @@
     <!-- MODAL ENTRETIEMPO / PAUSA DE CUARTOS       -->
     <!-- ========================================== -->
     <div id="period-modal" class="hidden modal-overlay">
-        <div class="glass-panel border border-[var(--nba-gold)] p-8 md:p-12 rounded-3xl text-center modal-enter max-w-md w-full shadow-2xl">
-            <h2 id="period-title" class="text-3xl md:text-5xl font-bebas mb-4 text-[var(--nba-gold)] tracking-wide">FIN DEL CUARTO</h2>
+        <div
+            class="glass-panel border border-[var(--nba-gold)] p-8 md:p-12 rounded-3xl text-center modal-enter max-w-md w-full shadow-2xl">
+            <h2 id="period-title" class="text-3xl md:text-5xl font-bebas mb-4 text-[var(--nba-gold)] tracking-wide">FIN
+                DEL CUARTO</h2>
             <div class="flex items-center justify-center gap-6 text-6xl md:text-7xl font-bebas">
                 <span id="p-m-s1" class="text-[var(--nba-red)]">0</span>
                 <span class="text-gray-500 font-mono">-</span>
                 <span id="p-m-s2" class="text-[var(--nba-blue)]">0</span>
             </div>
-            <p class="mt-4 font-bold text-gray-400 tracking-widest uppercase text-sm md:text-base" id="next-period-msg"></p>
+            <p class="mt-4 font-bold text-gray-400 tracking-widest uppercase text-sm md:text-base" id="next-period-msg">
+            </p>
         </div>
     </div>
 
@@ -545,17 +618,22 @@
     <!-- MODAL CONFIRMAR ANULACIÓN DEL PARTIDO      -->
     <!-- ========================================== -->
     <div id="abort-modal" class="hidden modal-overlay">
-        <div class="glass-panel border-2 border-red-500/80 p-8 rounded-3xl text-center modal-enter max-w-md w-full shadow-2xl">
-            <div class="text-5xl mb-3">⚠️</div>
+        <div
+            class="glass-panel border-2 border-red-500/80 p-8 rounded-3xl text-center modal-enter max-w-md w-full shadow-2xl">
+            <div class="flex justify-center mb-3">
+                <img src="icons/warning.svg" alt="Advertencia" class="icon-svg w-14 h-14">
+            </div>
             <h2 class="text-3xl md:text-4xl font-bebas mb-2 text-white tracking-wide">¿ANULAR PARTIDO?</h2>
             <p class="text-sm text-gray-300 mb-6">
                 El partido actual se detendrá de inmediato y volverás al menú principal sin registrar resultado.
             </p>
             <div class="flex gap-4 justify-center">
-                <button onclick="App.cancelAbortGame()" class="btn-nba px-6 py-2.5 rounded-xl text-lg bg-gray-800 hover:bg-gray-700">
+                <button onclick="App.cancelAbortGame()"
+                    class="btn-nba px-6 py-2.5 rounded-xl text-lg bg-gray-800 hover:bg-gray-700">
                     Continuar Jugando
                 </button>
-                <button onclick="App.confirmAbortGame()" class="btn-nba px-6 py-2.5 rounded-xl text-lg bg-red-800 hover:bg-red-700 border-red-500/60">
+                <button onclick="App.confirmAbortGame()"
+                    class="btn-nba px-6 py-2.5 rounded-xl text-lg bg-red-800 hover:bg-red-700 border-red-500/60">
                     Sí, Anular Partido
                 </button>
             </div>
@@ -570,4 +648,5 @@
     <script src="js/app.js"></script>
 
 </body>
+
 </html>

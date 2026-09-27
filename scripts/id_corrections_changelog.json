@@ -1,0 +1,630 @@
+{
+  "corrections": [
+    {
+      "pos": "PG",
+      "name": "Rod Strickland",
+      "old_id": 207,
+      "old_owner": "Desconocido",
+      "new_id": 393,
+      "new_owner": "Rod Strickland"
+    },
+    {
+      "pos": "PG",
+      "name": "Terry Porter",
+      "old_id": 227,
+      "old_owner": "Desconocido",
+      "new_id": 345,
+      "new_owner": "Terry Porter"
+    },
+    {
+      "pos": "PG",
+      "name": "Spud Webb",
+      "old_id": 353,
+      "old_owner": "Darrell Armstrong",
+      "new_id": 892,
+      "new_owner": "Spud Webb"
+    },
+    {
+      "pos": "PG",
+      "name": "Avery Johnson",
+      "old_id": 76,
+      "old_owner": "Cedric Ceballos",
+      "new_id": 422,
+      "new_owner": "Avery Johnson"
+    },
+    {
+      "pos": "SG",
+      "name": "Sidney Moncrief",
+      "old_id": 77610,
+      "old_owner": "Dave Minor",
+      "new_id": 77626,
+      "new_owner": "Sidney Moncrief"
+    },
+    {
+      "pos": "SG",
+      "name": "Earl Monroe",
+      "old_id": 77607,
+      "old_owner": "Desconocido",
+      "new_id": 600006,
+      "new_owner": "Earl Monroe"
+    },
+    {
+      "pos": "SG",
+      "name": "Sam Jones",
+      "old_id": 77193,
+      "old_owner": "Bobby Jones",
+      "new_id": 77196,
+      "new_owner": "Sam Jones"
+    },
+    {
+      "pos": "SG",
+      "name": "Mitch Richmond",
+      "old_id": 111,
+      "old_owner": "LaPhonso Ellis",
+      "new_id": 782,
+      "new_owner": "Mitch Richmond"
+    },
+    {
+      "pos": "SG",
+      "name": "Joe Dumars",
+      "old_id": 77,
+      "old_owner": "Doug Overton",
+      "new_id": 247,
+      "new_owner": "Joe Dumars"
+    },
+    {
+      "pos": "SG",
+      "name": "Eddie Jones",
+      "old_id": 228,
+      "old_owner": "Adam Keefe",
+      "new_id": 224,
+      "new_owner": "Eddie Jones"
+    },
+    {
+      "pos": "SG",
+      "name": "Walter Davis",
+      "old_id": 76518,
+      "old_owner": "Charlie Davis",
+      "new_id": 1453,
+      "new_owner": "Walter Davis"
+    },
+    {
+      "pos": "SG",
+      "name": "Jeff Hornacek",
+      "old_id": 358,
+      "old_owner": "Anfernee Hardaway",
+      "new_id": 204,
+      "new_owner": "Jeff Hornacek"
+    },
+    {
+      "pos": "SG",
+      "name": "Rolando Blackman",
+      "old_id": 76188,
+      "old_owner": "Mike Bloom",
+      "new_id": 76176,
+      "new_owner": "Rolando Blackman"
+    },
+    {
+      "pos": "SG",
+      "name": "Ron Harper",
+      "old_id": 147,
+      "old_owner": "Jalen Rose",
+      "new_id": 166,
+      "new_owner": "Ron Harper"
+    },
+    {
+      "pos": "SG",
+      "name": "Allan Houston",
+      "old_id": 278,
+      "old_owner": "Stacey Augmon",
+      "new_id": 275,
+      "new_owner": "Allan Houston"
+    },
+    {
+      "pos": "SG",
+      "name": "Doug Christie",
+      "old_id": 1737,
+      "old_owner": "Nazr Mohammed",
+      "new_id": 57,
+      "new_owner": "Doug Christie"
+    },
+    {
+      "pos": "SG",
+      "name": "Byron Scott",
+      "old_id": 78104,
+      "old_owner": "Desconocido",
+      "new_id": 2,
+      "new_owner": "Byron Scott"
+    },
+    {
+      "pos": "SG",
+      "name": "John Starks",
+      "old_id": 344,
+      "old_owner": "Dana Barros",
+      "new_id": 317,
+      "new_owner": "John Starks"
+    },
+    {
+      "pos": "SG",
+      "name": "Dan Majerle",
+      "old_id": 302,
+      "old_owner": "Mookie Blaylock",
+      "new_id": 105,
+      "new_owner": "Dan Majerle"
+    },
+    {
+      "pos": "SG",
+      "name": "Kerry Kittles",
+      "old_id": 1507,
+      "old_owner": "Derek Anderson",
+      "new_id": 954,
+      "new_owner": "Kerry Kittles"
+    },
+    {
+      "pos": "SG",
+      "name": "Rolando Blackman",
+      "old_id": 76188,
+      "old_owner": "Mike Bloom",
+      "new_id": 76176,
+      "new_owner": "Rolando Blackman"
+    },
+    {
+      "pos": "SF",
+      "name": "Dominique Wilkins",
+      "old_id": 78519,
+      "old_owner": "Charles Whitney",
+      "new_id": 1122,
+      "new_owner": "Dominique Wilkins"
+    },
+    {
+      "pos": "SF",
+      "name": "James Worthy",
+      "old_id": 78600,
+      "old_owner": "Brian Winters",
+      "new_id": 1460,
+      "new_owner": "James Worthy"
+    },
+    {
+      "pos": "SF",
+      "name": "Bernard King",
+      "old_id": 77252,
+      "old_owner": "Desconocido",
+      "new_id": 77264,
+      "new_owner": "Bernard King"
+    },
+    {
+      "pos": "SF",
+      "name": "Alex English",
+      "old_id": 76654,
+      "old_owner": "Desconocido",
+      "new_id": 76673,
+      "new_owner": "Alex English"
+    },
+    {
+      "pos": "SF",
+      "name": "Grant Hill",
+      "old_id": 224,
+      "old_owner": "Eddie Jones",
+      "new_id": 255,
+      "new_owner": "Grant Hill"
+    },
+    {
+      "pos": "SF",
+      "name": "Connie Hawkins",
+      "old_id": 76974,
+      "old_owner": "Marshall Hawkins",
+      "new_id": 76972,
+      "new_owner": "Connie Hawkins"
+    },
+    {
+      "pos": "SF",
+      "name": "Marques Johnson",
+      "old_id": 77196,
+      "old_owner": "Sam Jones",
+      "new_id": 77160,
+      "new_owner": "Marques Johnson"
+    },
+    {
+      "pos": "SF",
+      "name": "Gus Johnson",
+      "old_id": 77169,
+      "old_owner": "Neil Johnston",
+      "new_id": 77150,
+      "new_owner": "Gus Johnson"
+    },
+    {
+      "pos": "SF",
+      "name": "Chet Walker",
+      "old_id": 78445,
+      "old_owner": "Jamie Waller",
+      "new_id": 78435,
+      "new_owner": "Chet Walker"
+    },
+    {
+      "pos": "SF",
+      "name": "Kiki Vandeweghe",
+      "old_id": 78402,
+      "old_owner": "Gene Vance",
+      "new_id": 78404,
+      "new_owner": "Kiki Vandeweghe"
+    },
+    {
+      "pos": "SF",
+      "name": "Glen Rice",
+      "old_id": 724,
+      "old_owner": "Cory Alexander",
+      "new_id": 779,
+      "new_owner": "Glen Rice"
+    },
+    {
+      "pos": "SF",
+      "name": "Metta World Peace",
+      "old_id": 1889,
+      "old_owner": "Andre Miller",
+      "new_id": 1897,
+      "new_owner": "Metta World Peace"
+    },
+    {
+      "pos": "SF",
+      "name": "Detlef Schrempf",
+      "old_id": 245,
+      "old_owner": "Desconocido",
+      "new_id": 96,
+      "new_owner": "Detlef Schrempf"
+    },
+    {
+      "pos": "SF",
+      "name": "Bob Dandridge",
+      "old_id": 76508,
+      "old_owner": "Desconocido",
+      "new_id": 76500,
+      "new_owner": "Bob Dandridge"
+    },
+    {
+      "pos": "SF",
+      "name": "Purvis Short",
+      "old_id": 78144,
+      "old_owner": "Sam Sibert",
+      "new_id": 78139,
+      "new_owner": "Purvis Short"
+    },
+    {
+      "pos": "SF",
+      "name": "Jamal Mashburn",
+      "old_id": 228,
+      "old_owner": "Adam Keefe",
+      "new_id": 469,
+      "new_owner": "Jamal Mashburn"
+    },
+    {
+      "pos": "SF",
+      "name": "Keith Van Horn",
+      "old_id": 1501,
+      "old_owner": "Tim Thomas",
+      "new_id": 1496,
+      "new_owner": "Keith Van Horn"
+    },
+    {
+      "pos": "SF",
+      "name": "Cedric Maxwell",
+      "old_id": 77479,
+      "old_owner": "Ronald Martin",
+      "new_id": 77487,
+      "new_owner": "Cedric Maxwell"
+    },
+    {
+      "pos": "PF",
+      "name": "Kevin McHale",
+      "old_id": 77541,
+      "old_owner": "Kevin McKenna",
+      "new_id": 1450,
+      "new_owner": "Kevin McHale"
+    },
+    {
+      "pos": "PF",
+      "name": "Amare Stoudemire",
+      "old_id": 2406,
+      "old_owner": "Caron Butler",
+      "new_id": 2405,
+      "new_owner": "Amar'e Stoudemire"
+    },
+    {
+      "pos": "PF",
+      "name": "Spencer Haywood",
+      "old_id": 76988,
+      "old_owner": "Tom Heinsohn",
+      "new_id": 76981,
+      "new_owner": "Spencer Haywood"
+    },
+    {
+      "pos": "PF",
+      "name": "Dan Issel",
+      "old_id": 77085,
+      "old_owner": "Desconocido",
+      "new_id": 77097,
+      "new_owner": "Dan Issel"
+    },
+    {
+      "pos": "PF",
+      "name": "George McGinnis",
+      "old_id": 77526,
+      "old_owner": "Desconocido",
+      "new_id": 77532,
+      "new_owner": "George McGinnis"
+    },
+    {
+      "pos": "PF",
+      "name": "Shawn Kemp",
+      "old_id": 422,
+      "old_owner": "Avery Johnson",
+      "new_id": 431,
+      "new_owner": "Shawn Kemp"
+    },
+    {
+      "pos": "PF",
+      "name": "Elton Brand",
+      "old_id": 1883,
+      "old_owner": "Steve Francis",
+      "new_id": 1882,
+      "new_owner": "Elton Brand"
+    },
+    {
+      "pos": "PF",
+      "name": "Larry Nance",
+      "old_id": 77694,
+      "old_owner": "Craig Neal",
+      "new_id": 77685,
+      "new_owner": "Larry Nance"
+    },
+    {
+      "pos": "PF",
+      "name": "Terry Cummings",
+      "old_id": 76489,
+      "old_owner": "Armand Cure",
+      "new_id": 187,
+      "new_owner": "Terry Cummings"
+    },
+    {
+      "pos": "PF",
+      "name": "Bobby Jones",
+      "old_id": 77189,
+      "old_owner": "Major Jones",
+      "new_id": 77193,
+      "new_owner": "Bobby Jones"
+    },
+    {
+      "pos": "PF",
+      "name": "Dave DeBusschere",
+      "old_id": 76541,
+      "old_owner": "Paul Dawkins",
+      "new_id": 76545,
+      "new_owner": "Dave DeBusschere"
+    },
+    {
+      "pos": "PF",
+      "name": "Tom Chambers",
+      "old_id": 76367,
+      "old_owner": "Sid Catlett",
+      "new_id": 1472,
+      "new_owner": "Tom Chambers"
+    },
+    {
+      "pos": "PF",
+      "name": "Maurice Lucas",
+      "old_id": 77409,
+      "old_owner": "Jim Loscutoff",
+      "new_id": 77420,
+      "new_owner": "Maurice Lucas"
+    },
+    {
+      "pos": "PF",
+      "name": "Vern Mikkelsen",
+      "old_id": 77579,
+      "old_owner": "Chuck Mencel",
+      "new_id": 77593,
+      "new_owner": "Vern Mikkelsen"
+    },
+    {
+      "pos": "PF",
+      "name": "Buck Williams",
+      "old_id": 78553,
+      "old_owner": "Desconocido",
+      "new_id": 433,
+      "new_owner": "Buck Williams"
+    },
+    {
+      "pos": "PF",
+      "name": "Paul Silas",
+      "old_id": 78155,
+      "old_owner": "Desconocido",
+      "new_id": 78151,
+      "new_owner": "Paul Silas"
+    },
+    {
+      "pos": "PF",
+      "name": "Otis Thorpe",
+      "old_id": 15,
+      "old_owner": "Eric Piatkowski",
+      "new_id": 901,
+      "new_owner": "Otis Thorpe"
+    },
+    {
+      "pos": "PF",
+      "name": "P.J. Brown",
+      "old_id": 243,
+      "old_owner": "Aaron McKie",
+      "new_id": 136,
+      "new_owner": "P.J. Brown"
+    },
+    {
+      "pos": "C",
+      "name": "George Mikan",
+      "old_id": 77589,
+      "old_owner": "Zigmund Mihalik",
+      "new_id": 600012,
+      "new_owner": "George Mikan"
+    },
+    {
+      "pos": "C",
+      "name": "Willis Reed",
+      "old_id": 77934,
+      "old_owner": "Desconocido",
+      "new_id": 77929,
+      "new_owner": "Willis Reed"
+    },
+    {
+      "pos": "C",
+      "name": "Wes Unseld",
+      "old_id": 78393,
+      "old_owner": "Hal Uplinger",
+      "new_id": 78392,
+      "new_owner": "Wes Unseld"
+    },
+    {
+      "pos": "C",
+      "name": "Dave Cowens",
+      "old_id": 76468,
+      "old_owner": "Jim Creighton",
+      "new_id": 76462,
+      "new_owner": "Dave Cowens"
+    },
+    {
+      "pos": "C",
+      "name": "Nate Thurmond",
+      "old_id": 78332,
+      "old_owner": "Paul Thompson",
+      "new_id": 600001,
+      "new_owner": "Nate Thurmond"
+    },
+    {
+      "pos": "C",
+      "name": "Artis Gilmore",
+      "old_id": 76822,
+      "old_owner": "Mike Glenn",
+      "new_id": 600014,
+      "new_owner": "Artis Gilmore"
+    },
+    {
+      "pos": "C",
+      "name": "Bob Lanier",
+      "old_id": 77334,
+      "old_owner": "Mark Landsberger",
+      "new_id": 600005,
+      "new_owner": "Bob Lanier"
+    },
+    {
+      "pos": "C",
+      "name": "Robert Parish",
+      "old_id": 77796,
+      "old_owner": "Desconocido",
+      "new_id": 305,
+      "new_owner": "Robert Parish"
+    },
+    {
+      "pos": "C",
+      "name": "Alonzo Mourning",
+      "old_id": 162,
+      "old_owner": "Desconocido",
+      "new_id": 297,
+      "new_owner": "Alonzo Mourning"
+    },
+    {
+      "pos": "C",
+      "name": "Marc Gasol",
+      "old_id": 201180,
+      "old_owner": "Sun Yue",
+      "new_id": 201188,
+      "new_owner": "Marc Gasol"
+    },
+    {
+      "pos": "C",
+      "name": "Yao Ming",
+      "old_id": 2403,
+      "old_owner": "Nene",
+      "new_id": 2397,
+      "new_owner": "Yao Ming"
+    },
+    {
+      "pos": "C",
+      "name": "Dikembe Mutombo",
+      "old_id": 164,
+      "old_owner": "Chris Childs",
+      "new_id": 87,
+      "new_owner": "Dikembe Mutombo"
+    }
+  ],
+  "replacements": [
+    {
+      "pos": "PG",
+      "dup_name": "Nate Archibald",
+      "replaced_by": "Mookie Blaylock",
+      "id": 302,
+      "team": "Atlanta Hawks",
+      "rat": 85
+    },
+    {
+      "pos": "PG",
+      "dup_name": "Dave Bing",
+      "replaced_by": "Derek Fisher",
+      "id": 965,
+      "team": "L.A. Lakers",
+      "rat": 80
+    },
+    {
+      "pos": "PG",
+      "dup_name": "Muggsy Bogues",
+      "replaced_by": "Steve Francis",
+      "id": 1883,
+      "team": "Houston Rockets",
+      "rat": 86
+    },
+    {
+      "pos": "SG",
+      "dup_name": "Rolando Blackman",
+      "replaced_by": "Cuttino Mobley",
+      "id": 1749,
+      "team": "Houston Rockets",
+      "rat": 81
+    },
+    {
+      "pos": "SF",
+      "dup_name": "Mark Aguirre",
+      "replaced_by": "Robert Horry",
+      "id": 109,
+      "team": "Houston Rockets",
+      "rat": 82
+    },
+    {
+      "pos": "SF",
+      "dup_name": "Rick Barry",
+      "replaced_by": "John Salmons",
+      "id": 2422,
+      "team": "Sacramento Kings",
+      "rat": 80
+    },
+    {
+      "pos": "SF",
+      "dup_name": "Shane Battier",
+      "replaced_by": "Jeff Green",
+      "id": 201145,
+      "team": "Boston Celtics",
+      "rat": 80
+    },
+    {
+      "pos": "SF",
+      "dup_name": "Bruce Bowen",
+      "replaced_by": "Brandan Wright",
+      "id": 201148,
+      "team": "Dallas Mavericks",
+      "rat": 79
+    },
+    {
+      "pos": "C",
+      "dup_name": "Walt Bellamy",
+      "replaced_by": "Zydrunas Ilgauskas",
+      "id": 980,
+      "team": "Cleveland Cavaliers",
+      "rat": 82
+    }
+  ]
+}

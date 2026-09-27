@@ -91,7 +91,7 @@ known_nicknames = {
     clean("Byron Scott"): 78104,
     clean("Ron Harper"): 147,
     clean("John Starks"): 344,
-    clean("Dan Majerle"): 302,
+    clean("Dan Majerle"): 105,
     clean("Kerry Kittles"): 1507,
     clean("Michael Finley"): 714,
     clean("Jason Terry"): 1891,

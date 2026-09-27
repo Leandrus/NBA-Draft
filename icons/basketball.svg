@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <radialGradient id="ballShade" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#ff9d42" />
+      <stop offset="50%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#9a3412" />
+    </radialGradient>
+    <filter id="ballGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <!-- Ball Base Circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#ballShade)" stroke="#271206" stroke-width="2" filter="url(#ballGlow)"/>
+  
+  <!-- Ball Seams / Ribs -->
+  <!-- Horizontal seam -->
+  <path d="M2 32h60" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Vertical seam -->
+  <path d="M32 2v60" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Left curved seam -->
+  <path d="M11 6C23 18 23 46 11 58" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Right curved seam -->
+  <path d="M53 6C41 18 41 46 53 58" stroke="#1c0d02" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  
+  <!-- Subtle Top Highlight -->
+  <ellipse cx="26" cy="14" rx="14" ry="6" fill="#ffffff" opacity="0.2" transform="rotate(-20 26 14)"/>
+</svg>

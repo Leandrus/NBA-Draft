@@ -70,7 +70,7 @@ const App = {
         this.updateAudioButtonState();
         this.updateFullscreenButtonState();
         this.updateDbButtonVisibility();
-        console.log(`🏀 Ultimate Draft v${this.version} Inicializado!`);
+        console.log(`[Ultimate Draft] v${this.version} Inicializado!`);
     },
 
     bindEvents() {
@@ -99,7 +99,7 @@ const App = {
     // Dynamic Team Colors and Fallback Vector Profile
     getFallbackAvatar(playerName, teamName, pos) {
         const parts = playerName.trim().split(' ');
-        const initials = parts.length > 1 
+        const initials = parts.length > 1
             ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
             : parts[0].substring(0, 2).toUpperCase();
 
@@ -248,8 +248,8 @@ const App = {
         const badgeEl = document.getElementById('turn-announcement-badge');
 
         if (badgeEl) {
-            badgeEl.innerText = `JUGADOR ${playerNum}`;
-            badgeEl.className = playerNum === 1 
+            badgeEl.innerText = `EQUIPO ${playerNum}`;
+            badgeEl.className = playerNum === 1
                 ? 'px-4 py-1.5 rounded-full text-xl font-bebas nba-gradient-red border border-white/20'
                 : 'px-4 py-1.5 rounded-full text-xl font-bebas nba-gradient-blue border border-white/20';
         }
@@ -258,8 +258,8 @@ const App = {
         }
         if (teamEl) {
             teamEl.innerText = teamName;
-            teamEl.className = playerNum === 1 
-                ? 'text-4xl md:text-6xl font-bebas text-[var(--nba-red)]' 
+            teamEl.className = playerNum === 1
+                ? 'text-4xl md:text-6xl font-bebas text-[var(--nba-red)]'
                 : 'text-4xl md:text-6xl font-bebas text-[var(--nba-blue)]';
         }
 
@@ -301,10 +301,10 @@ const App = {
 
         if (turnTitle) turnTitle.innerText = `Turno: ${currentTeam.name}`;
         if (posSubtitle) posSubtitle.innerText = `Selecciona tu ${posNames[currentPosKey] || currentPosKey.toUpperCase()} (Ronda ${d.currentRound + 1} de ${d.positions.length})`;
-        
+
         if (pBadge) {
-            pBadge.innerText = isPlayer1 ? 'P1' : 'P2';
-            pBadge.className = isPlayer1 
+            pBadge.innerText = isPlayer1 ? 'EQUIPO 1' : 'EQUIPO 2';
+            pBadge.className = isPlayer1
                 ? 'px-3 py-1 rounded-full text-base font-bebas nba-gradient-red border border-white/20'
                 : 'px-3 py-1 rounded-full text-base font-bebas nba-gradient-blue border border-white/20';
         }
@@ -317,10 +317,10 @@ const App = {
             scoutBtn.classList.remove('hidden');
             const roundScouted = d.scoutUsedInRound[playerKey][d.currentRound];
             if (roundScouted) {
-                scoutBtn.innerText = "Scout Usado en Posición";
+                scoutBtn.innerHTML = "<span>Scout Usado en Posición</span>";
                 scoutBtn.disabled = true;
             } else {
-                scoutBtn.innerText = "🔍 Scout (-5% Rendimiento)";
+                scoutBtn.innerHTML = '<img src="icons/search.svg" class="icon-svg w-5 h-5 inline-block" alt="Scout"> <span>Scout (-5% Rendimiento)</span>';
                 scoutBtn.disabled = false;
             }
         } else {
@@ -403,7 +403,7 @@ const App = {
     applyScout() {
         const d = this.state.draft;
         const playerKey = d.currentPlayer === 1 ? 'p1' : 'p2';
-        
+
         // Mark scout used for this specific position round
         d.scoutUsedInRound[playerKey][d.currentRound] = true;
         d.scoutPenalties[playerKey] = true;
@@ -448,7 +448,7 @@ const App = {
         const initialSrc = `${this.CDN_URL}${player.id}.png`;
         imgBox.innerHTML = `
             <img src="${initialSrc}" 
-                 class="w-full h-full object-contain filter drop-shadow-lg" 
+                 class="w-full h-full object-cover filter drop-shadow-lg" 
                  alt="${player.n}"
                  data-player-id="${player.id}"
                  onerror="App.handleImageError(this, '${player.n.replace(/'/g, "\\'")}', '${player.t}', '${pos}')">
@@ -651,7 +651,8 @@ const App = {
         const logContainer = document.getElementById('sim-log');
         const div = document.createElement('div');
         div.className = `log-entry ${playItem.team === 'p1' ? 'team-p1' : 'team-p2'}`;
-        div.innerText = playItem.msg;
+        const iconName = playItem.icon || 'basketball';
+        div.innerHTML = `<img src="icons/${iconName}.svg" class="icon-svg w-4 h-4 object-contain inline-block flex-shrink-0" alt=""> <span>${playItem.msg}</span>`;
 
         logContainer.prepend(div);
         if (logContainer.childNodes.length > 10) {
@@ -731,7 +732,7 @@ const App = {
         document.getElementById('mvp-stats-line').innerText = `${mvp.stats.pts} PTS | ${mvp.stats.reb} REB | ${mvp.stats.ast} AST | ${mvp.stats.stl} ROB | ${mvp.stats.blk} TAP`;
         document.getElementById('mvp-img-box').innerHTML = `
             <img src="${this.CDN_URL}${mvp.id}.png" 
-                 class="w-full h-full object-contain filter drop-shadow" 
+                 class="w-full h-full object-cover filter drop-shadow" 
                  data-player-id="${mvp.id}"
                  onerror="App.handleImageError(this, '${mvp.n.replace(/'/g, "\\'")}', '${mvp.t}', '')">
         `;
@@ -759,8 +760,10 @@ const App = {
                 const champName = p1Wins >= limit ? this.state.teams.p1.name : this.state.teams.p2.name;
                 controls.innerHTML = `
                     <div class="text-center space-y-1">
-                        <div class="text-2xl sm:text-3xl font-bebas text-[var(--nba-gold)] animate-pulse">
-                            🏆 ¡${champName} ES EL CAMPEÓN DE LAS FINALES! 🏆
+                        <div class="text-2xl sm:text-3xl font-bebas text-[var(--nba-gold)] flex items-center justify-center gap-2 animate-pulse">
+                            <img src="icons/trophy.svg" class="icon-svg w-7 h-7 sm:w-9 sm:h-9 object-contain" alt="Trofeo">
+                            <span>¡${champName} ES EL CAMPEÓN DE LAS FINALES!</span>
+                            <img src="icons/trophy.svg" class="icon-svg w-7 h-7 sm:w-9 sm:h-9 object-contain" alt="Trofeo">
                         </div>
                         <p class="text-xs sm:text-sm text-gray-300 font-bebas">Serie Final: ${p1Wins} - ${p2Wins}</p>
                         <div class="flex gap-3 justify-center pt-0.5">
@@ -811,8 +814,8 @@ const App = {
             const fgPct = p.stats.fga > 0 ? Math.round((p.stats.fgm / p.stats.fga) * 100) : 0;
             const isMvp = p.id === mvpId;
             const tr = document.createElement('tr');
-            tr.className = isMvp 
-                ? 'bg-[var(--nba-gold)]/20 font-bold border-l-4 border-[var(--nba-gold)]' 
+            tr.className = isMvp
+                ? 'bg-[var(--nba-gold)]/20 font-bold border-l-4 border-[var(--nba-gold)]'
                 : 'border-b border-gray-800/80 hover:bg-white/5';
 
             tr.innerHTML = `
@@ -821,7 +824,7 @@ const App = {
                          class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-800 object-cover flex-shrink-0" 
                          data-player-id="${p.id}"
                          onerror="App.handleImageError(this, '${p.n.replace(/'/g, "\\'")}', '${p.t}', '')">
-                    <span class="text-[11px] sm:text-xs truncate max-w-[80px] sm:max-w-[105px]">${p.n}</span> ${isMvp ? '⭐' : ''}
+                    <span class="text-[11px] sm:text-xs truncate max-w-[80px] sm:max-w-[105px]">${p.n}</span> ${isMvp ? '<img src="icons/star.svg" class="icon-svg w-3.5 h-3.5 object-contain inline-block ml-1" alt="MVP" title="MVP">' : ''}
                 </td>
                 <td class="py-0.5 px-1 font-bold text-white text-[11px] sm:text-xs">${p.stats.pts}</td>
                 <td class="py-0.5 px-1 text-[11px] sm:text-xs">${p.stats.reb}</td>
@@ -879,7 +882,7 @@ const App = {
 
         if (this.state.dbFilter.search) {
             const q = this.state.dbFilter.search;
-            allPlayers = allPlayers.filter(p => 
+            allPlayers = allPlayers.filter(p =>
                 p.n.toLowerCase().includes(q) || p.t.toLowerCase().includes(q)
             );
         }
@@ -942,17 +945,18 @@ const App = {
     updateAudioButtonState() {
         const btn = document.getElementById('audio-toggle-btn');
         if (!btn || !window.audio) return;
-        btn.innerHTML = window.audio.isMuted ? '🔇' : '🔊';
-        btn.title = window.audio.isMuted ? "Activar Sonido" : "Silenciar Sonido";
+        const isMuted = window.audio.isMuted;
+        btn.innerHTML = `<img src="icons/${isMuted ? 'volume-mute' : 'volume-up'}.svg" class="icon-svg w-4 h-4 sm:w-5 sm:h-5 object-contain" alt="${isMuted ? 'Silenciado' : 'Sonido'}">`;
+        btn.title = isMuted ? "Activar Sonido" : "Silenciar Sonido";
     },
 
     toggleFullscreen() {
         if (window.audio) window.audio.playClick();
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
+            document.documentElement.requestFullscreen().catch(() => { });
         } else {
             if (document.exitFullscreen) {
-                document.exitFullscreen().catch(() => {});
+                document.exitFullscreen().catch(() => { });
             }
         }
     },
@@ -961,7 +965,7 @@ const App = {
         const btn = document.getElementById('fullscreen-btn');
         if (!btn) return;
         const isFS = !!document.fullscreenElement;
-        btn.innerHTML = isFS ? '🗗' : '⛶';
+        btn.innerHTML = `<img src="icons/${isFS ? 'fullscreen-exit' : 'fullscreen'}.svg" class="icon-svg w-4 h-4 sm:w-5 sm:h-5 object-contain" alt="${isFS ? 'Salir de Pantalla Completa' : 'Pantalla Completa'}">`;
         btn.title = isFS ? "Salir de Pantalla Completa" : "Pantalla Completa";
     }
 };

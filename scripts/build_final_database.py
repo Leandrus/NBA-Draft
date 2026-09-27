@@ -119,7 +119,7 @@ curated_sg = [
     (78104, "Byron Scott", "Lakers", 88, 85, 48, 35, 65, 75, 86),
     (147, "Ron Harper", "Bulls", 86, 75, 65, 60, 75, 85, 87),
     (344, "John Starks", "Knicks", 86, 85, 48, 35, 72, 78, 86),
-    (302, "Dan Majerle", "Suns", 85, 88, 65, 45, 68, 78, 86),
+    (105, "Dan Majerle", "Suns", 85, 88, 65, 45, 68, 78, 86),
     (1507, "Kerry Kittles", "Nets", 86, 84, 55, 45, 65, 82, 85),
     (714, "Michael Finley", "Mavericks", 89, 85, 65, 45, 68, 72, 87),
     (1891, "Jason Terry", "Mavericks", 86, 88, 48, 35, 75, 75, 86),
