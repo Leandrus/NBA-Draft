@@ -1,11 +1,11 @@
 /**
- * NBA Ultimate Draft - Main Application Controller (v2.1 Pro)
- * Handles screen routing, team customization, drafting flow, scout mechanics,
+ * Ultimate Draft - Controlador Principal de la Aplicación (v2.2 Pro)
+ * Gestiona pantallas, personalización de equipos, flujo de draft, mecánicas de scout,
  * simulation integration, box score rendering, fullscreen, and database browser.
  */
 
 const App = {
-    version: "2.1 Pro",
+    version: "2.2 Pro",
     state: {
         screen: 'menu',
         mode: 'normal', // normal, libre, 3x3, finales
@@ -70,7 +70,7 @@ const App = {
         this.updateAudioButtonState();
         this.updateFullscreenButtonState();
         this.updateDbButtonVisibility();
-        console.log(`🏀 NBA Ultimate Draft Pro v${this.version} Initialized!`);
+        console.log(`🏀 Ultimate Draft v${this.version} Inicializado!`);
     },
 
     bindEvents() {

@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>NBA Ultimate Draft Pro v2.1 - Simulador Competitivo de Baloncesto</title>
+    <title>Ultimate Draft v2.2 - Simulador Competitivo de Baloncesto</title>
     <meta name="description" content="Simulador web competitivo de baloncesto para dos jugadores locales. Crea tu quinteto ideal mediante Draft de cartas aleatorias y enfréntate con 1,000 jugadores reales y estadísticas históricas de la NBA.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +26,7 @@
     <header class="app-header w-full px-4 py-2.5 flex justify-between items-center z-30 flex-shrink-0">
         <div class="flex items-center gap-2 cursor-pointer" onclick="App.changeScreen('menu')">
             <span class="text-2xl md:text-3xl font-bebas tracking-wider text-white select-none">
-                NBA <span class="text-[var(--nba-red)]">ULTIMATE</span> DRAFT <span class="text-[var(--nba-gold)]">PRO</span>
+                <span class="text-[var(--nba-red)]">ULTIMATE</span> <span class="text-[var(--nba-gold)]">DRAFT</span>
             </span>
         </div>
         
@@ -67,8 +70,7 @@
                     Simulador Competitivo 2 Jugadores • 1,000 Jugadores Reales NBA
                 </span>
                 <h1 class="text-5xl sm:text-7xl md:text-8xl font-bebas leading-none tracking-tight">
-                    NBA <span class="text-[var(--nba-red)]">ULTIMATE</span><br>
-                    DRAFT <span class="text-[var(--nba-gold)]">PRO</span>
+                    <span class="text-[var(--nba-red)]">ULTIMATE</span> <span class="text-[var(--nba-gold)]">DRAFT</span>
                 </h1>
                 <p class="text-gray-400 text-xs sm:text-base max-w-lg mx-auto">
                     Arma tu quinteto de ensueño seleccionando cartas de jugadores históricos y actuales. ¡Compite en partidos rápidos y dinámicos!
@@ -102,11 +104,11 @@
             </div>
 
             <div class="flex items-center gap-3 text-xs text-gray-500 pt-2">
-                <span class="text-[var(--nba-gold)] font-bold">v2.1 Pro</span>
+                <span class="text-[var(--nba-gold)] font-bold">v2.2 Pro</span>
                 <span>•</span>
                 <span>Soporte Smart TV / D-Pad</span>
                 <span>•</span>
-                <span>Audio Sintetizado WebAPI</span>
+                <span>Audio WebAPI & BGM</span>
             </div>
         </section>
 
@@ -196,9 +198,9 @@
         <section id="screen-matchup" class="hidden flex-1 flex flex-col items-center justify-center space-y-6 my-auto py-4">
             <div class="text-center space-y-1">
                 <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-300">
-                    Matchup Listo • Arena Preparada
+                    Enfrentamiento Listo • Cancha Preparada
                 </span>
-                <h2 class="text-4xl sm:text-6xl font-bebas">ARENA READY</h2>
+                <h2 class="text-4xl sm:text-6xl font-bebas">CANCHA LISTA</h2>
             </div>
 
             <div class="w-full max-w-4xl flex flex-col md:flex-row justify-around items-center gap-6 glass-panel p-6">
@@ -231,7 +233,7 @@
             <button id="tipoff-btn" 
                     onclick="App.startSimulation()" 
                     class="btn-nba btn-nba-gold px-12 sm:px-16 py-4 sm:py-5 text-3xl sm:text-5xl rounded-2xl shadow-2xl">
-                🏀 TIP OFF 🏀
+                🏀 SALTO INICIAL 🏀
             </button>
         </section>
 
@@ -331,7 +333,7 @@
                 <!-- Historial de Jugadas (Play by Play - 1 col) -->
                 <div class="lg:col-span-1 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
                     <h6 class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
-                        HISTORIAL DE JUEGO (PLAY BY PLAY)
+                        HISTORIAL DE JUGADAS EN VIVO
                     </h6>
                     <div id="sim-log" class="sim-log-container flex-1 overflow-y-auto pr-1 min-h-0">
                         <!-- Entradas de log dinámicas -->
@@ -370,7 +372,7 @@
                 <div class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-red)]">
                     <div class="flex justify-between items-center mb-1 border-b border-red-900/60 pb-0.5 flex-shrink-0">
                         <h4 class="font-bebas text-base sm:text-lg text-[var(--nba-red)]">
-                            BOX SCORE - <span id="res-t1-name"></span>
+                            ESTADÍSTICAS - <span id="res-t1-name"></span>
                         </h4>
                         <span class="text-[10px] uppercase font-bold text-red-400">P1</span>
                     </div>
@@ -382,7 +384,7 @@
                 <div class="glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden border-t-2 border-t-[var(--nba-blue)]">
                     <div class="flex justify-between items-center mb-1 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
                         <h4 class="font-bebas text-base sm:text-lg text-[var(--nba-blue)]">
-                            BOX SCORE - <span id="res-t2-name"></span>
+                            ESTADÍSTICAS - <span id="res-t2-name"></span>
                         </h4>
                         <span class="text-[10px] uppercase font-bold text-blue-400">P2</span>
                     </div>

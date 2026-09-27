@@ -1,8 +1,8 @@
-# **PRD: NBA Ultimate Draft \- Simulador Competitivo de Baloncesto**
+# **PRD: Ultimate Draft - Simulador Competitivo de Baloncesto**
 
 ## **1\. Visión General del Producto**
 
-**NBA Ultimate Draft** es un simulador web interactivo diseñado para dos jugadores locales que puedan jugar sin internet. El objetivo es armar un quinteto ideal (o un tirador en modo especial) mediante una mecánica de "Draft" de cartas aleatorias y enfrentar a los equipos en una simulación de alta velocidad basada en estadísticas reales de jugadores históricos y actuales de la NBA.
+**Ultimate Draft** es un simulador web interactivo diseñado para dos jugadores locales que puedan jugar sin internet. El objetivo es armar un quinteto ideal (o un tirador en modo especial) mediante una mecánica de "Draft" de cartas aleatorias y enfrentar a los equipos en una simulación de alta velocidad basada en estadísticas reales de jugadores históricos y actuales de la NBA.
 
 ## **2\. Experiencia de Usuario (UX) y Flujo del Juego**
 
@@ -16,11 +16,11 @@ El juego debe seguir estrictamente este orden de pantallas:
 2. **Configuración de Equipos:** Pantalla para ingresar los nombres del Equipo 1 y Equipo 2\.  
 3. **Fase de Draft (Jugador 1):** Selección de 5 posiciones (C, PF, SF, SG, PG).  
 4. **Fase de Draft (Jugador 2):** Repetición del proceso para el segundo jugador.  
-5. **Arena Ready (Matchup):** Visualización de ambos rosters, sus ratings calculados y botón de "Tip Off".  
-6. **Simulación en Vivo:** Cronómetro fluido, marcador dinámico, historial de jugadas (log) y tablas de estadísticas.  
-7. **Resultados Finales:** Resultado final del partido, MVP del partido y Box Score (Estadísticas) detallado de cada jugador.  
-8. **Resultados Finales de Serie:** Mostrar al equipo campeón al ganar los 4 partidos de los 7 en el modo Finales y mostrar el MVP del partido y de la serie completa.  
-9. **Settings**: Sección para mostrar la lista de jugadores en la BD,con todos sus ratings y ordenados por posición de juego y alfabéticamente.
+5. **Cancha Lista (Enfrentamiento):** Visualización de ambas plantillas, sus ratings calculados y botón de "Salto Inicial".  
+6. **Simulación en Vivo:** Cronómetro fluido, marcador dinámico, historial de jugadas y tablas de estadísticas.  
+7. **Resultados Finales:** Resultado final del partido, MVP del partido y Estadísticas (Box Score) detalladas de cada jugador.  
+8. **Resultados Finales de Serie:** Mostrar al equipo campeón al ganar 4 partidos de los 7 en el modo Finales y mostrar el MVP del partido y de la serie completa.  
+9. **Base de Datos / Ajustes:** Sección para consultar el catálogo de 1,000 jugadores con todos sus ratings, ordenados por posición de juego y alfabéticamente.
 
 ## **3\. Modos de Juego**
 

@@ -1,6 +1,6 @@
 /**
- * NBA Ultimate Draft - Simulation Engine
- * Complies strictly with PRD Section 5:
+ * Ultimate Draft - Motor de Simulación
+ * Cumple con la especificación del PRD:
  * - 30 real seconds per quarter.
  * - 12:00 -> 0:00 NBA time descending fluidly.
  * - 3 real seconds pause between quarters with intermediate score modal.

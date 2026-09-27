@@ -1,6 +1,6 @@
 /**
- * NBA Ultimate Draft - Sound Effects & Music Engine
- * Combines procedural Web Audio API effects with continuous BGM & Victory audio tracks.
+ * Ultimate Draft - Motor de Efectos de Sonido y Música
+ * Combina efectos procedurales con Web Audio API y pistas de BGM continuo y fanfarria de victoria.
  */
 
 class SoundEngine {

@@ -1,8 +1,7 @@
 /**
- * NBA Ultimate Draft - Spatial Navigation Engine
- * Provides D-Pad / Arrow key directional navigation for Smart TVs,
- * Gamepads, and keyboard accessibility.
- * Built with strict deadzones, neutral stick locks, and zero auto-polling drift.
+ * Ultimate Draft - Motor de Navegación Espacial
+ * Proporciona navegación direccional con D-Pad / Teclas de flecha para Smart TVs,
+ * Gamepads y accesibilidad por teclado.
  */
 
 class SpatialNavigation {

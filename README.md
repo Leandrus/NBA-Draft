@@ -1,10 +1,10 @@
-# 🏀 NBA Ultimate Draft Pro
+# 🏀 Ultimate Draft
 
-[![NBA](https://img.shields.io/badge/NBA-Official%20IDs-17408B.svg?style=for-the-badge&logo=nba)](https://www.nba.com)
-[![Players](https://img.shields.io/badge/Players-1%2C000%20Real%20Athletes-C9082A.svg?style=for-the-badge)](data/players.json)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-f1c40f.svg?style=for-the-badge)](#)
-[![Platforms](https://img.shields.io/badge/Platforms-Smart%20TV%20%7C%20PC%20%7C%20Mobile-blueviolet.svg?style=for-the-badge)](#)
-[![Offline](https://img.shields.io/badge/Offline-100%25%20Functional-success.svg?style=for-the-badge)](#)
+[![NBA](https://img.shields.io/badge/NBA-Oficial-17408B.svg?style=for-the-badge&logo=nba)](https://www.nba.com)
+[![Jugadores](https://img.shields.io/badge/Jugadores-1%2C000%20Atletas%20Reales-C9082A.svg?style=for-the-badge)](data/players.json)
+[![Estado](https://img.shields.io/badge/Estado-Producci%C3%B3n%20Lista-f1c40f.svg?style=for-the-badge)](#)
+[![Plataformas](https://img.shields.io/badge/Plataformas-Smart%20TV%20%7C%20PC%20%7C%20M%C3%B3vil-blueviolet.svg?style=for-the-badge)](#)
+[![Offline](https://img.shields.io/badge/Offline-100%25%20Funcional-success.svg?style=for-the-badge)](#)
 
 > **Simulador web interactivo y competitivo de baloncesto para dos jugadores locales.**  
 > Selecciona a tus leyendas y estrellas favoritas mediante mecánicas de **Draft con cartas aleatorias**, personaliza tus franquicias y enfréntate en una **simulación a alta velocidad basada en estadísticas reales de la NBA**.
@@ -13,13 +13,13 @@
 
 ## 📸 Vista General y Captura de Pantallas
 
-| Menú Principal | Fase de Draft | Arena Ready (Matchup) |
+| Menú Principal | Fase de Draft | Cancha Lista (Enfrentamiento) |
 | :---: | :---: | :---: |
-| 4 modos de juego con audio integrado | 20 cartas aleatorias por posición | Comparativa de rosters y ratings OVR |
+| 4 modos de juego con audio integrado | 20 cartas aleatorias por posición | Comparativa de plantillas y ratings OVR |
 
-| Simulación en Vivo | Resultados & Box Score | Base de Datos (1,000 Jugadores) |
+| Simulación en Vivo | Resultados & Estadísticas | Base de Datos (1,000 Jugadores) |
 | :---: | :---: | :---: |
-| Reloj NBA ultra fluido y marcador dinámico | MVP del partido y estadísticas completas | Filtros por posición, búsqueda y ordenamiento |
+| Reloj ultra fluido y marcador dinámico | MVP del partido y estadísticas completas | Filtros por posición, búsqueda y ordenamiento |
 
 ---
 
@@ -56,16 +56,17 @@
 - **Play-by-Play en Vivo**: Registro dinámico de jugadas con emojis (🏀 Canastas, 👐 Rebotes, 👟 Asistencias, 🚫 Bloqueos, 🥷 Robos) resaltados con el color de cada franquicia.
 - **Box Score Detallado**: Tablas completas con PTS, REB, AST, ROB, TAP, TC y FG%.
 
-### 4. 🔊 Motor de Audio Web Audio API (100% Offline)
-- Sintetizador de sonido puro sin descargas externas de archivos `.mp3` o `.wav`.
-- Efectos incluidos:
+### 4. 🔊 Motor de Audio y Música (Web Audio API & BGM)
+- **Música de fondo continua (`music_bkg_loop.mp3`)**: Bucle infinito inmersivo con atenuación inteligente (*ducking*) durante celebraciones.
+- **Fanfarria de victoria y MVP (`music_victory.mp3`)**: Sonido especial de celebración reproducido una única vez al coronar al equipo ganador y MVP.
+- **Efectos procedurales sintetizados en tiempo real (Web Audio API)**:
   - 📯 Bocina de arena (buzzer) en finales de cuarto y partido.
-  - 💨 Sonido realista de *swish* de red al anotar canastas.
-  - 🎺 Silbato arbitral en el Tip-Off y faltas.
-  - 🛡️ Sonidos de impacto para taponazos y robos.
-  - 👏 Ovación y clamor del público en victorias y MVP.
+  - 💨 Sonido realista de *swish* de red al encestar.
+  - 🎺 Silbato arbitral en el salto inicial y faltas.
+  - 🛡️ Sonidos de impacto para taponazos y robos defensivos.
+  - 👏 Ovación y clamor del público en victorias y momentos MVP.
   - 🃏 Sonido de volteo de carta en el draft.
-  - 🔕 Botón de silenciar/activar audio con memoria en `localStorage`.
+  - 🔕 Control de silencio con memoria en `localStorage`.
 
 ### 5. 📺 Navegación Espacial Multi-Dispositivo (10ft Smart TV, PC y Móvil)
 - **Smart TVs y Consolas**: Compatible con mandos direccionales (D-Pad: Arriba, Abajo, Izquierda, Derecha, Enter/OK, Back/Escape) y Gamepads USB/Bluetooth (estándar HTML5 Gamepad API). Foco visual de alto contraste dorado.
@@ -79,22 +80,26 @@
 El código está modularizado y desacoplado para máxima mantenibilidad y rendimiento:
 
 ```text
-NBA-Draft/
+Ultimate-Draft/
+├── audio/
+│   ├── music_bkg_loop.mp3   # Música de fondo continua en bucle infinito
+│   └── music_victory.mp3    # Fanfarria de victoria y coronación MVP
 ├── css/
-│   └── style.css            # Sistema de diseño, glassmorphism, temas NBA y animaciones
+│   └── style.css            # Sistema de diseño, glassmorphism, paleta NBA y animaciones
 ├── data/
 │   └── players.json         # Base de datos en JSON con 1,000 jugadores (200 x posición)
 ├── js/
 │   ├── data/
 │   │   └── players.js       # Módulo exportable de la base de datos de jugadores
 │   ├── app.js               # Controlador principal, ciclo de vida, draft y UI routing
-│   ├── audio.js             # Motor de efectos de sonido sintetizados (Web Audio API)
+│   ├── audio.js             # Motor de efectos de sonido y pistas musicales
 │   ├── simulation.js        # Motor de simulación en vivo, cuartos, probabilidades y MVP
 │   └── spatial-nav.js       # Sistema de navegación espacial para Smart TVs y Gamepads
 ├── scripts/
 │   ├── build_final_database.py   # Pipeline ETL para calibrar y exportar la base de datos
 │   ├── download_nba_players.py   # Descarga e indexación de IDs oficiales NBA
 │   └── scrape_wiki_positions.py  # Clasificación de jugadores históricos por categoría
+├── favicon.svg              # Icono vectorial de baloncesto para el navegador
 ├── index.html               # Interfaz semántica estructurada y accesible
 ├── PRD - NBA Ultimate Draft Pro.md  # Documento de requerimientos del producto
 └── README.md                # Documentación oficial del proyecto
