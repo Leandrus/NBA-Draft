@@ -1,14 +1,18 @@
 /**
- * NBA Ultimate Draft - Sound Effects Engine (Web Audio API)
- * 100% self-contained synthesized audio without external mp3 dependencies.
- * Works completely offline!
+ * NBA Ultimate Draft - Sound Effects & Music Engine
+ * Combines procedural Web Audio API effects with continuous BGM & Victory audio tracks.
  */
 
 class SoundEngine {
     constructor() {
         this.ctx = null;
         this.isMuted = false;
-        
+        this.bgMusicVolume = 0.35;
+        this.victoryVolume = 0.8;
+        this._lastVictoryPlay = 0;
+        this._wasPlayingBeforeHide = false;
+        this.bgMusicStarted = false;
+
         // Restore mute preference
         try {
             const saved = localStorage.getItem('nba_draft_muted');
@@ -18,6 +22,72 @@ class SoundEngine {
         } catch (e) {
             console.warn("Storage not accessible for audio state", e);
         }
+
+        // Initialize audio elements for music
+        this.initAudioTracks();
+        this.setupAutoplayTriggers();
+    }
+
+    initAudioTracks() {
+        try {
+            // Background music loop
+            this.bgMusic = new Audio('audio/music_bkg_loop.mp3');
+            this.bgMusic.loop = true;
+            this.bgMusic.volume = this.bgMusicVolume;
+            this.bgMusic.preload = 'auto';
+
+            // Victory sound for winner & MVP
+            this.victoryAudio = new Audio('audio/music_victory.mp3');
+            this.victoryAudio.loop = false;
+            this.victoryAudio.volume = this.victoryVolume;
+            this.victoryAudio.preload = 'auto';
+
+            if (this.isMuted) {
+                this.bgMusic.muted = true;
+                this.victoryAudio.muted = true;
+            }
+        } catch (e) {
+            console.warn("Error creating Audio elements:", e);
+        }
+    }
+
+    setupAutoplayTriggers() {
+        // Try autoplaying immediately
+        if (!this.isMuted) {
+            this.playBgMusic();
+        }
+
+        // If browser blocks autoplay, start on first interaction
+        const startAudioOnInteraction = () => {
+            this.init();
+            if (!this.isMuted && (!this.bgMusic || this.bgMusic.paused)) {
+                this.playBgMusic();
+            }
+            window.removeEventListener('click', startAudioOnInteraction);
+            window.removeEventListener('keydown', startAudioOnInteraction);
+            window.removeEventListener('touchstart', startAudioOnInteraction);
+            window.removeEventListener('pointerdown', startAudioOnInteraction);
+        };
+
+        window.addEventListener('click', startAudioOnInteraction, { passive: true });
+        window.addEventListener('keydown', startAudioOnInteraction, { passive: true });
+        window.addEventListener('touchstart', startAudioOnInteraction, { passive: true });
+        window.addEventListener('pointerdown', startAudioOnInteraction, { passive: true });
+
+        // Pause/resume on tab visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (this.bgMusic && !this.bgMusic.paused) {
+                    this._wasPlayingBeforeHide = true;
+                    this.bgMusic.pause();
+                }
+            } else {
+                if (this._wasPlayingBeforeHide && !this.isMuted) {
+                    this._wasPlayingBeforeHide = false;
+                    this.playBgMusic();
+                }
+            }
+        });
     }
 
     init() {
@@ -30,6 +100,65 @@ class SoundEngine {
         if (this.ctx && this.ctx.state === 'suspended') {
             this.ctx.resume();
         }
+
+        if (!this.isMuted && this.bgMusic && this.bgMusic.paused) {
+            this.playBgMusic();
+        }
+    }
+
+    playBgMusic() {
+        if (this.isMuted || !this.bgMusic) return;
+        this.bgMusic.muted = false;
+        const playPromise = this.bgMusic.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                this.bgMusicStarted = true;
+            }).catch(() => {
+                // Autoplay was blocked by browser; will retry on first user interaction
+            });
+        }
+    }
+
+    pauseBgMusic() {
+        if (this.bgMusic) {
+            this.bgMusic.pause();
+        }
+    }
+
+    playVictory() {
+        if (this.isMuted || !this.victoryAudio) return;
+
+        // Prevent rapid repeated triggers
+        const now = Date.now();
+        if (now - this._lastVictoryPlay < 2500) {
+            return;
+        }
+        this._lastVictoryPlay = now;
+
+        try {
+            // Lower background music volume slightly during victory celebration
+            if (this.bgMusic && !this.bgMusic.paused) {
+                this.bgMusic.volume = this.bgMusicVolume * 0.25;
+            }
+
+            this.victoryAudio.currentTime = 0;
+            this.victoryAudio.muted = false;
+            const playPromise = this.victoryAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("Victory audio playback blocked:", e);
+                });
+            }
+
+            // Restore background music volume when victory audio finishes
+            this.victoryAudio.onended = () => {
+                if (this.bgMusic && !this.isMuted) {
+                    this.bgMusic.volume = this.bgMusicVolume;
+                }
+            };
+        } catch (e) {
+            console.warn("Could not play victory sound:", e);
+        }
     }
 
     toggleMute() {
@@ -37,6 +166,23 @@ class SoundEngine {
         try {
             localStorage.setItem('nba_draft_muted', this.isMuted.toString());
         } catch (e) {}
+
+        if (this.bgMusic) {
+            this.bgMusic.muted = this.isMuted;
+            if (this.isMuted) {
+                this.bgMusic.pause();
+            } else {
+                this.playBgMusic();
+            }
+        }
+
+        if (this.victoryAudio) {
+            this.victoryAudio.muted = this.isMuted;
+            if (this.isMuted) {
+                this.victoryAudio.pause();
+            }
+        }
+
         return this.isMuted;
     }
 

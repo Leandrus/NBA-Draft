@@ -702,6 +702,9 @@ const App = {
 
     onSimFinish(data) {
         this.changeScreen('results');
+        if (window.audio) {
+            window.audio.playVictory();
+        }
 
         const winnerKey = data.winner;
         this.state.teams[winnerKey].seriesWins++;

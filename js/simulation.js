@@ -258,6 +258,7 @@ class SimulationEngine {
         if (window.audio) {
             window.audio.playCheer();
             setTimeout(() => window.audio.playFanfare(), 300);
+            window.audio.playVictory();
         }
 
         this.onFinish({
