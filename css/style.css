@@ -744,6 +744,14 @@ body.is-tv .card-draft:focus {
     animation: consentSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+#consent-banner.hidden,
+#consent-modal.hidden,
+#legal-modal.hidden,
+.consent-banner.hidden,
+.modal-overlay.hidden {
+    display: none !important;
+}
+
 @keyframes consentSlideUp {
     from {
         opacity: 0;
