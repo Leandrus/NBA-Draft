@@ -156,6 +156,8 @@ const ConsentManager = {
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
         this.switchLegalTab(tabName);
+        const container = document.querySelector('.legal-content-container');
+        if (container) container.scrollTop = 0;
     },
 
     closeLegalModal() {
@@ -188,6 +190,8 @@ const ConsentManager = {
                 }
             }
         });
+        const container = document.querySelector('.legal-content-container');
+        if (container) container.scrollTop = 0;
     }
 };
 
