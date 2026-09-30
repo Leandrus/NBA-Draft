@@ -1,7 +1,7 @@
 # Ultimate Draft - Documentación Técnica Completa para Modelos de Inteligencia Artificial (LLMs)
 Dominio Oficial: https://nba.leandrus.net/
 Contacto: info@leandrus.net
-Versión: 2.2 Pro
+Versión: 2.2 Demo
 
 ---
 

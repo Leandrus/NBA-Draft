@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <title>Ultimate Draft v2.2 - Simulador Competitivo de Baloncesto NBA</title>
+    <title>Ultimate Draft v2.2 Demo - Simulador Competitivo de Baloncesto NBA</title>
     <meta name="description"
         content="Simulador web competitivo de baloncesto para dos jugadores locales. Crea tu quinteto ideal mediante Draft de cartas aleatorias y enfréntate con 1,000 jugadores reales y estadísticas históricas de la NBA.">
     <meta name="author" content="Leandrus">
@@ -181,7 +181,7 @@
             </div>
 
             <div class="flex flex-wrap justify-center items-center gap-2.5 text-xs text-gray-500 pt-2">
-                <span class="text-[var(--nba-gold)] font-bold">v2.2 Pro</span>
+                <span class="text-[var(--nba-gold)] font-bold">v2.2 Demo</span>
                 <span>•</span>
                 <span>Soporte Smart TV / D-Pad</span>
                 <span>•</span>
@@ -190,15 +190,15 @@
 
             <!-- Andamiaje Legal y Gestión de Consentimiento -->
             <div class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-[11px] text-gray-400 pt-1 border-t border-white/10 max-w-xl">
-                <button type="button" onclick="App.openLegalModal('privacy')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Privacidad</button>
+                <a href="privacy.html" onclick="if(window.ConsentManager){window.ConsentManager.openLegalModal('privacy');return false;}" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2 cursor-pointer">Privacidad</a>
                 <span class="text-gray-600">•</span>
-                <button type="button" onclick="App.openLegalModal('terms')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Términos</button>
+                <a href="terms.html" onclick="if(window.ConsentManager){window.ConsentManager.openLegalModal('terms');return false;}" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2 cursor-pointer">Términos</a>
                 <span class="text-gray-600">•</span>
-                <button type="button" onclick="App.openLegalModal('cookies')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Cookies & Almacenamiento</button>
+                <a href="cookies.html" onclick="if(window.ConsentManager){window.ConsentManager.openLegalModal('cookies');return false;}" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2 cursor-pointer">Cookies & Almacenamiento</a>
                 <span class="text-gray-600">•</span>
-                <button type="button" onclick="App.openLegalModal('disclaimer')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Aviso NBA</button>
+                <a href="terms.html#disclaimer" onclick="if(window.ConsentManager){window.ConsentManager.openLegalModal('disclaimer');return false;}" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2 cursor-pointer">Aviso NBA</a>
                 <span class="text-gray-600">•</span>
-                <button type="button" onclick="window.ConsentManager && window.ConsentManager.openPreferencesModal()" class="hover:text-[var(--nba-gold)] text-amber-200/90 font-medium transition underline underline-offset-2 flex items-center gap-1">
+                <button type="button" onclick="if(window.ConsentManager){window.ConsentManager.openPreferencesModal();}" class="hover:text-[var(--nba-gold)] text-amber-200/90 font-medium transition underline underline-offset-2 flex items-center gap-1 cursor-pointer">
                     <span>⚙️ Configurar Cookies</span>
                 </button>
             </div>
@@ -879,7 +879,7 @@
                         <strong>Tu Privacidad en Ultimate Draft:</strong> Utilizamos <code>localStorage</code> exclusivamente para guardar tu partida y volumen. No usamos cookies publicitarias ni compartimos tus datos.
                     </p>
                     <p class="text-[11px] text-gray-400 mt-0.5">
-                        Al continuar, aceptas nuestras políticas conforme a RGPD y CCPA. Puedes revisar la <a href="privacy.html" target="_blank" rel="noopener" class="underline text-[var(--nba-gold)]">Política de Privacidad</a> y los <a href="terms.html" target="_blank" rel="noopener" class="underline text-[var(--nba-gold)]">Términos</a>.
+                        Al continuar, aceptas nuestras políticas conforme a RGPD y CCPA. Puedes revisar la <a href="privacy.html" onclick="if(window.ConsentManager){window.ConsentManager.openLegalModal('privacy');return false;}" class="underline text-[var(--nba-gold)] cursor-pointer">Política de Privacidad</a> y los <a href="terms.html" onclick="if(window.ConsentManager){window.ConsentManager.openLegalModal('terms');return false;}" class="underline text-[var(--nba-gold)] cursor-pointer">Términos</a>.
                     </p>
                 </div>
             </div>

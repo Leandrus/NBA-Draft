@@ -1,11 +1,11 @@
 /**
- * Ultimate Draft - Controlador Principal de la Aplicación (v2.2 Pro)
+ * Ultimate Draft - Controlador Principal de la Aplicación (v2.2 Demo)
  * Gestiona pantallas, personalización de equipos, flujo de draft, mecánicas de scout,
  * simulation integration, box score rendering, fullscreen, and database browser.
  */
 
 const App = {
-    version: "2.2 Pro",
+    version: "2.2 Demo",
     state: {
         screen: 'menu',
         mode: 'normal', // normal, libre, 3x3, finales

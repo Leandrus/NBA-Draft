@@ -2,7 +2,7 @@
 > Simulador web competitivo de baloncesto para dos jugadores locales con draft de cartas y 1,000 jugadores reales con estadísticas históricas de la NBA.
 
 ## Metadatos
-- **Nombre:** Ultimate Draft (v2.2 Pro)
+- **Nombre:** Ultimate Draft (v2.2 Demo)
 - **URL Canónica:** https://nba.leandrus.net/
 - **Contacto del Desarrollador:** info@leandrus.net
 - **Tipo de Aplicación:** Simulador Deportivo / Videojuego Web / PWA

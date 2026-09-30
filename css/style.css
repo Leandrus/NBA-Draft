@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ULTIMATE DRAFT - SISTEMA DE DISEÑO Y ESTILOS (v2.2 Pro)
+   ULTIMATE DRAFT - SISTEMA DE DISEÑO Y ESTILOS (v2.2 Demo)
    ========================================================================== */
 
 :root {
@@ -402,7 +402,7 @@ header.app-header {
     background: rgba(0, 0, 0, 0.88);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    z-index: 100;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -734,7 +734,7 @@ body.is-tv .card-draft:focus {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 9999;
+    z-index: 9998;
     padding: 0.85rem 1.25rem;
     background: rgba(7, 21, 36, 0.94);
     backdrop-filter: blur(16px);
