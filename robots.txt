@@ -1,0 +1,36 @@
+# Ultimate Draft - Robots.txt
+# Dominio Oficial: https://nba.leandrus.net
+
+User-agent: *
+Allow: /
+Allow: /privacy.html
+Allow: /terms.html
+Allow: /cookies.html
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /.well-known/security.txt
+Disallow: /scripts/
+Disallow: /*.json$
+
+# Motores de IA y Asistentes Conversacionales
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+Sitemap: https://nba.leandrus.net/sitemap.xml

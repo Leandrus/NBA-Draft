@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Política de Cookies y Almacenamiento Local - Ultimate Draft NBA</title>
+    <meta name="description"
+        content="Información detallada sobre el uso de almacenamiento local (Local Storage) y cookies técnicas en Ultimate Draft.">
+    <link rel="canonical" href="https://nba.leandrus.net/cookies.html">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Leandrus">
+    <meta name="theme-color" content="#020b13">
+
+    <!-- Seguridad -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.nba.com; media-src 'self'; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-[#020b13] text-white min-h-screen flex flex-col justify-between overflow-y-auto">
+
+    <!-- Header -->
+    <header class="app-header w-full px-4 sm:px-8 py-3 flex justify-between items-center border-b border-white/10 glass-panel">
+        <a href="/" class="flex items-center gap-2">
+            <span class="text-2xl sm:text-3xl font-bebas tracking-wider text-white">
+                <span class="text-[var(--nba-red)]">ULTIMATE</span> <span class="text-[var(--nba-gold)]">DRAFT</span>
+            </span>
+        </a>
+        <a href="/" class="btn-nba px-4 py-1.5 text-xs sm:text-sm rounded-lg bg-gray-800 hover:bg-gray-700">
+            ← Volver al Simulador
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8 sm:py-12">
+        <div class="glass-panel p-6 sm:p-10 border border-white/10 space-y-6">
+            <div class="border-b border-white/10 pb-4">
+                <span class="text-xs uppercase font-bold text-[var(--nba-gold)] tracking-widest">Almacenamiento y Cookies</span>
+                <h1 class="text-4xl sm:text-6xl font-bebas tracking-wide mt-1 text-white">POLÍTICA DE COOKIES & STORAGE</h1>
+                <p class="text-xs text-gray-400 mt-1">Conformidad con la Directiva ePrivacy y el RGPD • nba.leandrus.net</p>
+            </div>
+
+            <section class="space-y-3">
+                <h2 class="text-2xl font-bebas text-[var(--nba-gold)]">1. ¿Qué son las cookies y qué es el Local Storage?</h2>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                    Las cookies son pequeños archivos de texto que los servidores web depositan en el dispositivo del usuario para rastreo o autenticación en solicitudes HTTP. Por su parte, la tecnología <strong>Web Storage (localStorage)</strong> es un mecanismo moderno del navegador que permite almacenar pares clave-valor de forma estrictamente local en tu navegador, sin que estos datos viajen en cada petición al servidor.
+                </p>
+                <div class="p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-xl">
+                    <p class="text-xs sm:text-sm text-emerald-200">
+                        <strong>Transparencia:</strong> Ultimate Draft <strong>NO utiliza cookies publicitarias, ni de terceros, ni de seguimiento entre sitios</strong>. Todo almacenamiento se limita a <code>localStorage</code> dentro del propio navegador para el funcionamiento del juego.
+                    </p>
+                </div>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-2xl font-bebas text-[var(--nba-gold)]">2. Inventario de Datos Almacenados en Tu Navegador</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-gray-300 border border-white/10">
+                        <thead class="bg-white/10 text-white font-bebas text-sm">
+                            <tr>
+                                <th class="p-2.5 border-b border-white/10">Llave / Clave</th>
+                                <th class="p-2.5 border-b border-white/10">Tipo</th>
+                                <th class="p-2.5 border-b border-white/10">Duración</th>
+                                <th class="p-2.5 border-b border-white/10">Finalidad</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            <tr>
+                                <td class="p-2.5 font-mono text-[var(--nba-gold)]">ud_consent_settings</td>
+                                <td class="p-2.5">Técnica (Obligatoria)</td>
+                                <td class="p-2.5">Persistente</td>
+                                <td class="p-2.5">Guarda el estado de tus preferencias de privacidad aceptadas en el CMP.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-mono text-[var(--nba-gold)]">ud_audio_enabled</td>
+                                <td class="p-2.5">Preferencia (Opcional)</td>
+                                <td class="p-2.5">Persistente</td>
+                                <td class="p-2.5">Guarda si el usuario prefiere los efectos de sonido silenciados o activos.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-mono text-[var(--nba-gold)]">ud_volume</td>
+                                <td class="p-2.5">Preferencia (Opcional)</td>
+                                <td class="p-2.5">Persistente</td>
+                                <td class="p-2.5">Guarda el nivel del potenciómetro de volumen configurado en el juego.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 font-mono text-[var(--nba-gold)]">ud_saved_game</td>
+                                <td class="p-2.5">Técnica (Obligatoria)</td>
+                                <td class="p-2.5">Temporal</td>
+                                <td class="p-2.5">Guarda temporalmente la serie o el partido para evitar pérdidas ante recargas.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-2xl font-bebas text-[var(--nba-gold)]">3. Gestión y Eliminación de Almacenamiento Local</h2>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                    Puedes restablecer y borrar todas las configuraciones locales de Ultimate Draft pulsando el botón a continuación, o bien desde la configuración de tu navegador borrando los datos de sitio para <code>nba.leandrus.net</code>.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-3">
+                    <button type="button" onclick="clearStorageAndReload()" class="btn-nba px-5 py-2.5 rounded-xl bg-red-900/80 hover:bg-red-800 text-xs sm:text-sm font-bold border border-red-500/40">
+                        🗑️ Borrar Datos Locales de Ultimate Draft
+                    </button>
+                    <a href="/" class="btn-nba btn-nba-gold px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold">
+                        ⚙️ Ir al Simulador y Configurar CMP
+                    </a>
+                </div>
+                <div id="clear-status" class="hidden text-xs text-emerald-400 font-bold mt-2">
+                    ✓ Todos los datos locales de Ultimate Draft han sido eliminados de tu navegador.
+                </div>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-2xl font-bebas text-[var(--nba-gold)]">4. Dudas o Consultas</h2>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                    Para dudas sobre el almacenamiento de la web, escribe a: <a href="mailto:info@leandrus.net" class="text-[var(--nba-gold)] underline">info@leandrus.net</a>.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-4 text-center text-xs text-gray-500 border-t border-white/10 glass-panel">
+        <p>© 2026 Ultimate Draft • Dominio: <a href="https://nba.leandrus.net" class="text-gray-400 hover:text-white">nba.leandrus.net</a> • Contacto: <a href="mailto:info@leandrus.net" class="text-[var(--nba-gold)]">info@leandrus.net</a></p>
+        <div class="flex justify-center gap-3 mt-1.5">
+            <a href="privacy.html" class="hover:text-white underline">Privacidad</a>
+            <span>•</span>
+            <a href="terms.html" class="hover:text-white underline">Términos</a>
+            <span>•</span>
+            <a href="cookies.html" class="text-[var(--nba-gold)] underline">Cookies</a>
+        </div>
+    </footer>
+
+    <script>
+        function clearStorageAndReload() {
+            try {
+                localStorage.removeItem('ud_consent_settings');
+                localStorage.removeItem('ud_audio_enabled');
+                localStorage.removeItem('ud_volume');
+                localStorage.removeItem('ud_saved_game');
+                document.getElementById('clear-status').classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
+            } catch(e) {
+                alert('No se pudo borrar el almacenamiento local: ' + e);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

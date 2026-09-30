@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Ultimate Draft NBA Simulator",
+  "name_for_model": "ultimate_draft_nba",
+  "description_for_human": "Simulador web competitivo de baloncesto NBA para 2 jugadores con draft de cartas y 1,000 jugadores reales.",
+  "description_for_model": "Permite consultar reglas, mecánicas de draft, base de datos y algoritmos de simulación deportiva de Ultimate Draft.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://nba.leandrus.net/llms-full.txt"
+  },
+  "logo_url": "https://nba.leandrus.net/icons/basketball.svg",
+  "contact_email": "info@leandrus.net",
+  "legal_info_url": "https://nba.leandrus.net/terms.html"
+}

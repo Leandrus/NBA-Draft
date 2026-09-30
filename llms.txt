@@ -1,0 +1,39 @@
+# Ultimate Draft - NBA Simulator
+> Simulador web competitivo de baloncesto para dos jugadores locales con draft de cartas y 1,000 jugadores reales con estadísticas históricas de la NBA.
+
+## Metadatos
+- **Nombre:** Ultimate Draft (v2.2 Pro)
+- **URL Canónica:** https://nba.leandrus.net/
+- **Contacto del Desarrollador:** info@leandrus.net
+- **Tipo de Aplicación:** Simulador Deportivo / Videojuego Web / PWA
+- **Licencia:** Recreativa no comercial (Fair Use con marcas de la NBA)
+
+## Modos de Juego
+1. **Modo Normal:**
+   - 20 cartas boca abajo por posición (Pívot, Ala-Pívot, Alero, Escolta, Base).
+   - Botón Scout: Revela 5 cartas aleatorias por posición a cambio de una penalización del 5% de rendimiento durante el partido.
+2. **Modo Libre:**
+   - 20 cartas visibles por posición sin penalización de scout.
+3. **Duelo 3x3:**
+   - 3 elecciones por equipo seleccionadas de una bolsa combinada de Aleros y Bases (PF, SF, SG, PG).
+4. **Las Finales (Bo7):**
+   - Serie eliminatoria al mejor de 7 partidos entre las dos franquicias seleccionadas, con seguimiento de récords y partidos.
+
+## Motor de Simulación Probabilístico
+- **Duración:** 4 cuartos de 30 segundos reales cada uno (equivalentes a 12 minutos oficiales NBA con reloj decreciente).
+- **Overtime:** En caso de empate se simula una prórroga de 5 minutos NBA (12.5 segundos reales).
+- **Cálculo de Jugadas:** La probabilidad de acierto en tiros de campo (2PT y 3PT), rebotes, robos y tapones se calcula en función de los atributos individuales de cada jugador (t2, t3, reb, ast, stl, blk, rat OVR) y las penalizaciones de scout aplicadas.
+- **Box Score y MVP:** Seguimiento exhaustivo de puntos, rebotes, asistencias, robos y tapones por jugador, seleccionando al MVP del partido al finalizar.
+
+## Arquitectura Técnica y Privacidad
+- **Frontend:** Vanilla JavaScript (ES6+), CSS3 con Tailwind y diseño adaptativo Glassmorphism.
+- **Audio:** Sintetizador Web Audio API y reproducción de efectos estéreo (silbato, flip de cartas, tiros, ovaciones).
+- **Controles:** Ratón, pantalla táctil y soporte para Smart TV mediante teclado / D-Pad (Navegación espacial).
+- **Privacidad (RGPD / CCPA):** Ejecución 100% del lado del cliente. No se recogen ni envían datos personales identificables a servidores externos.
+
+## Documentación Adicional
+- Documentación Técnica Detallada: [llms-full.txt](https://nba.leandrus.net/llms-full.txt)
+- Política de Privacidad: [privacy.html](https://nba.leandrus.net/privacy.html)
+- Términos de Servicio: [terms.html](https://nba.leandrus.net/terms.html)
+- Política de Cookies: [cookies.html](https://nba.leandrus.net/cookies.html)
+- Reporte de Seguridad: [security.txt](https://nba.leandrus.net/.well-known/security.txt)

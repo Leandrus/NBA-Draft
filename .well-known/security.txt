@@ -1,0 +1,6 @@
+Contact: mailto:info@leandrus.net
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: es, en
+Canonical: https://nba.leandrus.net/.well-known/security.txt
+Policy: https://nba.leandrus.net/privacy.html#security
+Acknowledgments: https://nba.leandrus.net/

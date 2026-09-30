@@ -4,10 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Ultimate Draft v2.2 - Simulador Competitivo de Baloncesto</title>
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Ultimate Draft v2.2 - Simulador Competitivo de Baloncesto NBA</title>
     <meta name="description"
         content="Simulador web competitivo de baloncesto para dos jugadores locales. Crea tu quinteto ideal mediante Draft de cartas aleatorias y enfréntate con 1,000 jugadores reales y estadísticas históricas de la NBA.">
+    <meta name="author" content="Leandrus">
+    <link rel="canonical" href="https://nba.leandrus.net/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+    <!-- Arquitectura de Seguridad Estándar -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.nba.com https://*.nba.com; media-src 'self'; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
+
+    <!-- Open Graph / Redes Sociales -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nba.leandrus.net/">
+    <meta property="og:title" content="Ultimate Draft - Simulador Competitivo de Baloncesto NBA">
+    <meta property="og:description"
+        content="Crea tu quinteto ideal mediante Draft de cartas aleatorias y compite en partidos dinámicos con 1,000 jugadores reales y estadísticas históricas de la NBA.">
+    <meta property="og:image" content="https://nba.leandrus.net/icons/basketball.svg">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:site_name" content="Ultimate Draft">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ultimate Draft - Simulador Competitivo de Baloncesto NBA">
+    <meta name="twitter:description"
+        content="Simulador web competitivo de baloncesto para dos jugadores locales con 1,000 jugadores reales y estadísticas de la NBA.">
+    <meta name="twitter:image" content="https://nba.leandrus.net/icons/basketball.svg">
+
+    <!-- PWA & Mobile Support -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#020b13">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ultimate Draft">
+    <link rel="apple-touch-icon" href="favicon.svg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -23,6 +59,31 @@
 
     <!-- Custom Design System Styles -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Ultimate Draft",
+      "url": "https://nba.leandrus.net/",
+      "description": "Simulador competitivo de baloncesto para dos jugadores locales con más de 1,000 jugadores históricos de la NBA.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "author": {
+        "@type": "Person",
+        "name": "Leandrus",
+        "email": "info@leandrus.net",
+        "url": "https://nba.leandrus.net/"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 
 <body class="bg-[#020b13] text-white">
@@ -119,12 +180,27 @@
                 </button>
             </div>
 
-            <div class="flex items-center gap-3 text-xs text-gray-500 pt-2">
-                <span class="text-[var(--nba-gold)] font-bold">v2.2 Demo</span>
+            <div class="flex flex-wrap justify-center items-center gap-2.5 text-xs text-gray-500 pt-2">
+                <span class="text-[var(--nba-gold)] font-bold">v2.2 Pro</span>
                 <span>•</span>
                 <span>Soporte Smart TV / D-Pad</span>
                 <span>•</span>
                 <span>Audio WebAPI & BGM</span>
+            </div>
+
+            <!-- Andamiaje Legal y Gestión de Consentimiento -->
+            <div class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-[11px] text-gray-400 pt-1 border-t border-white/10 max-w-xl">
+                <button type="button" onclick="App.openLegalModal('privacy')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Privacidad</button>
+                <span class="text-gray-600">•</span>
+                <button type="button" onclick="App.openLegalModal('terms')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Términos</button>
+                <span class="text-gray-600">•</span>
+                <button type="button" onclick="App.openLegalModal('cookies')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Cookies & Almacenamiento</button>
+                <span class="text-gray-600">•</span>
+                <button type="button" onclick="App.openLegalModal('disclaimer')" class="hover:text-[var(--nba-gold)] transition underline underline-offset-2">Aviso NBA</button>
+                <span class="text-gray-600">•</span>
+                <button type="button" onclick="window.ConsentManager && window.ConsentManager.openPreferencesModal()" class="hover:text-[var(--nba-gold)] text-amber-200/90 font-medium transition underline underline-offset-2 flex items-center gap-1">
+                    <span>⚙️ Configurar Cookies</span>
+                </button>
             </div>
         </section>
 
@@ -291,26 +367,27 @@
                 </div>
             </div>
 
-            <!-- Contenido Simulación: Estadísticas en vivo e Historial de Jugadas -->
-            <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3 min-h-0 overflow-hidden">
-                <!-- Tabla Estadísticas en Vivo (2 cols) -->
-                <div class="lg:col-span-2 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
-                    <h6
-                        class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
-                        ESTADÍSTICAS DEL PARTIDO EN VIVO
-                    </h6>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1 min-h-0 overflow-hidden">
+            <!-- Contenido Simulación: Prioridad Total a Estadísticas de Ambos Equipos y Log Compacto Ajustado -->
+            <div class="flex-1 min-h-0 overflow-hidden sim-layout-wrapper gap-2 sm:gap-3">
+                <!-- Tabla Estadísticas en Vivo (Prioridad Principal: Ambos Equipos y Jugadores) -->
+                <div class="sim-stats-panel glass-panel p-2 sm:p-2.5 flex flex-col min-h-0 overflow-hidden lg:col-span-2">
+                    <div class="flex justify-between items-center mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
+                        <h6 class="font-bebas text-sm sm:text-base text-gray-300 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>ESTADÍSTICAS EN VIVO - AMBOS EQUIPOS</span>
+                        </h6>
+                        <span class="text-[10px] text-[var(--nba-gold)] font-mono uppercase tracking-wider hidden xs:inline">Actualización en tiempo real</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2 flex-1 min-h-0 overflow-hidden">
                         <!-- Subtabla Equipo 1 -->
-                        <div class="flex flex-col min-h-0 overflow-hidden">
-                            <div
-                                class="flex justify-between items-center px-1 mb-0.5 border-b border-red-900/60 pb-0.5 flex-shrink-0">
-                                <span id="sim-t1-stat-title"
-                                    class="font-bebas text-xs sm:text-sm text-[var(--nba-red)] truncate">Equipo 1</span>
-                                <span
-                                    class="text-[9px] bg-red-950/70 text-red-300 font-bold px-1.5 py-0.2 rounded">J1</span>
+                        <div class="flex flex-col min-h-0 overflow-hidden bg-black/25 rounded-lg p-1 border border-red-950/40">
+                            <div class="flex justify-between items-center px-1 mb-0.5 border-b border-red-900/60 pb-0.5 flex-shrink-0">
+                                <span id="sim-t1-stat-title" class="font-bebas text-xs sm:text-sm text-[var(--nba-red)] truncate">Equipo 1</span>
+                                <span class="text-[9px] bg-red-950/80 text-red-300 font-bold px-1.5 py-0.5 rounded border border-red-800/40">J1</span>
                             </div>
                             <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
-                                <table class="stat-table text-[11px] sm:text-xs">
+                                <table class="stat-table text-[10px] sm:text-xs w-full">
                                     <thead>
                                         <tr>
                                             <th>JUGADOR</th>
@@ -327,17 +404,13 @@
                         </div>
 
                         <!-- Subtabla Equipo 2 -->
-                        <div class="flex flex-col min-h-0 overflow-hidden">
-                            <div
-                                class="flex justify-between items-center px-1 mb-0.5 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
-                                <span id="sim-t2-stat-title"
-                                    class="font-bebas text-xs sm:text-sm text-[var(--nba-blue)] truncate">Equipo
-                                    2</span>
-                                <span
-                                    class="text-[9px] bg-blue-950/70 text-blue-300 font-bold px-1.5 py-0.2 rounded">J2</span>
+                        <div class="flex flex-col min-h-0 overflow-hidden bg-black/25 rounded-lg p-1 border border-blue-950/40">
+                            <div class="flex justify-between items-center px-1 mb-0.5 border-b border-blue-900/60 pb-0.5 flex-shrink-0">
+                                <span id="sim-t2-stat-title" class="font-bebas text-xs sm:text-sm text-[var(--nba-blue)] truncate">Equipo 2</span>
+                                <span class="text-[9px] bg-blue-950/80 text-blue-300 font-bold px-1.5 py-0.5 rounded border border-blue-800/40">J2</span>
                             </div>
                             <div class="table-responsive flex-1 min-h-0 overflow-y-auto">
-                                <table class="stat-table text-[11px] sm:text-xs">
+                                <table class="stat-table text-[10px] sm:text-xs w-full">
                                     <thead>
                                         <tr>
                                             <th>JUGADOR</th>
@@ -355,13 +428,15 @@
                     </div>
                 </div>
 
-                <!-- Historial de Jugadas (Play by Play - 1 col) -->
-                <div class="lg:col-span-1 glass-panel p-2.5 sm:p-3 flex flex-col min-h-0 overflow-hidden">
-                    <h6
-                        class="font-bebas text-base sm:text-lg text-gray-400 mb-1 border-b border-gray-700/80 pb-1 flex-shrink-0">
-                        HISTORIAL DE JUGADAS EN VIVO
-                    </h6>
-                    <div id="sim-log" class="sim-log-container flex-1 overflow-y-auto pr-1 min-h-0">
+                <!-- Historial de Jugadas (Secundario / Compacto en móvil con altura mínima adaptada) -->
+                <div class="sim-log-panel glass-panel p-2 sm:p-2.5 flex flex-col overflow-hidden lg:col-span-1">
+                    <div class="flex justify-between items-center mb-1 border-b border-gray-700/80 pb-0.5 flex-shrink-0">
+                        <h6 class="font-bebas text-xs sm:text-sm text-gray-400">
+                            JUGADAS EN VIVO
+                        </h6>
+                        <span class="text-[9px] text-gray-400 font-mono hidden sm:inline">Últimos eventos</span>
+                    </div>
+                    <div id="sim-log" class="sim-log-container flex-1 overflow-y-auto pr-0.5 min-h-0">
                         <!-- Entradas de log dinámicas -->
                     </div>
                 </div>
@@ -638,12 +713,213 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- MODAL LEGAL INTERACTIVO (IN-GAME)          -->
+    <!-- ========================================== -->
+    <div id="legal-modal" class="hidden modal-overlay">
+        <div class="glass-panel border border-[var(--nba-gold)] p-5 sm:p-7 rounded-2xl max-w-2xl w-full shadow-2xl modal-enter flex flex-col max-h-[88vh]">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-[var(--nba-gold)]"></span>
+                    <h2 class="text-2xl sm:text-3xl font-bebas tracking-wide text-white">INFORMACIÓN LEGAL Y PRIVACIDAD</h2>
+                </div>
+                <button type="button" onclick="App.closeLegalModal()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-white/10 text-xl font-bold transition" aria-label="Cerrar modal legal">&times;</button>
+            </div>
+
+            <!-- Pestañas Legales -->
+            <div class="flex border-b border-white/10 overflow-x-auto flex-shrink-0 mt-2 gap-1">
+                <button id="tab-btn-privacy" onclick="ConsentManager.switchLegalTab('privacy')" class="legal-tab-btn active">Privacidad</button>
+                <button id="tab-btn-terms" onclick="ConsentManager.switchLegalTab('terms')" class="legal-tab-btn">Términos</button>
+                <button id="tab-btn-cookies" onclick="ConsentManager.switchLegalTab('cookies')" class="legal-tab-btn">Cookies & Storage</button>
+                <button id="tab-btn-disclaimer" onclick="ConsentManager.switchLegalTab('disclaimer')" class="legal-tab-btn">Aviso NBA</button>
+            </div>
+
+            <!-- Contenidos -->
+            <div class="legal-content-container flex-1 mt-3 text-left">
+                <!-- Pestaña 1: Privacidad -->
+                <div id="legal-content-privacy" class="space-y-3">
+                    <h3>1. POLÍTICA DE PRIVACIDAD (RGPD / CCPA)</h3>
+                    <p><strong>Responsable del sitio:</strong> Ultimate Draft (<a href="mailto:info@leandrus.net" class="text-[var(--nba-gold)] underline">info@leandrus.net</a>). Dominio oficial: <strong>nba.leandrus.net</strong>.</p>
+                    <p>Ultimate Draft es un simulador recreativo que se ejecuta íntegramente en el navegador cliente. No recopilamos, no vendemos ni compartimos datos personales identificables (PII) con servidores externos ni plataformas de perfilado publicitario.</p>
+                    <p><strong>Almacenamiento Local:</strong> Utilizamos únicamente la API estándar de <code>localStorage</code> del dispositivo del usuario con la exclusiva finalidad de:</p>
+                    <ul>
+                        <li>Preservar el estado del juego, alineaciones y configuraciones de franquicia.</li>
+                        <li>Recordar preferencias de audio (volumen y silencio) y pantalla completa.</li>
+                        <li>Gestionar el estado de consentimiento del usuario conforme a normativas internacionales.</li>
+                    </ul>
+                    <p><strong>Contacto y Derechos:</strong> Puedes solicitar información o ejercer tus derechos ARCO escribiendo a <a href="mailto:info@leandrus.net" class="text-[var(--nba-gold)] underline">info@leandrus.net</a>. Puedes consultar la versión extendida en <a href="privacy.html" target="_blank" rel="noopener" class="text-[var(--nba-gold)] underline">privacy.html</a>.</p>
+                </div>
+
+                <!-- Pestaña 2: Términos -->
+                <div id="legal-content-terms" class="hidden space-y-3">
+                    <h3>2. TÉRMINOS Y CONDICIONES DE USO</h3>
+                    <p>El acceso y uso de este sitio web implican la aceptación plena de los presentes Términos de Servicio.</p>
+                    <ul>
+                        <li><strong>Propósito:</strong> Demostración tecnológica, educativa y de entretenimiento no comercial.</li>
+                        <li><strong>Propiedad de Software:</strong> La arquitectura de código, diseño de interfaz y motor de simulación probabilístico son propiedad intelectual de su autor.</li>
+                        <li><strong>Uso Responsable:</strong> Queda terminantemente prohibido cualquier intento de denegación de servicio, inyección maliciosa o scraping perjudicial de la infraestructura de alojamiento.</li>
+                        <li><strong>Exención de Garantías:</strong> La plataforma se proporciona "tal cual" (as-is), sin garantías explícitas de funcionamiento ininterrumpido.</li>
+                    </ul>
+                    <p>Documento completo disponible en <a href="terms.html" target="_blank" rel="noopener" class="text-[var(--nba-gold)] underline">terms.html</a>.</p>
+                </div>
+
+                <!-- Pestaña 3: Cookies & Storage -->
+                <div id="legal-content-cookies" class="hidden space-y-3">
+                    <h3>3. POLÍTICA DE COOKIES Y ALMACENAMIENTO LOCAL</h3>
+                    <p>Este sitio <strong>NO emplea cookies HTTP tradicionales de rastreo ni balizas publicitarias de terceros</strong>. Emplea la tecnología web estándar <code>localStorage</code> para almacenamiento del lado del cliente.</p>
+                    <ul>
+                        <li><code>ud_consent_settings</code>: Almacena la elección y fecha de consentimiento del usuario (Técnica).</li>
+                        <li><code>ud_audio_enabled</code> / <code>ud_volume</code>: Recuerda tu preferencia de audio y nivel sonoro (Preferencia).</li>
+                        <li><code>ud_saved_game</code>: Permite reanudar una serie o draft en curso si decides cerrar el navegador (Técnica).</li>
+                    </ul>
+                    <p>Puedes modificar tu consentimiento en cualquier momento mediante el botón "⚙️ Configurar Cookies" del menú o consultar <a href="cookies.html" target="_blank" rel="noopener" class="text-[var(--nba-gold)] underline">cookies.html</a>.</p>
+                </div>
+
+                <!-- Pestaña 4: Disclaimer NBA -->
+                <div id="legal-content-disclaimer" class="hidden space-y-3">
+                    <h3>4. AVISO LEGAL Y DESCARGO DE RESPONSABILIDAD (NBA)</h3>
+                    <p><strong>Aviso de Propiedad Intelectual:</strong> "Ultimate Draft" es una aplicación web de simulación independiente desarrollada con fines recreativos y pedagógicos.</p>
+                    <p>Los nombres de jugadores, estadísticas históricas, nombres de franquicias, marcas registradas y logos mencionados en la aplicación pertenecen exclusivamente a la <strong>National Basketball Association (NBA)</strong>, a la <strong>National Basketball Players Association (NBPA)</strong> y a sus respectivos titulares.</p>
+                    <p>Este proyecto <strong>NO está afiliado, patrocinado, respaldado ni autorizado oficialmente por la NBA ni por ninguna de sus franquicias asociadas</strong>. Su uso se realiza bajo la doctrina de uso legítimo informativo y nominativo (Fair Use).</p>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center flex-shrink-0">
+                <span class="text-[11px] text-gray-500">Ultimate Draft • <a href="mailto:info@leandrus.net" class="underline">info@leandrus.net</a></span>
+                <button type="button" onclick="App.closeLegalModal()" class="btn-nba px-6 py-2 rounded-xl text-base bg-gray-800 hover:bg-gray-700">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL DE CONFIGURACIÓN DE CONSENTIMIENTO   -->
+    <!-- ========================================== -->
+    <div id="consent-modal" class="hidden modal-overlay">
+        <div class="glass-panel border border-[var(--nba-gold)] p-6 rounded-2xl max-w-lg w-full shadow-2xl modal-enter text-left">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                <h3 class="text-2xl font-bebas text-[var(--nba-gold)]">PREFERENCIAS DE PRIVACIDAD & ALMACENAMIENTO</h3>
+                <button type="button" onclick="ConsentManager.closePreferencesModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+            </div>
+
+            <p class="text-xs text-gray-300 mb-4">
+                Personaliza cómo Ultimate Draft almacena datos en tu navegador. Valoramos tu privacidad: ningún dato sensible se envía a servidores remotos.
+            </p>
+
+            <div class="space-y-3">
+                <!-- Almacenamiento Necesario -->
+                <div class="p-3 bg-white/5 rounded-xl border border-white/10 flex items-start justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-bold text-white">Almacenamiento Técnico Necesario</span>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">Siempre Activo</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-1">
+                            Indispensable para el funcionamiento del draft, mecánicas de juego y persistencia de tu configuración de consentimiento.
+                        </p>
+                    </div>
+                    <input type="checkbox" checked disabled class="mt-1 accent-emerald-500 w-4 h-4 cursor-not-allowed">
+                </div>
+
+                <!-- Preferencias -->
+                <div class="p-3 bg-white/5 rounded-xl border border-white/10 flex items-start justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-bold text-white">Preferencias de Sonido y Visualización</span>
+                            <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-bold uppercase">Opcional</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-1">
+                            Permite recordar tus ajustes de volumen, silencio de efectos de sonido y preferencia de pantalla completa entre sesiones.
+                        </p>
+                    </div>
+                    <input id="cmp-pref-checkbox" type="checkbox" checked class="mt-1 accent-[var(--nba-gold)] w-4 h-4 cursor-pointer">
+                </div>
+
+                <!-- Analítica Local -->
+                <div class="p-3 bg-white/5 rounded-xl border border-white/10 flex items-start justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-bold text-white">Métricas Locales de Rendimiento</span>
+                            <span class="text-[10px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-bold uppercase">Opcional</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-1">
+                            Permite evaluar diagnósticos locales de FPS y tiempos de simulación para optimizar la fluidez visual en tu equipo.
+                        </p>
+                    </div>
+                    <input id="cmp-anal-checkbox" type="checkbox" class="mt-1 accent-[var(--nba-gold)] w-4 h-4 cursor-pointer">
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-2.5 justify-end">
+                <button type="button" onclick="ConsentManager.rejectNonEssential()" class="btn-nba px-4 py-2 text-xs rounded-xl bg-gray-800 hover:bg-gray-700">
+                    Solo Necesarias
+                </button>
+                <button type="button" onclick="ConsentManager.saveCustomPreferences()" class="btn-nba px-5 py-2 text-xs rounded-xl bg-blue-700 hover:bg-blue-600">
+                    Guardar Selección
+                </button>
+                <button type="button" onclick="ConsentManager.acceptAll()" class="btn-nba btn-nba-gold px-5 py-2 text-xs rounded-xl">
+                    Aceptar Todas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BANNER FLOTANTE DE CONSENTIMIENTO (CMP)    -->
+    <!-- ========================================== -->
+    <div id="consent-banner" class="hidden consent-banner">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[var(--nba-gold)]/20 border border-[var(--nba-gold)]/40 flex items-center justify-center flex-shrink-0 text-lg">
+                    🛡️
+                </div>
+                <div class="text-left">
+                    <p class="text-xs sm:text-sm text-gray-200 leading-snug">
+                        <strong>Tu Privacidad en Ultimate Draft:</strong> Utilizamos <code>localStorage</code> exclusivamente para guardar tu partida y volumen. No usamos cookies publicitarias ni compartimos tus datos.
+                    </p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">
+                        Al continuar, aceptas nuestras políticas conforme a RGPD y CCPA. Puedes revisar la <a href="privacy.html" target="_blank" rel="noopener" class="underline text-[var(--nba-gold)]">Política de Privacidad</a> y los <a href="terms.html" target="_blank" rel="noopener" class="underline text-[var(--nba-gold)]">Términos</a>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 flex-shrink-0 w-full md:w-auto justify-end">
+                <button type="button" onclick="ConsentManager.openPreferencesModal()" class="px-3.5 py-1.5 rounded-lg border border-white/20 text-xs font-bold text-gray-300 hover:bg-white/10 transition">
+                    Preferencias
+                </button>
+                <button type="button" onclick="ConsentManager.rejectNonEssential()" class="px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-bold text-white transition">
+                    Solo Necesarias
+                </button>
+                <button type="button" onclick="ConsentManager.acceptAll()" class="btn-nba btn-nba-gold px-5 py-1.5 text-xs rounded-lg shadow-lg">
+                    Aceptar Todo
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Application Script Modules -->
     <script src="js/data/players.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/spatial-nav.js"></script>
     <script src="js/simulation.js"></script>
+    <script src="js/consent.js"></script>
     <script src="js/app.js"></script>
+
+    <!-- Registro PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => {
+                        console.log('[PWA] Service Worker registrado exitosamente:', reg.scope);
+                    })
+                    .catch(err => {
+                        console.warn('[PWA] Error al registrar Service Worker:', err);
+                    });
+            });
+        }
+    </script>
 
 </body>
 

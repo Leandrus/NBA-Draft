@@ -1,0 +1,14 @@
+/* TEAM */
+  Desarrollador y Arquitectura: Leandrus
+  Contacto: info@leandrus.net
+  Sitio Web: https://nba.leandrus.net
+
+/* THANKS */
+  Comunidad de aficionados al baloncesto de la NBA.
+  Google Fonts por las tipografías Bebas Neue e Inter.
+
+/* SITE */
+  Última Actualización: 2026-09-30
+  Estándares: HTML5, CSS3, ES2023, PWA, RFC 9116, Schema.org
+  Componentes: Web Audio API, Spatial TV Navigation D-Pad, Service Worker Offline Cache
+  Diseño: Dark Mode NBA Glassmorphism

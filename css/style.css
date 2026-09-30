@@ -657,3 +657,152 @@ body.is-tv .card-draft:focus {
     gap: 8px;
 }
 
+/* ==========================================================================
+   SIMULACIÓN RESPONSIVE: PRIORIDAD TOTAL DE ESTADÍSTICAS EN MÓVILES
+   ========================================================================== */
+.sim-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+    .sim-layout-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* En móviles, el panel de estadísticas tiene máxima prioridad vertical */
+.sim-stats-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* En móviles, el panel de jugadas se ajusta al espacio restante con altura mínima */
+.sim-log-panel {
+    flex: 0 0 auto;
+    height: 82px;
+    min-height: 64px;
+    max-height: 100px;
+}
+
+@media (min-width: 640px) {
+    .sim-log-panel {
+        height: 110px;
+        max-height: 130px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sim-log-panel {
+        flex: 1 1 0%;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+    }
+}
+
+/* Ajuste compacto de filas de tabla en móvil */
+@media (max-width: 639px) {
+    .stat-table th {
+        padding: 0.15rem 0.25rem;
+        font-size: 0.75rem;
+    }
+    .stat-table td {
+        padding: 0.15rem 0.25rem;
+        font-size: 0.7rem;
+    }
+    .stat-table td img {
+        width: 16px;
+        height: 16px;
+    }
+    .stat-table td span {
+        max-width: 65px;
+    }
+    .log-entry {
+        font-size: 0.72rem;
+        padding: 0.15rem 0.4rem;
+        margin-bottom: 0.15rem;
+    }
+}
+
+/* ==========================================================================
+   SISTEMA DE GESTIÓN DE CONSENTIMIENTO (CMP) & MODALES LEGALES
+   ========================================================================== */
+.consent-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: 0.85rem 1.25rem;
+    background: rgba(7, 21, 36, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 2px solid var(--nba-gold);
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.7);
+    animation: consentSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes consentSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.legal-tab-btn {
+    padding: 0.5rem 1rem;
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.legal-tab-btn:hover {
+    color: #ffffff;
+}
+
+.legal-tab-btn.active {
+    color: var(--nba-gold);
+    border-bottom-color: var(--nba-gold);
+}
+
+.legal-content-container {
+    max-height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 0.5rem;
+}
+
+.legal-content-container h3 {
+    font-family: var(--font-heading);
+    color: var(--nba-gold);
+    font-size: 1.35rem;
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+}
+
+.legal-content-container p, 
+.legal-content-container li {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.legal-content-container ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+

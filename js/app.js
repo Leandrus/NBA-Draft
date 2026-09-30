@@ -586,18 +586,18 @@ const App = {
                     tr.id = `stat-row-${p.id}`;
                     tr.className = "border-b border-gray-800/70 transition duration-150";
                     tr.innerHTML = `
-                        <td class="py-1 px-1 font-bold ${isP1 ? 'text-red-400' : 'text-blue-400'} flex items-center gap-1.5">
+                        <td class="py-0.5 sm:py-1 px-0.5 sm:px-1 font-bold ${isP1 ? 'text-red-400' : 'text-blue-400'} flex items-center gap-1 sm:gap-1.5">
                             <img src="${this.CDN_URL}${p.id}.png" 
-                                 class="w-5 h-5 rounded-full bg-gray-800 object-cover flex-shrink-0" 
+                                 class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-800 object-cover flex-shrink-0" 
                                  data-player-id="${p.id}"
                                  onerror="App.handleImageError(this, '${p.n.replace(/'/g, "\\'")}', '${p.t}', '')">
-                            <span class="truncate max-w-[85px] sm:max-w-[110px] text-[11px] sm:text-xs">${p.n}</span>
+                            <span class="truncate max-w-[68px] sm:max-w-[110px] text-[10px] sm:text-xs leading-none">${p.n}</span>
                         </td>
-                        <td id="p-pts-${p.id}" class="py-1 px-1 font-bold text-white text-[11px] sm:text-xs">0</td>
-                        <td id="p-reb-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
-                        <td id="p-ast-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
-                        <td id="p-stl-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
-                        <td id="p-blk-${p.id}" class="py-1 px-1 text-gray-300 text-[11px] sm:text-xs">0</td>
+                        <td id="p-pts-${p.id}" class="py-0.5 sm:py-1 px-0.5 sm:px-1 font-bold text-white text-[10px] sm:text-xs">0</td>
+                        <td id="p-reb-${p.id}" class="py-0.5 sm:py-1 px-0.5 sm:px-1 text-gray-300 text-[10px] sm:text-xs">0</td>
+                        <td id="p-ast-${p.id}" class="py-0.5 sm:py-1 px-0.5 sm:px-1 text-gray-300 text-[10px] sm:text-xs">0</td>
+                        <td id="p-stl-${p.id}" class="py-0.5 sm:py-1 px-0.5 sm:px-1 text-gray-300 text-[10px] sm:text-xs">0</td>
+                        <td id="p-blk-${p.id}" class="py-0.5 sm:py-1 px-0.5 sm:px-1 text-gray-300 text-[10px] sm:text-xs">0</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -977,6 +977,18 @@ const App = {
         const isFS = !!document.fullscreenElement;
         btn.innerHTML = `<img src="icons/${isFS ? 'fullscreen-exit' : 'fullscreen'}.svg" class="icon-svg w-4 h-4 sm:w-5 sm:h-5 object-contain" alt="${isFS ? 'Salir de Pantalla Completa' : 'Pantalla Completa'}">`;
         btn.title = isFS ? "Salir de Pantalla Completa" : "Pantalla Completa";
+    },
+
+    openLegalModal(tab) {
+        if (window.ConsentManager) {
+            window.ConsentManager.openLegalModal(tab);
+        }
+    },
+
+    closeLegalModal() {
+        if (window.ConsentManager) {
+            window.ConsentManager.closeLegalModal();
+        }
     }
 };
 

@@ -1,0 +1,83 @@
+# Ultimate Draft - Documentación Técnica Completa para Modelos de Inteligencia Artificial (LLMs)
+Dominio Oficial: https://nba.leandrus.net/
+Contacto: info@leandrus.net
+Versión: 2.2 Pro
+
+---
+
+## 1. Visión General del Proyecto
+Ultimate Draft es una Single Page Application (SPA) orientada al juego competitivo local cara a cara entre dos personas. Los usuarios arman sus quintetos mediante rondas de draft alternadas con una base de datos estática de 1,000 jugadores históricos y contemporáneos de la National Basketball Association (NBA), culminando en un partido simulado en vivo con reloj oficial y cálculo de jugadas dinámicas.
+
+---
+
+## 2. Estructura de Datos de los Jugadores
+La base de datos se almacena en el objeto global `window.NBA_DATABASE` (cargado desde `js/data/players.js`), organizada por las siguientes posiciones:
+- `c`: Pívots (Centers)
+- `pf`: Alas-Pívot (Power Forwards)
+- `sf`: Aleros (Small Forwards)
+- `sg`: Escoltas (Shooting Guards)
+- `pg`: Bases (Point Guards)
+- `mix`: Agrupación de jugadores para la modalidad 3x3
+
+Cada registro de jugador contiene la siguiente firma:
+```json
+{
+  "id": 2544,
+  "n": "LeBron James",
+  "t": "Los Angeles Lakers",
+  "pos": "sf",
+  "t2": 92,
+  "t3": 85,
+  "reb": 88,
+  "ast": 94,
+  "stl": 82,
+  "blk": 78,
+  "rat": 96
+}
+```
+Atributos numéricos de rendimiento (escala estándar 50 - 99):
+- `t2`: Eficacia y tendencia en lanzamientos de 2 puntos (tiro de media distancia y penetración).
+- `t3`: Eficacia en lanzamientos de 3 puntos desde el perímetro.
+- `reb`: Capacidad de rebote ofensivo y defensivo.
+- `ast`: Visión de juego y generación de asistencias para compañeros.
+- `stl`: Agresividad y habilidad en robos de balón en defensa.
+- `blk`: Intimidación defensiva y tapones.
+- `rat`: Calificación Global (Overall Rating - OVR) que pondera el impacto general del atleta.
+
+---
+
+## 3. Algoritmo del Motor de Simulación (`js/simulation.js`)
+El motor de simulación opera mediante un bucle temporal basado en intervalos regulares:
+- **Frecuencia de Actualización:** 10 ticks por segundo (`ticksPerSecond = 10`).
+- **Duración del Cuarto:** 30 segundos de tiempo real equivalen a 12 minutos (720 segundos) de reloj oficial NBA.
+- **Factor de Tiempo:** Cada tick avanza `720 / (30 * 10) = 2.4` segundos del reloj NBA.
+- **Pausa de Entretiempo:** Entre cuartos se produce una pausa de 3 segundos reales con display del marcador acumulado.
+- **Prórroga (Overtime):** Si al sonar la chicharra del cuarto período persiste un empate, se activa un Overtime de 5 minutos NBA (300 segundos, equivalentes a 12.5 segundos reales).
+
+### Cálculo de Posesiones y Jugadas:
+1. En cada tick, se evalúa una probabilidad estocástica de generación de jugada ofensiva (`tickProbability ≈ 0.35`).
+2. Se determina la franquicia atacante alternando el control y ponderando la diferencia de OVR de los quintetos.
+3. Se selecciona al jugador protagonista de la acción dentro del roster mediante ruleta probabilística según su Rating individual.
+4. Si se aplicó la penalización de Scout (-5%), el rating efectivo del equipo infractor se multiplica por `0.95`.
+5. Se genera la jugada:
+   - **Tiro de 3:** Si un número aleatorio favorece la propensión de triple y el atributo `t3` del tirador supera el umbral defensivo rival, se anotan 3 puntos y se registra el evento.
+   - **Tiro de 2:** Se evalúa `t2` versus la defensa interior rival. En caso de acierto, se suma asistencia al mejor pasador activo del quinteto (`ast`).
+   - **Tapón / Robo Defensivo:** Si el tiro falla, se evalúa si un defensor del equipo rival realiza un tapón (`blk`) o recuperación previa (`stl`).
+   - **Rebote:** Si el balón sale despedido, el jugador con mayor atributo `reb` captura el rebote defensivo u ofensivo.
+6. Todos los eventos se transmiten reactivamente a la interfaz para alimentar el marcador, las tablas de jugadores y el log de eventos en vivo.
+
+---
+
+## 4. Fórmula de Elección del Jugador Más Valioso (MVP)
+Al concluir el encuentro, la puntuación de impacto de cada jugador se calcula como:
+```
+MVP_Score = (PTS * 1.0) + (REB * 1.2) + (AST * 1.5) + (STL * 2.0) + (BLK * 2.0)
+```
+El jugador perteneciente al equipo ganador con la mayor puntuación de impacto acumulada recibe el galardón de MVP del partido y se exhibe en la pantalla de resultados con su ficha y fotografía.
+
+---
+
+## 5. Arquitectura de Seguridad y Privacidad
+- **CSP (Content Security Policy):** Directivas estrictas que mitigan cualquier riesgo de Cross-Site Scripting (XSS).
+- **Protección de Datos:** No se recopilan datos privados en servidores. El almacenamiento de estados se restringe a `localStorage` bajo consentimiento explícito gestionado por el CMP.
+- **PWA Ready:** Manifiesto estándar y Service Worker (`sw.js`) para garantizar el funcionamiento sin conexión y en dispositivos móviles.
